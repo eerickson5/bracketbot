@@ -9,13 +9,20 @@ class Team(db.Model, SerializerMixin):
     team_name = db.Column(db.String)
     # captain_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
+    game_scores = db.relationship("GameScore", back_populates = "team")
+    games = association_proxy('game_scores', 'game', creator=lambda game_obj: GameScore(game=game_obj))
+
 class GameScore(db.Model, SerializerMixin):
     __table_name__ = "gamescores"
     id = db.Column(db.Integer, primary_key=True)
     own_score = db.Column(db.Integer)
     opponent_score = db.Column(db.Integer)
-    # team_id = db.Column(db.Integer, db.ForeignKey('teams.id'))
-    # game_id = db.Column(db.Integer, db.ForeignKey('games.id'))
+
+    team_id = db.Column(db.Integer, db.ForeignKey('team.id'))
+    team = db.relationship("Team", back_populates = "game_scores")
+
+    game_id = db.Column(db.Integer, db.ForeignKey('game.id'))
+    game = db.relationship("Game", back_populates = "game_scores")
 
 class Game(db.Model, SerializerMixin):
     __table_name__ = "games"
@@ -24,6 +31,9 @@ class Game(db.Model, SerializerMixin):
     start_time = db.Column(db.DateTime)
     # stage_id = db.Column(db.Integer, db.ForeignKey('stages.id'))
     # parent_id = db.Column(db.Integer, db.ForeignKey('games.id'))
+
+    game_scores = db.relationship("GameScore", back_populates = "game")
+    teams = association_proxy('game_scores', 'team', creator=lambda team_obj: GameScore(team=team_obj))
 
 class Stage(db.Model, SerializerMixin):
     __table_name__ = "stages"
