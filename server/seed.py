@@ -28,9 +28,24 @@ if __name__ == '__main__':
         db.session.add(ozone)
         db.session.add(magma)
 
+        #1 tournament
+        tourney = Tournament(
+            name = "Round Robin",
+            num_fields = 1
+        )
+        db.session.add(tourney)
+        #1 stage
+        pool = Stage(
+            name = "Pool",
+            minutes_per_game = 90,
+            is_bracket = False,
+            tournament = tourney
+        )
+        db.session.add(pool)
         # 1 game
         matchup = Game(
-            location = "SAC"
+            location = "SAC",
+            stage = pool
         )
         db.session.add(matchup)
         # 2 game_scores
@@ -48,6 +63,5 @@ if __name__ == '__main__':
         )
         db.session.add(magma_score)
         db.session.add(ozone_score)
-
         db.session.commit()
         print("Seeded.")

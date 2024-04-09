@@ -29,11 +29,14 @@ class Game(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     location = db.Column(db.String)
     start_time = db.Column(db.DateTime)
-    # stage_id = db.Column(db.Integer, db.ForeignKey('stages.id'))
     # parent_id = db.Column(db.Integer, db.ForeignKey('games.id'))
+
+    stage_id = db.Column(db.Integer, db.ForeignKey('stage.id'))
+    stage = db.relationship("Stage", back_populates = "games")
 
     game_scores = db.relationship("GameScore", back_populates = "game")
     teams = association_proxy('game_scores', 'team', creator=lambda team_obj: GameScore(team=team_obj))
+    tournaments = association_proxy('stages', 'tournament', creator=lambda tourney_obj: Stage(tournament=tourney_obj))
 
 class Stage(db.Model, SerializerMixin):
     __table_name__ = "stages"
@@ -44,7 +47,11 @@ class Stage(db.Model, SerializerMixin):
     minutes_per_game = db.Column(db.Integer)
     minutes_per_break = db.Column(db.Integer)
     is_bracket = db.Column(db.Boolean)
-    # tournament_id = db.Column(db.Integer, db.ForeignKey('tournaments.id'))
+
+    tournament_id = db.Column(db.Integer, db.ForeignKey('tournament.id'))
+    tournament = db.relationship("Tournament", back_populates = "stages")
+
+    games = db.relationship("Game", back_populates = "stage")
 
 
 class Tournament(db.Model, SerializerMixin):
@@ -52,3 +59,6 @@ class Tournament(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     num_fields = db.Column(db.Integer)
+
+    stages = db.relationship("Stage", back_populates = "tournament")
+    games = association_proxy("stages", 'games', creator=lambda game_obj: Stage(game=game_obj))
