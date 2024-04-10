@@ -5,6 +5,7 @@ import {
 
 import TournamentCard from "../components/TournamentCard";
 import GameCard from "../components/GameCard";
+import TeamCard from "../components/TeamCard";
 
 export default function TournamentDashboard(){
   const tourney = {
@@ -37,11 +38,16 @@ export default function TournamentDashboard(){
     }
   }
 
+  const team = {
+    name: "Atlanta Soul",
+    image:'https://pbs.twimg.com/profile_images/1609982268478480393/9WXVNUar_400x400.jpg',
+  }
 
     return(
     <Container>
       <TournamentCard tournament={tourney}/>
       <GameCard game={game}/>
+      <TeamCard team={team}/>
     </Container>
      
     )
