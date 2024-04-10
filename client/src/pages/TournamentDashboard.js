@@ -6,6 +6,7 @@ import {
 import TournamentCard from "../components/TournamentCard";
 import GameCard from "../components/GameCard";
 import TeamCard from "../components/TeamCard";
+import NewTeamForm from "../components/NewTeamForm";
 
 export default function TournamentDashboard(){
   const tourney = {
@@ -48,6 +49,7 @@ export default function TournamentDashboard(){
       <TournamentCard tournament={tourney}/>
       <GameCard game={game}/>
       <TeamCard team={team}/>
+      <NewTeamForm/>
     </Container>
      
     )

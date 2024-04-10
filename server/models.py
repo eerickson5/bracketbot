@@ -22,6 +22,8 @@ class Team(db.Model, SerializerMixin):
     games = association_proxy('game_scores', 'game', creator=lambda game_obj: GameScore(game=game_obj))
     tournaments = db.relationship('Team', secondary=tournament_teams, back_populates="players")
 
+    # serialize_only = ('id', 'team_name', 'game_scores')
+
 class GameScore(db.Model, SerializerMixin):
     __table_name__ = "gamescores"
     id = db.Column(db.Integer, primary_key=True)
