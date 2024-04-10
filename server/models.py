@@ -1,7 +1,16 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
-
+# from sqlalchemy import MetaData
 from config import db
+
+
+
+tournament_teams = db.Table(
+    "tournament_teams",
+    # metadata,
+    db.Column('tournament_id', db.Integer, db.ForeignKey("tournament.id"), primary_key=True),
+    db.Column('team_id', db.Integer, db.ForeignKey("team.id"), primary_key=True)
+)
 
 class Team(db.Model, SerializerMixin):
     __table_name__ = "teams"
@@ -11,6 +20,7 @@ class Team(db.Model, SerializerMixin):
 
     game_scores = db.relationship("GameScore", back_populates = "team")
     games = association_proxy('game_scores', 'game', creator=lambda game_obj: GameScore(game=game_obj))
+    tournaments = db.relationship('Team', secondary=tournament_teams, back_populates="players")
 
 class GameScore(db.Model, SerializerMixin):
     __table_name__ = "gamescores"
@@ -62,3 +72,4 @@ class Tournament(db.Model, SerializerMixin):
 
     stages = db.relationship("Stage", back_populates = "tournament")
     games = association_proxy("stages", 'games', creator=lambda game_obj: Stage(game=game_obj))
+    teams = db.relationship("Player", secondary=tournament_teams, back_populates = 'players')
