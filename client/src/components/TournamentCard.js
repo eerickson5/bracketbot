@@ -8,6 +8,7 @@ export default function TournamentCard({tournament}){
         header={tournament.name}
         meta={tournament.location}
         description={`${tournament.numTeams} teams | ${tournament.numPools} Pools | ${tournament.numBrackets} Brackets`}
+        color="red"
         />
     )
 }

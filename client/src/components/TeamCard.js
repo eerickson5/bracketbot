@@ -8,5 +8,5 @@ export default function TeamCard({team}){
         src: team.image,
       }
     
-      return <Label as='a' content={team.name} image={imageProps} size="big"/>
+      return <Label as='a' content={team.name} image={imageProps} size="big" color="blue"/>
 }
