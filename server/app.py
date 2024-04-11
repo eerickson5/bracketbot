@@ -32,7 +32,7 @@ class CreateTeam(Resource):
         try:
             team = Team(
                 team_name=request.json.get("teamName"),
-                #image=request.form.get("image"),
+                image=request.json.get("image"),
                 #captain_id=session["user_id"]
             )
             db.session.add(team)

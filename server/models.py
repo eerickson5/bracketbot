@@ -16,6 +16,7 @@ class Team(db.Model, SerializerMixin):
     __table_name__ = "teams"
     id = db.Column(db.Integer, primary_key = True)
     team_name = db.Column(db.String)
+    image = db.Column(db.String)
     # captain_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     game_scores = db.relationship("GameScore", back_populates = "team")
@@ -71,6 +72,7 @@ class Tournament(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     num_fields = db.Column(db.Integer)
+    image = db.Column(db.String)
 
     stages = db.relationship("Stage", back_populates = "tournament")
     games = association_proxy("stages", 'games', creator=lambda game_obj: Stage(game=game_obj))
