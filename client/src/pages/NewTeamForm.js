@@ -5,7 +5,7 @@ import { useState } from 'react'
 export default function NewTeamForm({}){
 
     const [formData, setFormData] = useState({
-        name: "",
+        teamName: "",
         image: ""
     })
 
@@ -25,12 +25,26 @@ export default function NewTeamForm({}){
         return(false);
     }
 
+    function handleSubmit(){
+        const formattedFormData = new FormData();
+        formattedFormData.append("team_name", formData.teamName);
+        formattedFormData.append("image", formData.image);
+
+        fetch("/team", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: formattedFormData,
+        }).then((r) => {r.json()}).then(item => console.log(item))
+    }
+
     return (
-        <Segment color="blue" inverted tertiary>
+        <Segment color="blue" inverted tertiary onSubmit={handleSubmit}>
             <h2>Create New Team</h2>
             <Form>
-                <FormInput fluid style={{marginBottom: 20}} name="name"
-                label='Team name' placeholder='Team name' value={formData.name} onChange={handleChange}/>
+                <FormInput fluid style={{marginBottom: 20}} name="teamName"
+                label='Team name' placeholder='Team name' value={formData.teamName} onChange={handleChange}/>
                 
                 <FormInput fluid name="image" style={{marginBottom: 20}} 
                 label='Link to team photo' placeholder='Team photo' value={formData.image} onChange={handleChange}/>

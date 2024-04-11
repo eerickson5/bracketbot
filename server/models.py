@@ -20,7 +20,7 @@ class Team(db.Model, SerializerMixin):
 
     game_scores = db.relationship("GameScore", back_populates = "team")
     games = association_proxy('game_scores', 'game', creator=lambda game_obj: GameScore(game=game_obj))
-    tournaments = db.relationship('Team', secondary=tournament_teams, back_populates="players")
+    tournaments = db.relationship('Tournament', secondary=tournament_teams, back_populates="teams")
 
     # serialize_only = ('id', 'team_name', 'game_scores')
 
@@ -74,4 +74,4 @@ class Tournament(db.Model, SerializerMixin):
 
     stages = db.relationship("Stage", back_populates = "tournament")
     games = association_proxy("stages", 'games', creator=lambda game_obj: Stage(game=game_obj))
-    teams = db.relationship("Player", secondary=tournament_teams, back_populates = 'players')
+    teams = db.relationship("Team", secondary=tournament_teams, back_populates = 'tournaments')
