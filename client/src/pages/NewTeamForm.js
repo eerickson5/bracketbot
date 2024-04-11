@@ -26,16 +26,14 @@ export default function NewTeamForm({}){
     }
 
     function handleSubmit(){
-        const formattedFormData = new FormData();
-        formattedFormData.append("team_name", formData.teamName);
-        formattedFormData.append("image", formData.image);
 
-        fetch("/team", {
+        console.log("sending form: ", formData)
+        fetch("http://localhost:5555/team", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: formattedFormData,
+        body: JSON.stringify(formData),
         }).then((r) => {r.json()}).then(item => console.log(item))
     }
 

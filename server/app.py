@@ -28,9 +28,10 @@ class TeamByID(Resource):
 class CreateTeam(Resource):
     def post(self):
         # if session["user_id"]:
+        print(request)
         try:
             team = Team(
-                team_name=request.form.get("team_name"),
+                team_name=request.json.get("teamName"),
                 #image=request.form.get("image"),
                 #captain_id=session["user_id"]
             )
