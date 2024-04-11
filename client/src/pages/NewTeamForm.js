@@ -16,9 +16,9 @@ export default function NewTeamForm(){
     }
 
     function isEmoji(string) {
-        const emojiRegex = /\p{Emoji}/u;
+        const emojiRegex = /\p{Extended_Pictographic}/u;
 
-        if (emojiRegex.test(string)){
+        if (emojiRegex.test(string) || string.length === 0){
           return(true);
         }
       
@@ -53,6 +53,7 @@ export default function NewTeamForm(){
                         label='Use Emoji'
                         value='sm'
                         checked={isEmoji(formData.image)}
+                        onClick={() => setFormData({...formData, image: ""})}
                         />
                         <FormRadio
                         label='Link to Photo'
