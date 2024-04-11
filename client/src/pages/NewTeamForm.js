@@ -46,7 +46,7 @@ export default function NewTeamForm(){
                     label='Team name' placeholder='Team name' value={formData.teamName} onChange={handleChange}/>
                     
                     <FormInput fluid name="image" style={{marginBottom: 20}} 
-                    label='Link to team photo' placeholder='Team photo' value={formData.image} onChange={handleChange}/>
+                    label='Team icon' placeholder='Team icon' value={formData.image} onChange={handleChange}/>
 
                     <Grid columns={2} style={{marginBottom:5}}>
                         <FormRadio
