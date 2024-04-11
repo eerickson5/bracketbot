@@ -1,8 +1,8 @@
 import React from "react";
-import { Label, Form, FormInput, FormRadio, Segment, Grid, Button } from 'semantic-ui-react'
+import { Label, Form, FormInput, FormRadio, Segment, Grid, Button, Container } from 'semantic-ui-react'
 import { useState } from 'react'
 
-export default function NewTeamForm({}){
+export default function NewTeamForm(){
 
     const [formData, setFormData] = useState({
         teamName: "",
@@ -38,30 +38,33 @@ export default function NewTeamForm({}){
     }
 
     return (
-        <Segment color="blue" inverted tertiary onSubmit={handleSubmit}>
-            <h2>Create New Team</h2>
-            <Form>
-                <FormInput fluid style={{marginBottom: 20}} name="teamName"
-                label='Team name' placeholder='Team name' value={formData.teamName} onChange={handleChange}/>
-                
-                <FormInput fluid name="image" style={{marginBottom: 20}} 
-                label='Link to team photo' placeholder='Team photo' value={formData.image} onChange={handleChange}/>
+        <Container style={{marginTop: 50}}>
+            <Segment color="blue" inverted tertiary onSubmit={handleSubmit}>
+                <h2>Create New Team</h2>
+                <Form>
+                    <FormInput fluid style={{marginBottom: 20}} name="teamName"
+                    label='Team name' placeholder='Team name' value={formData.teamName} onChange={handleChange}/>
+                    
+                    <FormInput fluid name="image" style={{marginBottom: 20}} 
+                    label='Link to team photo' placeholder='Team photo' value={formData.image} onChange={handleChange}/>
 
-                <Grid columns={2} style={{marginBottom:5}}>
-                    <FormRadio
-                    label='Use Emoji'
-                    value='sm'
-                    checked={isEmoji(formData.image)}
-                    />
-                    <FormRadio
-                    label='Upload Photo'
-                    value='photo'
-                    checked={!isEmoji(formData.image)}
-                    />
-                </Grid>
-                <Button>Submit</Button>
-            </Form>
-        </Segment>
+                    <Grid columns={2} style={{marginBottom:5}}>
+                        <FormRadio
+                        label='Use Emoji'
+                        value='sm'
+                        checked={isEmoji(formData.image)}
+                        />
+                        <FormRadio
+                        label='Link to Photo'
+                        value='photo'
+                        checked={!isEmoji(formData.image)}
+                        />
+                    </Grid>
+                    <Button>Submit</Button>
+                </Form>
+            </Segment>
+        </Container>
+        
         
     )
 }
