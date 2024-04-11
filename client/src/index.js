@@ -1,7 +1,7 @@
 import React from "react";
 import App from "./components/App";
 import TournamentDashboard from "./pages/TournamentDashboard";
-import NewTeamForm from "./pages/NewTeamForm";
+import NewTournamentForm from "./pages/NewTournamentForm";
 import * as ReactDOM from "react-dom";
 import "./index.css";
 import { createRoot } from "react-dom/client";
@@ -11,7 +11,7 @@ import 'semantic-ui-css/semantic.min.css';
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <NewTeamForm/>
+        element: <NewTournamentForm/>
     }
 ])
 const root = ReactDOM.createRoot(document.getElementById("root"))

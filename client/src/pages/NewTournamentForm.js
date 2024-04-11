@@ -2,10 +2,10 @@ import React from "react";
 import { Form, FormInput, FormRadio, Segment, Grid, Button, Container } from 'semantic-ui-react'
 import { useState } from 'react'
 
-export default function NewTeamForm(){
+export default function NewTournamentForm(){
 
     const [formData, setFormData] = useState({
-        teamName: "",
+        tournamentName: "",
         image: ""
     })
 
@@ -28,7 +28,7 @@ export default function NewTeamForm(){
     function handleSubmit(){
 
         console.log("sending form: ", formData)
-        fetch("http://localhost:5555/team", {
+        fetch("http://localhost:5555/tournament", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -39,14 +39,14 @@ export default function NewTeamForm(){
 
     return (
         <Container style={{marginTop: 50}}>
-            <Segment color="blue" inverted tertiary onSubmit={handleSubmit}>
-                <h2>Create New Team</h2>
+            <Segment color="red" inverted tertiary onSubmit={handleSubmit}>
+                <h2>Create New Tournament</h2>
                 <Form>
-                    <FormInput fluid style={{marginBottom: 20}} name="teamName"
-                    label='Team name' placeholder='Team name' value={formData.teamName} onChange={handleChange}/>
+                    <FormInput fluid style={{marginBottom: 20}} name="tournamentName"
+                    label='Tournament name' placeholder='Tournament name' value={formData.tournamentName} onChange={handleChange}/>
                     
                     <FormInput fluid name="image" style={{marginBottom: 20}} 
-                    label='Link to team photo' placeholder='Team photo' value={formData.image} onChange={handleChange}/>
+                    label='Tournament icon' placeholder='Tournament icon' value={formData.image} onChange={handleChange}/>
 
                     <Grid columns={2} style={{marginBottom:5}}>
                         <FormRadio
