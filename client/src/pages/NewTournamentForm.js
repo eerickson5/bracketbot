@@ -41,7 +41,9 @@ export default function NewTournamentForm(){
         return(false);
     }
 
-    function handleSubmit(){
+    //TODO: return button should trigger add team, not submit tournament
+    function handleSubmit(e){
+        e.preventDefault()
         fetch("http://localhost:5555/tournament", {
         method: "POST",
         headers: {
