@@ -1,12 +1,13 @@
 import React from "react";
-import { Label } from 'semantic-ui-react'
+import { Label, LabelDetail, Icon } from 'semantic-ui-react'
 
-export default function TeamCard({team}){
-    const imageProps = {
-        avatar: true,
-        spaced: 'right',
-        src: team.image,
-      }
-    
-      return <Label as='a' content={team.name} image={imageProps} size="big" color="blue"/>
+export default function TeamCard({team, removeTeam}){
+
+  return ( 
+    <Label size="big" color="blue" as='a' onRemove={removeTeam}>
+      {team.image}
+      <LabelDetail>{team.name}</LabelDetail>
+      <Icon name='delete' />
+    </Label>
+  )
 }
