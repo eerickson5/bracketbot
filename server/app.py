@@ -43,6 +43,25 @@ class CreateTeam(Resource):
     # else:
     #     return make_response({"error": "Not logged in"}, 401)
 
+class CreateTournament(Resource):
+    def post(self):
+        # if session["user_id"]:
+        print(request)
+        try:
+            tournament = Tournament(
+                team_name=request.json.get("tournamentName"),
+                image=request.json.get("image"),
+                #captain_id=session["user_id"]
+            )
+            db.session.add(tournament)
+            db.session.commit()
+            return make_response(tournament.to_dict(), 201)
+        except ValueError as e:
+            return make_response( {"message": str(e)}, 422)
+    # else:
+    #     return make_response({"error": "Not logged in"}, 401)
+
+api.add_resource(CreateTournament, '/tournament')
 api.add_resource(TeamByID, '/team/<int:id>')
 api.add_resource(CreateTeam, '/team')
 

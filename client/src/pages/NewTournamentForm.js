@@ -6,13 +6,25 @@ export default function NewTournamentForm(){
 
     const [formData, setFormData] = useState({
         tournamentName: "",
-        image: ""
+        image: "",
     })
 
+    const [teams, setTeams] = useState([
+        {name: "Atlanta Soul", image: "😎"},
+        {},
+        {}
+    ])
+
+    //TODO: this works for both inputs not just image WHAT
     function handleChange(e, { name, value }){
-        if (!(isEmoji(formData.image) && value.length > 2)){
+        if(name !== "tournamentName"){
+            if (!(isEmoji(formData.image) && value.length > 2)){
+                setFormData({...formData, [name]: value})
+            }
+        } else {
             setFormData({...formData, [name]: value})
         }
+        
     }
 
     function isEmoji(string) {
@@ -61,6 +73,8 @@ export default function NewTournamentForm(){
                         checked={!isEmoji(formData.image)}
                         />
                     </Grid>
+
+                    <h3>Add Teams</h3>
                     <Button>Submit</Button>
                 </Form>
             </Segment>
