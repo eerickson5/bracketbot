@@ -77,7 +77,7 @@ export default function NewTournamentForm(){
                     </Grid>
 
                     <h3>Add Teams</h3>
-                    <TeamAdder teams={teams} addTeam={setTeams}/>
+                    <TeamAdder teams={teams} onEditTeams={(teams) => setTeams(teams)}/>
                     <Button>Submit</Button>
                 </Form>
             </Segment>

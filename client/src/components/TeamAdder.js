@@ -6,6 +6,7 @@ export default function TeamAdder({teams, onEditTeams}){
 
     let removeTeam = (team) => {
         let newTeams = teams.filter(newTeam => newTeam !== team)
+        console.log(newTeams.length)
         onEditTeams(newTeams)
     }
 
