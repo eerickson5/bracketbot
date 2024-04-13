@@ -41,16 +41,19 @@ export default function NewTournamentForm(){
         return(false);
     }
 
-    //TODO: return button should trigger add team, not submit tournament
+    //TODO: return button should trigger add team sometimes, not submit tournament
     function handleSubmit(e){
         e.preventDefault()
-        fetch("http://localhost:5555/tournament", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-        }).then((r) => {r.json()}).then(item => console.log(item))
+        if(e.target.name === "final-submit"){
+            fetch("http://localhost:5555/tournament", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+            }).then((r) => {r.json()}).then(item => console.log(item))
+        }
+        
     }
 
     return (
@@ -80,7 +83,7 @@ export default function NewTournamentForm(){
 
                     <h3>Add Teams</h3>
                     <TeamAdder teams={teams} onEditTeams={(teams) => setTeams(teams)}/>
-                    <Button>Submit</Button>
+                    <Button name="final-submit">Submit</Button>
                 </Form>
             </Segment>
         </Container>

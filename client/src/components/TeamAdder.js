@@ -2,7 +2,7 @@ import React from "react";
 import { Input, Container, Button } from 'semantic-ui-react'
 import TeamCard from "./TeamCard";
 import { useState } from "react";
-import { isSingleEmoji } from "../isSingleEmoji";
+import { isSingleEmoji, randomEmoji } from "../emojiFunctions";
 
 //eVENT.preventdefault
 export default function TeamAdder({teams, onEditTeams}){
@@ -21,15 +21,12 @@ export default function TeamAdder({teams, onEditTeams}){
     let addTeam = () => {
         if(name.length < 1){
             setErrorMessage("Give your team a name!")
-        } else if(teams.includes(name)) {
+        } else if (teams.some(existingTeam => existingTeam["name"] === name)) {
+        // } else if(teams.includes(name)) {
             setErrorMessage("A team with this name already exists.")
         } else {
-            onEditTeams([...teams, {name: name, image: emoji}])
+            onEditTeams([...teams, {name: name, image: isSingleEmoji(emoji) ? emoji : randomEmoji()}])
         }
-
-        //if team name is valid and doesn't already exist
-        //if if is a singular emoji
-        //send up
     }
 
     function changeEmoji(string){
