@@ -49,11 +49,17 @@ class CreateTournament(Resource):
         print(request)
         try:
             tournament = Tournament(
-                team_name=request.json.get("tournamentName"),
+                name=request.json.get("tournamentName"),
                 image=request.json.get("image"),
-                #captain_id=session["user_id"]
             )
             db.session.add(tournament)
+            teams = [Team(
+                team_name=item["name"],
+                image=item["image"]
+            ) for item in request.json.get("teams")]
+            for team in teams:
+                db.session.add(team)
+                tournament.teams.append(team)
             db.session.commit()
             return make_response(tournament.to_dict(), 201)
         except ValueError as e:

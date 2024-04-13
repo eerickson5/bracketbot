@@ -11,12 +11,12 @@ export default function NewTournamentForm(){
     })
 
     const [teams, setTeams] = useState([
-        {name: "Atlanta Soul", image: "😎"},
-        {name: "Magma", image: "🌋"},
-        {name: "Ozone", image: "🫧"},
-        {name: "M'Kay'", image: "🤯"},
-        {name: "Happy Hour", image: "🍻"},
-        {name: "Wreck", image: "🦖"},
+        // {name: "Atlanta Soul", image: "😎"},
+        // {name: "Magma", image: "🌋"},
+        // {name: "Ozone", image: "🫧"},
+        // {name: "M'Kay'", image: "🤯"},
+        // {name: "Happy Hour", image: "🍻"},
+        // {name: "Wreck", image: "🦖"},
     ])
 
     //TODO: this works for both inputs not just image WHAT
