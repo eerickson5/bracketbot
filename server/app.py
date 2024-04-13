@@ -53,7 +53,6 @@ class TournamentByID(Resource):
 class CreateTournament(Resource):
     def post(self):
         # if session["user_id"]:
-        print(request)
         try:
             tournament = Tournament(
                 name=request.json.get("tournamentName"),
@@ -75,7 +74,7 @@ class CreateTournament(Resource):
     #     return make_response({"error": "Not logged in"}, 401)
 
 api.add_resource(CreateTournament, '/tournament')
-api.add_resource(TournamentByID, '/team/<int:id>')
+api.add_resource(TournamentByID, '/tournament/<int:id>')
 api.add_resource(TeamByID, '/team/<int:id>')
 api.add_resource(CreateTeam, '/team')
 

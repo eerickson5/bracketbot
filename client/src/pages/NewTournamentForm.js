@@ -7,8 +7,6 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 export default function NewTournamentForm(){
-
-
         //TODO: return button should trigger add team sometimes, not submit tournament
     const formSchema = yup.object().shape({
         tournamentName: yup.string().required("This tournament needs a name!").max(50),
@@ -20,7 +18,7 @@ export default function NewTournamentForm(){
         //     image: yup.string().max(5)
         // })
         // )
-        .min(4).required()
+        .min(4, "Tournaments need at least 4 teams.").required()
     })
 
     const formik = useFormik({
@@ -32,12 +30,10 @@ export default function NewTournamentForm(){
         validationSchema: formSchema,
         onSubmit: async (values) => {
             // if(e.target.name === "final-submit"){
-                console.log("submitting...")
                 if(values.image === ""){
                     values.image = randomEmoji()
                 }
                 values.image = values.image === "" ? randomEmoji() : values.image;
-                console.log(values)
                 fetch("http://localhost:5555/tournament", {
                 method: "POST",
                 headers: {
@@ -49,12 +45,10 @@ export default function NewTournamentForm(){
                     console.log(item)
                     
                 })
-                .catch(e => setErrorMessage(e))
+                .catch(e => console.log(e))
             // }
         }
     })
-
-    const [errorMessage, setErrorMessage] = useState("")
 
     //TODO: this works for both inputs not just image WHAT
     function handleChange(e, { name, value }){
@@ -92,7 +86,9 @@ export default function NewTournamentForm(){
                         checked={!isSingleEmoji(formik.values.image)}
                         />
                     </Grid>
-                    <p style={{color:'red'}}>{`${formik.errors.name} ${formik.errors.image}`}</p>
+                    {formik.errors.teams ? <p>{formik.errors.tournamentName}</p> : null}
+                    {formik.errors.teams ? <p>{formik.errors.image}</p> : null}
+                    {formik.errors.teams ? <p>{formik.errors.teams}</p> : null}
                     <h3>Add Teams</h3>
                     <TeamAdder teams={formik.values.teams} onEditTeams={(teams) => formik.setFieldValue("teams", teams)}/>
                     <Button type="submit" name="submit" >Submit</Button>
