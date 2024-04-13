@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, Team, Tournament, Game, GameScore, Stage
+from models import db, Team, Tournament, Game, GameScore, Stage, tournament_teams
 
 if __name__ == '__main__':
     fake = Faker()
@@ -19,6 +19,7 @@ if __name__ == '__main__':
         GameScore.query.delete()
         Tournament.query.delete()
         Stage.query.delete()
+        tournament_teams.query.delete()
 
         print("Starting seed...")
 

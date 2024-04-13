@@ -28,7 +28,6 @@ class TeamByID(Resource):
 class CreateTeam(Resource):
     def post(self):
         # if session["user_id"]:
-        print(request)
         try:
             team = Team(
                 team_name=request.json.get("teamName"),
@@ -42,6 +41,14 @@ class CreateTeam(Resource):
             return make_response( {"message": str(e)}, 422)
     # else:
     #     return make_response({"error": "Not logged in"}, 401)
+
+class TournamentByID(Resource):
+    def get(self, id):
+        tournament = Tournament.query.filter(Tournament.id == id).first()
+        if tournament:
+            return make_response(tournament.to_dict(), 200)
+        else:
+            return make_response("No tournament exists with that id", 404)
 
 class CreateTournament(Resource):
     def post(self):
@@ -68,6 +75,7 @@ class CreateTournament(Resource):
     #     return make_response({"error": "Not logged in"}, 401)
 
 api.add_resource(CreateTournament, '/tournament')
+api.add_resource(TournamentByID, '/team/<int:id>')
 api.add_resource(TeamByID, '/team/<int:id>')
 api.add_resource(CreateTeam, '/team')
 
