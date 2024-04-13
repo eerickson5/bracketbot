@@ -14,7 +14,6 @@ export default function TeamAdder({teams, onEditTeams}){
 
     let removeTeam = (team) => {
         let newTeams = teams.filter(newTeam => newTeam !== team)
-        console.log(newTeams.length)
         onEditTeams(newTeams)
     }
     
@@ -22,10 +21,12 @@ export default function TeamAdder({teams, onEditTeams}){
         if(name.length < 1){
             setErrorMessage("Give your team a name!")
         } else if (teams.some(existingTeam => existingTeam["name"] === name)) {
-        // } else if(teams.includes(name)) {
-            setErrorMessage("A team with this name already exists.")
+            setErrorMessage(`A team with the name ${name} already exists.`)
         } else {
             onEditTeams([...teams, {name: name, image: isSingleEmoji(emoji) ? emoji : randomEmoji()}])
+            setName("")
+            setEmoji("")
+            setErrorMessage("")
         }
     }
 
@@ -41,14 +42,15 @@ export default function TeamAdder({teams, onEditTeams}){
             <Container>
                 <Input 
                 icon='add user' iconPosition='left' placeholder='Team name...'  style={{marginBottom: 10, marginInline: 5}}
-                onChange={(e, {name, value}) => setName(value)} value={name}/>
+                onChange={(e, {value}) => setName(value)} value={name}/>
                 <Input 
                 icon='smile' iconPosition='left' placeholder='Emoji..'  style={{marginBottom: 10, marginInline: 5}}
-                onChange={(e, {name, value}) => changeEmoji(value)} value={emoji}/>
+                onChange={(e, {value}) => changeEmoji(value)} value={emoji}/>
 
                 <Button secondary onClick={addTeam}>Add Team</Button>
             </Container>
             <Container>
+                <p>{errorMessage}</p>
                 {teamCards}
             </Container>
         </div>
