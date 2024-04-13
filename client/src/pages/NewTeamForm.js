@@ -39,9 +39,9 @@ export default function NewTeamForm(){
 
     return (
         <Container style={{marginTop: 50}}>
-            <Segment color="blue" inverted tertiary onSubmit={handleSubmit}>
+            <Segment color="blue" inverted tertiary >
                 <h2>Create New Team</h2>
-                <Form>
+                <Form onSubmit={handleSubmit}>
                     <FormInput fluid style={{marginBottom: 20}} name="teamName"
                     label='Team name' placeholder='Team name' value={formData.teamName} onChange={handleChange}/>
                     

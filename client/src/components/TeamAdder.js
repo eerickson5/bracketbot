@@ -47,7 +47,7 @@ export default function TeamAdder({teams, onEditTeams}){
                 icon='smile' iconPosition='left' placeholder='Emoji..'  style={{marginBottom: 10, marginInline: 5}}
                 onChange={(e, {value}) => changeEmoji(value)} value={emoji}/>
 
-                <Button secondary onClick={addTeam}>Add Team</Button>
+                <Button type="button" secondary onClick={addTeam}>Add Team</Button>
             </Container>
             <Container>
                 <p>{errorMessage}</p>

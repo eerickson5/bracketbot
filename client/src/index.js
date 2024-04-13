@@ -10,8 +10,12 @@ import 'semantic-ui-css/semantic.min.css';
 
 const router = createBrowserRouter([
     {
-        path: "/",
+        path: "/tournament/new",
         element: <NewTournamentForm/>
+    },
+    {
+        path: "/tournament/:id",
+        element: <TournamentDashboard/>
     }
 ])
 const root = ReactDOM.createRoot(document.getElementById("root"))
