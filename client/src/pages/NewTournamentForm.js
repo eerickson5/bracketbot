@@ -61,10 +61,10 @@ export default function NewTournamentForm(){
             <Segment color="red" padded onSubmit={handleSubmit}>
                 <h2>Create New Tournament</h2>
                 <Form>
-                    <FormInput fluid style={{marginBottom: 20}} name="tournamentName"
+                    <FormInput fluid style={{marginBottom: 20}} name="tournamentName" size="large"
                     label='Tournament name' placeholder='Tournament name' value={formData.tournamentName} onChange={handleChange}/>
                     
-                    <FormInput fluid name="image" style={{marginBottom: 20}} 
+                    <FormInput fluid name="image" style={{marginBottom: 20}} size="large"
                     label='Tournament icon' placeholder='Tournament icon' value={formData.image} onChange={handleChange}/>
 
                     <Grid columns={2} style={{marginBottom:5}}>
