@@ -5,6 +5,7 @@ import TournamentCard from "../components/TournamentCard";
 import GameCard from "../components/GameCard";
 import TeamCard from "../components/TeamCard";
 import DynamicImage from "../components/DynamicImage";
+import TournamentHeader from "../components/TournamentHeader";
 
 export default function TournamentDashboard(){
 
@@ -23,9 +24,7 @@ export default function TournamentDashboard(){
     return(
       <Container>
         <Container textAlign='center' style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
-          <DynamicImage image={tournament.image} isFullWidth>
-            <h1>{tournament.name}</h1>
-          </DynamicImage>
+          <TournamentHeader name={tournament.name} image={tournament.image}/>
           
         </Container>
         <Container>
