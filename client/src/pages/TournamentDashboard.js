@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Container, Segment } from 'semantic-ui-react'
+import { Container, Button} from 'semantic-ui-react'
 import { useParams } from "react-router-dom";
-import TournamentCard from "../components/TournamentCard";
 import GameCard from "../components/GameCard";
 import TeamCard from "../components/TeamCard";
-import DynamicImage from "../components/DynamicImage";
 import TournamentHeader from "../components/TournamentHeader";
+import TournamentMenu from "../components/TournamentMenu";
 
 export default function TournamentDashboard(){
 
@@ -23,14 +22,21 @@ export default function TournamentDashboard(){
 
     return(
       <Container>
-        <Container textAlign='center' style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
-          <TournamentHeader name={tournament.name} image={tournament.image}/>
-          
-        </Container>
+        <TournamentHeader name={tournament.name} image={tournament.image}/>
+        <TournamentMenu/>
+
         <Container>
           <h2>Teams</h2>
           { tournament.teams.map( team => <TeamCard team={team} key={team.id}/>) }
         </Container>
+        <Button
+          content='Like'
+          icon='heart'
+          label={{ as: 'a', basic: true, content: '2,048' }}
+          labelPosition='right'
+          size='huge'
+        />
+        
       </Container>
      
     )
