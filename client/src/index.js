@@ -1,6 +1,8 @@
 import React from "react";
 import App from "./components/App";
-import TournamentDashboard from "./pages/TournamentDashboard";
+import TournamentDashboard from "./components/TournamentDashboard";
+import TournamentDashboardContainer from "./pages/TournamentDashboardContainer";
+import TournamentTeamDashboard from "./components/TournamentTeamDashboard"
 import NewTournamentForm from "./pages/NewTournamentForm";
 import * as ReactDOM from "react-dom";
 import "./index.css";
@@ -15,7 +17,11 @@ const router = createBrowserRouter([
     },
     {
         path: "/tournament/:id",
-        element: <TournamentDashboard/>
+        element: <TournamentDashboardContainer/>,
+        children: [
+            {path: "/tournament/:id/", element: <TournamentDashboard/>},
+            {path: "/tournament/:id/teams", element: <TournamentTeamDashboard/>}
+        ]
     }
 ])
 const root = ReactDOM.createRoot(document.getElementById("root"))

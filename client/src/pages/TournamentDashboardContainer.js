@@ -5,8 +5,10 @@ import GameCard from "../components/GameCard";
 import TeamCard from "../components/TeamCard";
 import TournamentHeader from "../components/TournamentHeader";
 import TournamentMenu from "../components/TournamentMenu";
+import TournamentDashboard from "../components/TournamentDashboard";
+import TeamAdder from "../components/TeamAdder"
 
-export default function TournamentDashboard(){
+export default function TournamentDashboardContainer(){
 
   const tourn_id = useParams().id
   const [tournament, setTournament] = useState({teams:[]})
@@ -25,17 +27,7 @@ export default function TournamentDashboard(){
         <TournamentHeader name={tournament.name} image={tournament.image}/>
         <TournamentMenu/>
 
-        <Container>
-          <h2>Teams</h2>
-          { tournament.teams.map( team => <TeamCard team={team} key={team.id}/>) }
-        </Container>
-        <Button
-          content='Like'
-          icon='heart'
-          label={{ as: 'a', basic: true, content: '2,048' }}
-          labelPosition='right'
-          size='huge'
-        />
+        <TournamentDashboard tournament={tournament}/>
         
       </Container>
      
