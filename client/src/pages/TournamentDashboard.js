@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {
-    Container, Grid
-  } from 'semantic-ui-react'
+import { Container } from 'semantic-ui-react'
 import { useParams } from "react-router-dom";
 import TournamentCard from "../components/TournamentCard";
 import GameCard from "../components/GameCard";
 import TeamCard from "../components/TeamCard";
+import DynamicImage from "../components/DynamicImage";
 
 export default function TournamentDashboard(){
 
@@ -44,10 +43,9 @@ export default function TournamentDashboard(){
 
 
     return(
-      <Container>
-        <TournamentCard tournament={tournament}/>
-        <GameCard game={game}/>
-
+      <Container textAlign='center'>
+        <DynamicImage image={tournament.image}/>
+        <h1>{tournament.name}</h1>
         <Container>
           <h2>Teams</h2>
           {
