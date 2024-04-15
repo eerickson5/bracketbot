@@ -17,7 +17,6 @@ export default function TournamentDashboard(){
     fetch(`http://localhost:5555/tournament/${tourn_id}`).then(res => res.json())
     .then(data => {
       setTournament(data)
-      console.log(tournament)
     })
     .catch(e => console.log(e))
   }, [tourn_id])
@@ -59,7 +58,7 @@ export default function TournamentDashboard(){
 
     return(
     <Container>
-      <TournamentCard tournament={tourney}/>
+      <TournamentCard tournament={tournament}/>
       <GameCard game={game}/>
       <TeamCard team={team}/>
     </Container>
