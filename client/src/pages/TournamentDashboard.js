@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-    Container
+    Container, Grid
   } from 'semantic-ui-react'
 import { useParams } from "react-router-dom";
 import TournamentCard from "../components/TournamentCard";
@@ -10,7 +10,7 @@ import TeamCard from "../components/TeamCard";
 export default function TournamentDashboard(){
 
   const tourn_id = useParams().id
-  const [tournament, setTournament] = useState({})
+  const [tournament, setTournament] = useState({teams:[]})
 
   useEffect(() => {
 
@@ -20,15 +20,6 @@ export default function TournamentDashboard(){
     })
     .catch(e => console.log(e))
   }, [tourn_id])
-
-  const tourney = {
-    image:'https://universe.byu.edu/wp-content/uploads/2019/07/AP19204604544330-1.jpg',
-    name:'Round Robin',
-    location:'Applewood Park',
-    numTeams: 16,
-    numPools: 4,
-    numBrackets: 2
-  }
 
   const game = {
     location: 'Field C',
@@ -51,17 +42,19 @@ export default function TournamentDashboard(){
     }
   }
 
-  const team = {
-    name: "Atlanta Soul",
-    image:'https://pbs.twimg.com/profile_images/1609982268478480393/9WXVNUar_400x400.jpg',
-  }
 
     return(
-    <Container>
-      <TournamentCard tournament={tournament}/>
-      <GameCard game={game}/>
-      <TeamCard team={team}/>
-    </Container>
+      <Container>
+        <TournamentCard tournament={tournament}/>
+        <GameCard game={game}/>
+
+        <Container>
+          <h2>Teams</h2>
+          {
+            tournament.teams.map( team => <TeamCard team={team} key={team.id}/>)
+          }
+        </Container>
+      </Container>
      
     )
 }

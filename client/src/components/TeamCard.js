@@ -4,10 +4,10 @@ import { Label, LabelDetail, Icon } from 'semantic-ui-react'
 export default function TeamCard({team, onRemoveTeam}){
 
   return ( 
-    <Label size="large" color="blue" as='a' onClick={ () => onRemoveTeam(team)} style={{marginBottom: 5}}>
+    <Label size="big" color="blue" as='a' onClick={ () => team.onRemoveTeam ?  onRemoveTeam(team) : null} style={{marginBottom: 5}}>
       {team.image}
-      <LabelDetail>{team.name}</LabelDetail>
-      <Icon name='delete' />
+      <LabelDetail>{team.team_name}</LabelDetail>
+      {team.onRemoveTeam ? <Icon name='delete' /> : null}
     </Label>
   )
 }
