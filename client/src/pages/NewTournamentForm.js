@@ -1,12 +1,13 @@
 import React from "react";
 import { Form, FormInput, FormRadio, Segment, Grid, Button, Container } from 'semantic-ui-react'
-import { useState } from 'react'
 import TeamAdder from "../components/TeamAdder";
 import { isSingleEmoji, randomEmoji } from "../emojiFunctions";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 export default function NewTournamentForm(){
+    const navigate = useNavigate()
         //TODO: return button should trigger add team sometimes, not submit tournament
     const formSchema = yup.object().shape({
         tournamentName: yup.string().required("This tournament needs a name!").max(50),
@@ -40,10 +41,10 @@ export default function NewTournamentForm(){
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(values),
-                }).then((r) => {r.json()})
-                .then(item => {
-                    console.log(item)
-                    
+                }).then(res => res.json())
+                .then(tournament => {
+                    formik.resetForm()
+                    navigate(`/tournament/${tournament.id}`)
                 })
                 .catch(e => console.log(e))
             // }

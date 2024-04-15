@@ -82,5 +82,5 @@ class Tournament(db.Model, SerializerMixin):
     games = association_proxy("stages", 'games', creator=lambda game_obj: Stage(game=game_obj))
     teams = db.relationship("Team", secondary=tournament_teams, back_populates = 'tournaments')
 
-    serialize_only = ('id', 'name', 'image', 'num_fields', 'teams', 'games')
+    serialize_only = ('id', 'name', 'image', 'num_fields', 'teams', 'stages')
     # on delete also delete stages, games, gamescores, and tournament-teams
