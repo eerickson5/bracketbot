@@ -1,11 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Menu, MenuItem, Icon } from 'semantic-ui-react'
 
-export default function TournamentMenu(){
+export default function TournamentMenu(tournamentId){
+  const navigate = useNavigate()
     return (
         <Menu icon='labeled' secondary as="a">
         <MenuItem
           name='teams'
+          // onClick={() => navigate(`/tournament/${tournamentId}/teams`)}
         >
           <Icon name='users' />
           Edit Teams

@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Container, Button} from 'semantic-ui-react'
 import { useParams } from "react-router-dom";
-import GameCard from "../components/GameCard";
-import TeamCard from "../components/TeamCard";
 import TournamentHeader from "../components/TournamentHeader";
 import TournamentMenu from "../components/TournamentMenu";
 import TournamentDashboard from "../components/TournamentDashboard";
-import TeamAdder from "../components/TeamAdder"
 
 export default function TournamentDashboardContainer(){
 
@@ -25,7 +22,7 @@ export default function TournamentDashboardContainer(){
     return(
       <Container>
         <TournamentHeader name={tournament.name} image={tournament.image}/>
-        <TournamentMenu/>
+        <TournamentMenu tournamentId={tourn_id}/>
 
         <TournamentDashboard tournament={tournament}/>
         

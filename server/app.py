@@ -60,7 +60,7 @@ class CreateTournament(Resource):
             )
             db.session.add(tournament)
             teams = [Team(
-                team_name=item["name"],
+                team_name=item["team_name"],
                 image=item["image"]
             ) for item in request.json.get("teams")]
             for team in teams:

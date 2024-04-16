@@ -23,7 +23,7 @@ export default function TeamAdder({teams, onEditTeams}){
         } else if (teams.some(existingTeam => existingTeam["name"] === name)) {
             setErrorMessage(`A team with the name ${name} already exists.`)
         } else {
-            onEditTeams([...teams, {name: name, image: isSingleEmoji(emoji) ? emoji : randomEmoji()}])
+            onEditTeams([...teams, {team_name: name, image: isSingleEmoji(emoji) ? emoji : randomEmoji()}])
             setName("")
             setEmoji("")
             setErrorMessage("")

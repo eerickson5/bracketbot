@@ -5,7 +5,6 @@ import GameCard from "../components/GameCard";
 import TeamCard from "../components/TeamCard";
 
 export default function TournamentDashboard({tournament}){
-  console.log(tournament)
     return(
       <Container>
         <Container>
