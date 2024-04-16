@@ -4,11 +4,13 @@ import { useParams } from "react-router-dom";
 import TournamentHeader from "../components/TournamentHeader";
 import TournamentMenu from "../components/TournamentMenu";
 import TournamentDashboard from "../components/TournamentDashboard";
+import TournamentTeamDashboard from "../components/TournamentTeamDashboard";
 
 export default function TournamentDashboardContainer(){
 
   const tourn_id = useParams().id
   const [tournament, setTournament] = useState({teams:[]})
+  const [selectedMenu, setSelectedMenu] = useState("")
 
   useEffect(() => {
 
@@ -22,9 +24,9 @@ export default function TournamentDashboardContainer(){
     return(
       <Container>
         <TournamentHeader name={tournament.name} image={tournament.image}/>
-        <TournamentMenu tournamentId={tourn_id}/>
+        <TournamentMenu selectedMenu={selectedMenu} onSelectMenu={(menu) => setSelectedMenu(menu)}/>
 
-        <TournamentDashboard tournament={tournament}/>
+        {selectedMenu === "" ? <TournamentDashboard tournament={tournament}/> : <TournamentTeamDashboard tournament={tournament}/>}
         
       </Container>
      

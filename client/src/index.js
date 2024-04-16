@@ -18,10 +18,6 @@ const router = createBrowserRouter([
     {
         path: "/tournament/:id",
         element: <TournamentDashboardContainer/>,
-        children: [
-            {path: "/tournament/:id/", element: <TournamentDashboard/>},
-            {path: "/tournament/:id/teams", element: <TournamentTeamDashboard/>}
-        ]
     }
 ])
 const root = ReactDOM.createRoot(document.getElementById("root"))
