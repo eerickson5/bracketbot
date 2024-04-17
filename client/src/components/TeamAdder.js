@@ -12,12 +12,12 @@ export default function TeamAdder({teams, onEditTeams}){
     const [errorMessage, setErrorMessage] = useState("")
 
 
-    let removeTeam = (team) => {
+    const removeTeam = (team) => {
         let newTeams = teams.filter(newTeam => newTeam !== team)
         onEditTeams(newTeams)
     }
     
-    let addTeam = () => {
+    const addTeam = () => {
         if(name.length < 1){
             setErrorMessage("Give your team a name!")
         } else if (teams.some(existingTeam => existingTeam["name"] === name)) {
@@ -36,7 +36,6 @@ export default function TeamAdder({teams, onEditTeams}){
         } 
     }
 
-    let teamCards = teams.map( (team, index )=> (<TeamCard key={index} team={team} onRemoveTeam={removeTeam}/>))
     return(
         <div>
             <Container>
@@ -51,7 +50,7 @@ export default function TeamAdder({teams, onEditTeams}){
             </Container>
             <Container>
                 <p>{errorMessage}</p>
-                {teamCards}
+                {teams.map( (team, index )=> (<TeamCard key={index} team={team} onRemoveTeam={removeTeam}/>))}
             </Container>
         </div>
     )

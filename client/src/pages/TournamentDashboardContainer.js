@@ -12,6 +12,7 @@ export default function TournamentDashboardContainer(){
   const [tournament, setTournament] = useState({teams:[]})
   const [selectedMenu, setSelectedMenu] = useState("home")
 
+  //todo: change when anything about the tournament changes via the other menus
   useEffect(() => {
 
     fetch(`http://localhost:5555/tournament/${tourn_id}`).then(res => res.json())
