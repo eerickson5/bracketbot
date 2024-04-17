@@ -10,7 +10,7 @@ export default function TournamentDashboardContainer(){
 
   const tourn_id = useParams().id
   const [tournament, setTournament] = useState({teams:[]})
-  const [selectedMenu, setSelectedMenu] = useState("")
+  const [selectedMenu, setSelectedMenu] = useState("home")
 
   useEffect(() => {
 
@@ -26,7 +26,7 @@ export default function TournamentDashboardContainer(){
         <TournamentHeader name={tournament.name} image={tournament.image}/>
         <TournamentMenu selectedMenu={selectedMenu} onSelectMenu={(menu) => setSelectedMenu(menu)}/>
 
-        {selectedMenu === "" ? <TournamentDashboard tournament={tournament}/> : <TournamentTeamDashboard tournament={tournament}/>}
+        {selectedMenu === "home" ? <TournamentDashboard tournament={tournament}/> : <TournamentTeamDashboard tournament={tournament}/>}
         
       </Container>
      

@@ -11,7 +11,7 @@ export default function TournamentMenu({selectedMenu, onSelectMenu}){
             active={selectedMenu === "home"}
             onClick={() => onSelectMenu("home")}
           >
-            <Icon name='users' />
+            <Icon name='clipboard list' />
             Home
           </MenuItem>
         <MenuItem
@@ -29,7 +29,7 @@ export default function TournamentMenu({selectedMenu, onSelectMenu}){
           onClick={() => onSelectMenu("pools")}
         >
           <Icon name='table' />
-          Add Pools
+          Pools
         </MenuItem>
 
         <MenuItem
@@ -38,7 +38,7 @@ export default function TournamentMenu({selectedMenu, onSelectMenu}){
           onClick={() => onSelectMenu("bracket")}
         >
           <Icon name='sitemap' />
-          Add Bracket
+          Bracket
         </MenuItem>
 
         <MenuItem
