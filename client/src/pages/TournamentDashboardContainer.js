@@ -6,6 +6,7 @@ import TournamentMenu from "../components/TournamentMenu";
 import TournamentDashboard from "../components/TournamentDashboard";
 import TournamentTeamDashboard from "../components/TournamentTeamDashboard";
 import PoolsDashboard from "../components/PoolsDashboard";
+import CreatePoolsForm from "../components/CreatePoolsForm";
 
 export default function TournamentDashboardContainer(){
 
@@ -22,6 +23,15 @@ export default function TournamentDashboardContainer(){
     .catch(e => console.log(e))
   }, [tourn_id])
 
+  function getPools(){
+    let somePools = []
+
+    tournament.stages.forEach(pool => {
+      somePools.push(pool)
+    })
+    return somePools
+}
+
     return(
       <Container>
         <TournamentHeader name={tournament.name} image={tournament.image}/>
@@ -31,6 +41,8 @@ export default function TournamentDashboardContainer(){
         ? <TournamentDashboard tournament={tournament}/> 
         : selectedMenu === "teams"
         ? <TournamentTeamDashboard tournament={tournament} onUpdateTournament={setTournament}/>
+        : getPools().length === 0
+        ? <CreatePoolsForm />
         : <PoolsDashboard tournament={tournament} onUpdateTournament={setTournament}/> }
       </Container>
      

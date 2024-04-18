@@ -2,6 +2,7 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 # from sqlalchemy import MetaData
 from config import db
+import functools
 
 
 
@@ -108,5 +109,12 @@ class Tournament(db.Model, SerializerMixin):
         
         db.session.commit()
 
+    @property
+    def pools(self):
+        return [a for a in self.stages if not a.is_bracket]
+    
+    @property
+    def brackets(self):
+        return [a for a in self.stages if a.is_bracket]
 
     # on delete also delete stages, games, gamescores, and tournament-teams
