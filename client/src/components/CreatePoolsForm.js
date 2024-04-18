@@ -70,8 +70,10 @@ export default function CreatePoolsForm({tournament}){
                     />
                 </FormGroup>
 
+                <h3>There will be X pools with X games each, including X crossover game. <br/> It will last X hours and X minutes.</h3>
+
                 
-                <Button type="submit" name="submit" >Submit</Button>
+                <Button primary type="submit" name="submit" >Submit</Button>
             </Form>
         </Segment>
         
