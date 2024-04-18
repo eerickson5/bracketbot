@@ -24,6 +24,7 @@ class TeamByID(Resource):
             return make_response(team.to_dict(), 200)
         else:
             return make_response("No team exists with that id", 404)
+api.add_resource(TeamByID, '/team/<int:id>')
         
 class CreateTeam(Resource):
     def post(self):
@@ -41,6 +42,8 @@ class CreateTeam(Resource):
             return make_response( {"message": str(e)}, 422)
     # else:
     #     return make_response({"error": "Not logged in"}, 401)
+api.add_resource(CreateTeam, '/team')
+
 
 class TournamentByID(Resource):
     def get(self, id):
@@ -49,6 +52,21 @@ class TournamentByID(Resource):
             return make_response(tournament.to_dict(), 200)
         else:
             return make_response("No tournament exists with that id", 404)
+        
+    def patch(self, id):
+        tournament = Tournament.query.filter(Tournament.id == id).first()
+        if tournament:
+            if request.json.get("operation") == "rationalize_teams":
+                tournament.rationalize_teams(request.json.get("teams"))
+            else:
+                for attr in request.json:
+                    setattr(tournament, attr, request.json.get(attr))
+                db.session.add(tournament)
+                db.session.commit()
+            return make_response(tournament.to_dict(), 200)
+        else:
+            return make_response({"error": "No tournament exists with that ID."}, 404)
+api.add_resource(TournamentByID, '/tournament/<int:id>')
 
 class CreateTournament(Resource):
     def post(self):
@@ -72,11 +90,7 @@ class CreateTournament(Resource):
             return make_response( {"message": str(e)}, 422)
     # else:
     #     return make_response({"error": "Not logged in"}, 401)
-
 api.add_resource(CreateTournament, '/tournament')
-api.add_resource(TournamentByID, '/tournament/<int:id>')
-api.add_resource(TeamByID, '/team/<int:id>')
-api.add_resource(CreateTeam, '/team')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

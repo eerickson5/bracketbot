@@ -2,27 +2,32 @@ import React, { useState } from "react";
 import TeamAdder from "./TeamAdder";
 import { Container, Button } from "semantic-ui-react";
 
-export default function TournamentTeamDashboard({tournament}){
+export default function TournamentTeamDashboard({tournament, onTriggerChange}){
     const [teams, setTeams] = useState(tournament.teams)
     const [error, setError] = useState("")
 
     //TODO: if teams already have a game, can't add new ones
     const handleEditTeams = () => {
-        if(teams.length <= 4){
+        if(teams.length < 4){
             setError("Whoops! You need at least 4 teams in a tournament.")
         } else {
-            fetch("http://localhost:5555/tournament/teams", {
-            method: "POST",
+            fetch(`http://localhost:5555/tournament/${tournament.id}`, {
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({teams: teams, tournament_id: tournament.id}),
+            body: JSON.stringify({"teams": teams, "operation": "rationalize_teams"}),
             }).then(res => res.json())
-            .then(tournament => {
-                console.log("yay")
+            .then(newTournament => {
+                onTriggerChange()
             })
-            .catch(e => setError(e))
+            .catch(e => resetFromError(e))
         }
+    }
+
+    const resetFromError = (e) => {
+        setError(e.error)
+        setTeams(tournament.teams)
     }
 
     return (

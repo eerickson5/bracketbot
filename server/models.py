@@ -83,4 +83,30 @@ class Tournament(db.Model, SerializerMixin):
     teams = db.relationship("Team", secondary=tournament_teams, back_populates = 'tournaments')
 
     serialize_only = ('id', 'name', 'image', 'num_fields', 'teams', 'stages')
+
+    def rationalize_teams(self, given_teams):
+        recurring_teams = []
+        old_teams_set = set([team.id for team in self.teams])
+
+        #add teams that didn't exist yet
+        for team in given_teams:
+            if not team.get("id"):
+                new_team = Team(
+                    team_name=team["team_name"],
+                    image=team["image"],
+                )
+                db.session.add(new_team)
+                self.teams.append(new_team)
+            else:
+                recurring_teams.append(team["id"])
+        #remove teams that used to be a part of the tournament but are no longer
+        team_ids_to_delete = old_teams_set.difference(set(recurring_teams))
+        for team_id in team_ids_to_delete:
+            team_to_delete = Team.query.filter(Team.id == team_id).first()
+            if len(team_to_delete.tournaments) == 1:
+                db.session.delete(team_to_delete)
+        
+        db.session.commit()
+
+
     # on delete also delete stages, games, gamescores, and tournament-teams
