@@ -5,6 +5,7 @@ import TournamentHeader from "../components/TournamentHeader";
 import TournamentMenu from "../components/TournamentMenu";
 import TournamentDashboard from "../components/TournamentDashboard";
 import TournamentTeamDashboard from "../components/TournamentTeamDashboard";
+import PoolsDashboard from "../components/PoolsDashboard";
 
 export default function TournamentDashboardContainer(){
 
@@ -28,8 +29,9 @@ export default function TournamentDashboardContainer(){
 
         {selectedMenu === "home" 
         ? <TournamentDashboard tournament={tournament}/> 
-        : <TournamentTeamDashboard tournament={tournament} onUpdateTournament={setTournament}/>}
-        
+        : selectedMenu === "teams"
+        ? <TournamentTeamDashboard tournament={tournament} onUpdateTournament={setTournament}/>
+        : <PoolsDashboard tournament={tournament} onUpdateTournament={setTournament}/> }
       </Container>
      
     )
