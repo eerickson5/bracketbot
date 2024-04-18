@@ -87,8 +87,8 @@ export default function NewTournamentForm(){
                         checked={!isSingleEmoji(formik.values.image)}
                         />
                     </Grid>
-                    {formik.errors.teams ? <p>{formik.errors.tournamentName}</p> : null}
-                    {formik.errors.teams ? <p>{formik.errors.image}</p> : null}
+                    {formik.errors.tournamentName ? <p>{formik.errors.tournamentName}</p> : null}
+                    {formik.errors.image ? <p>{formik.errors.image}</p> : null}
                     {formik.errors.teams ? <p>{formik.errors.teams}</p> : null}
                     <h3>Add Teams</h3>
                     <TeamAdder teams={formik.values.teams} onEditTeams={(teams) => formik.setFieldValue("teams", teams)}/>
