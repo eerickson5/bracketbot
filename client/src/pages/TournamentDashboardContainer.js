@@ -42,7 +42,7 @@ export default function TournamentDashboardContainer(){
         : selectedMenu === "teams"
         ? <TournamentTeamDashboard tournament={tournament} onUpdateTournament={setTournament}/>
         : getPools().length === 0
-        ? <CreatePoolsForm />
+        ? <CreatePoolsForm tournament={tournament}/>
         : <PoolsDashboard tournament={tournament} onUpdateTournament={setTournament}/> }
       </Container>
      

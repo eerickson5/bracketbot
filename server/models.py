@@ -72,6 +72,16 @@ class Stage(db.Model, SerializerMixin):
 
     serialize_only = ('games', 'name')
 
+    #Calculating brackets notes:
+    #get length of games and rests and number of games
+    #make pools
+    #check if there are enough fields
+    #adjust
+    # this tournament will last x hours y minutes with b brackets. is that ok?
+    #when should it start?
+    #it ends at c. is that ok?
+    #submit THEN assign teams
+
 class Tournament(db.Model, SerializerMixin):
     __table_name__ = "tournaments"
     id = db.Column(db.Integer, primary_key=True)
