@@ -11,24 +11,24 @@ export default function TournamentDashboardContainer(){
   const tourn_id = useParams().id
   const [tournament, setTournament] = useState({teams:[]})
   const [selectedMenu, setSelectedMenu] = useState("home")
-  const [changeTriggered, triggerChange] = useState(false)
 
   //todo: change when anything about the tournament changes via the other menus
   useEffect(() => {
-
     fetch(`http://localhost:5555/tournament/${tourn_id}`).then(res => res.json())
     .then(data => {
       setTournament(data)
     })
     .catch(e => console.log(e))
-  }, [tourn_id, changeTriggered])
+  }, [tourn_id])
 
     return(
       <Container>
         <TournamentHeader name={tournament.name} image={tournament.image}/>
         <TournamentMenu selectedMenu={selectedMenu} onSelectMenu={(menu) => setSelectedMenu(menu)}/>
 
-        {selectedMenu === "home" ? <TournamentDashboard tournament={tournament}/> : <TournamentTeamDashboard tournament={tournament} onTriggerChange={() => triggerChange(true)}/>}
+        {selectedMenu === "home" 
+        ? <TournamentDashboard tournament={tournament}/> 
+        : <TournamentTeamDashboard tournament={tournament} onUpdateTournament={setTournament}/>}
         
       </Container>
      
