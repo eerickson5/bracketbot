@@ -7,6 +7,7 @@ import TournamentDashboard from "../components/TournamentDashboard";
 import TournamentTeamDashboard from "../components/TournamentTeamDashboard";
 import PoolsDashboard from "../components/PoolsDashboard";
 import CreatePoolsForm from "../components/CreatePoolsForm";
+import DragAndDropPools from "../components/DragAndDropPools";
 
 export default function TournamentDashboardContainer(){
 
@@ -42,7 +43,7 @@ export default function TournamentDashboardContainer(){
         : selectedMenu === "teams"
         ? <TournamentTeamDashboard tournament={tournament} onUpdateTournament={setTournament}/>
         : getPools().length === 0
-        ? <CreatePoolsForm tournament={tournament}/>
+        ? <DragAndDropPools tournament={tournament}/>
         : <PoolsDashboard tournament={tournament} onUpdateTournament={setTournament}/> }
       </Container>
      

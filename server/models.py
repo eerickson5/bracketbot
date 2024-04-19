@@ -65,6 +65,7 @@ class Stage(db.Model, SerializerMixin):
     minutes_per_game = db.Column(db.Integer)
     minutes_per_break = db.Column(db.Integer)
     is_bracket = db.Column(db.Boolean)
+    #is_crossover = db.Column(db.Boolean)
 
     tournament_id = db.Column(db.Integer, db.ForeignKey('tournament.id'))
     tournament = db.relationship("Tournament", back_populates = "stages")
