@@ -1,35 +1,51 @@
 import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-
-const initialData = {
-  tasks: {
-    'task-1': { id: 'task-1', content: 'Take out the garbage' },
-    'task-2': { id: 'task-2', content: 'Watch my favorite show' },
-    'task-3': { id: 'task-3', content: 'Charge my phone' },
-    'task-4': { id: 'task-4', content: 'Cook dinner' }
-  },
-  columns: {
-    'column-1': {
-      id: 'column-1',
-      title: 'To do',
-      taskIds: ['task-1', 'task-2']
-    },
-    'column-2': {
-      id: 'column-2',
-      title: 'In progress',
-      taskIds: ['task-3', 'task-4']
-    }
-  },
-  columnOrder: ['column-1', 'column-2']
-};
+import TeamCard from './TeamCard';
 
 export default function DragAndDropPools({tournament}) {
-  const [data, setData] = useState(initialData);
+    const [data, setData] = useState(formatData());
+
+    function formatData(){
+        let newData = {
+            teams: teamsToDict(tournament.teams),
+            pools: poolsToDict(2),
+        }
+        newData['columnOrder'] = Object.keys(newData.pools)
+        return newData
+    }
+
+  function teamsToDict(teams){
+    let teamDict = {}
+    teams.forEach(team => {
+        teamDict[team.id] = {...team, id: String(team.id)}
+    });
+    return teamDict
+  }
+
+  function createPool(num){
+    return {id: `pool-${num}`, title: `Pool ${num}`, teamIds: []}
+  }
+
+  function poolsToDict(numPools){
+    let poolDict = {
+        'unassigned': {
+            id: 'unassigned',
+            title: "Unassigned Teams",
+            teamIds: tournament.teams.map( team => String(team.id))
+        }
+    }
+    for (let i = 1; i <= numPools; i++) {
+        poolDict[`pool-${i}`] = createPool(i)
+        //use {...createPool(i) to assign random teams}
+    }
+    return (poolDict)
+  }
+
 
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
 
-    // If dropped outside of droppable area
+    // If dropped outside of droppable area or in same place
     if (!destination || (
         destination.droppableId === source.droppableId &&
         destination.index === source.index
@@ -37,24 +53,24 @@ export default function DragAndDropPools({tournament}) {
       return;
     }
 
-    const start = data.columns[source.droppableId];
-    const finish = data.columns[destination.droppableId];
+    const start = data.pools[source.droppableId];
+    const finish = data.pools[destination.droppableId];
 
     // If dropped in the same column
     if (start === finish) {
-      const newTaskIds = Array.from(start.taskIds);
-      newTaskIds.splice(source.index, 1);
-      newTaskIds.splice(destination.index, 0, draggableId);
+      const newTeamIds = Array.from(start.teamIds);
+      newTeamIds.splice(source.index, 1);
+      newTeamIds.splice(destination.index, 0, draggableId);
 
       const newColumn = {
         ...start,
-        taskIds: newTaskIds
+        teamIds: newTeamIds
       };
 
       const newData = {
         ...data,
-        columns: {
-          ...data.columns,
+        pools: {
+          ...data.pools,
           [newColumn.id]: newColumn
         }
       };
@@ -64,24 +80,24 @@ export default function DragAndDropPools({tournament}) {
     }
 
     // Moving from one list to another
-    const startTaskIds = Array.from(start.taskIds);
-    startTaskIds.splice(source.index, 1);
+    const startTeamIds = Array.from(start.teamIds);
+    startTeamIds.splice(source.index, 1);
     const newStart = {
       ...start,
-      taskIds: startTaskIds
+      teamIds: startTeamIds
     };
 
-    const finishTaskIds = Array.from(finish.taskIds);
-    finishTaskIds.splice(destination.index, 0, draggableId);
+    const finishTeamIds = Array.from(finish.teamIds);
+    finishTeamIds.splice(destination.index, 0, draggableId);
     const newFinish = {
       ...finish,
-      taskIds: finishTaskIds
+      teamIds: finishTeamIds
     };
 
     const newData = {
       ...data,
-      columns: {
-        ...data.columns,
+      pools: {
+        ...data.pools,
         [newStart.id]: newStart,
         [newFinish.id]: newFinish
       }
@@ -92,9 +108,10 @@ export default function DragAndDropPools({tournament}) {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
+        <div style={{ display: 'flex' }}>
       {data.columnOrder.map((columnId) => {
-        const column = data.columns[columnId];
-        const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
+        const column = data.pools[columnId];
+        const teams = column.teamIds.map((teamId) => data.teams[teamId]);
 
         return (
           <div key={column.id} style={{ margin: 8 }}>
@@ -105,16 +122,17 @@ export default function DragAndDropPools({tournament}) {
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                   style={{
-                    background: 'lightgrey',
+                    border: '2px solid lightgrey',
+                    borderRadius: '10px',
                     padding: 4,
-                    width: 250,
-                    minHeight: 100
+                    minWidth: 200,
+                    minHeight: 200
                   }}
                 >
-                  {tasks.map((task, index) => (
+                  {teams.map((team, index) => (
                     <Draggable
-                      key={task.id}
-                      draggableId={task.id}
+                      key={team.id}
+                      draggableId={team.id}
                       index={index}
                     >
                       {(provided) => (
@@ -124,14 +142,12 @@ export default function DragAndDropPools({tournament}) {
                           {...provided.dragHandleProps}
                           style={{
                             userSelect: 'none',
-                            padding: 16,
-                            margin: '0 0 8px 0',
-                            minHeight: '50px',
-                            backgroundColor: 'white',
+                            justifyContent: 'center',
+                            display: 'flex',
                             ...provided.draggableProps.style
                           }}
                         >
-                          {task.content}
+                          <TeamCard team={team}/>
                         </div>
                       )}
                     </Draggable>
@@ -143,6 +159,7 @@ export default function DragAndDropPools({tournament}) {
           </div>
         );
       })}
+      </div>
     </DragDropContext>
   );
 }
