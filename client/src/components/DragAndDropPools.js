@@ -163,8 +163,10 @@
         <Container>
             <div style={{display: "flex", flexDirection: 'row', alignItems: 'center'}}>
                 <h1 style={{margin: 20}}>Assign Teams to Pools</h1>
-                <Button content='Add Pool' icon='plus' labelPosition='right' secondary onClick={handleAddPool}/>
-                <Button content='Remove Pool' icon='minus' labelPosition='right' onClick={handleRemovePool}/>
+                <Button content='Add Pool' icon='plus' labelPosition='right' secondary onClick={handleAddPool}
+                disabled={data.poolOrder.length >= Object.keys(data.teams).length / 2}/>
+                <Button content='Remove Pool' icon='minus' labelPosition='right' onClick={handleRemovePool}
+                disabled={data.poolOrder.length === 1}/>
                 <Button content='Randomize' icon='random' labelPosition='right' secondary onClick={handleRandomize} 
                 disabled={data.pools["unassigned"].teamIds.length === 0 || data.poolOrder.length <= 1}/>
             </div>
