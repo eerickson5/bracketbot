@@ -51,6 +51,7 @@
         })
     }
 
+    //TODO: dont remove if theres nothing to remove
     const handleRemovePool = () => {
         let poolOrder = data.poolOrder
         const idToDelete = poolOrder.pop()
@@ -61,6 +62,37 @@
             ...data,
             pools: newPools,
             poolOrder
+        })
+    }
+
+    const handleRandomize = () => {
+        let randomizedPools = data.pools
+
+        const numToChoose = Math.floor(Object.keys(data.teams).length / (data.poolOrder.length - 1))
+        Object.keys(randomizedPools).forEach( poolId => {
+            if (poolId !== "unassigned" && poolId !== `pool-${data.poolOrder - 1}`) {
+                for (let i = 0; i < numToChoose; i ++){
+                    const randomNumber = Math.floor(Math.random() * randomizedPools["unassigned"].teamIds.length)
+                    randomizedPools[poolId].teamIds.push(randomizedPools["unassigned"].teamIds[randomNumber])
+                    randomizedPools["unassigned"].teamIds.splice(randomNumber, 1)
+                }
+            }
+        })
+
+        let poolsAvailableForAnother = Object.keys(randomizedPools).filter(id => id !== "unassigned")
+
+        randomizedPools["unassigned"].teamIds.forEach( team => {
+            const randomPoolId = poolsAvailableForAnother[
+                Math.floor(Math.random() * (poolsAvailableForAnother.length))
+            ]
+            randomizedPools[randomPoolId].teamIds.push(team)
+            poolsAvailableForAnother.splice(randomPoolId, 1)
+        })
+        randomizedPools["unassigned"].teamIds = []
+
+        setData({
+            ...data,
+            pools: randomizedPools
         })
     }
 
@@ -133,8 +165,10 @@
         <Container>
             <div style={{display: "flex", flexDirection: 'row', alignItems: 'center'}}>
                 <h1 style={{margin: 20}}>Assign Teams to Pools</h1>
-                <Button content='Add a Pool' icon='plus' labelPosition='right' secondary onClick={handleAddPool}/>
-                <Button content='Remove a Pool' icon='minus' labelPosition='right' onClick={handleRemovePool}/>
+                <Button content='Add Pool' icon='plus' labelPosition='right' secondary onClick={handleAddPool}/>
+                <Button content='Remove Pool' icon='minus' labelPosition='right' onClick={handleRemovePool}/>
+                <Button content='Randomize' icon='random' labelPosition='right' secondary onClick={handleRandomize} 
+                disabled={data.pools["unassigned"].teamIds.length === 0 || data.poolOrder.length <= 1}/>
             </div>
             <DragDropContext onDragEnd={onDragEnd}>
                 <div style={{ display: 'flex' }}>
