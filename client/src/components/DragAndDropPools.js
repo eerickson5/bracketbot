@@ -51,7 +51,6 @@
         })
     }
 
-    //TODO: dont remove if theres nothing to remove
     const handleRemovePool = () => {
         let poolOrder = data.poolOrder
         const idToDelete = poolOrder.pop()
@@ -160,7 +159,7 @@
 
     //TODO - they run off the screen crying emoji
     return (
-        <Container>
+        <Container style={{maxWidth: '100%'}}>
             <div style={{display: "flex", flexDirection: 'row', alignItems: 'center'}}>
                 <h1 style={{margin: 20}}>Assign Teams to Pools</h1>
                 <Button content='Add Pool' icon='plus' labelPosition='right' secondary onClick={handleAddPool}
@@ -171,7 +170,7 @@
                 disabled={data.pools["unassigned"].teamIds.length === 0 || data.poolOrder.length <= 1}/>
             </div>
             <DragDropContext onDragEnd={onDragEnd}>
-                <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', flexWrap:'wrap' }}>
                 {data.poolOrder.map((columnId) => {
                     const column = data.pools[columnId];
                     const teams = column.teamIds.map((teamId) => data.teams[teamId]);
@@ -186,7 +185,7 @@
                             ref={provided.innerRef}
                             style={{
                                 border: '2px solid lightgrey',
-                                borderRadius: '10px',
+                                borderRadius: '5px',
                                 padding: 4,
                                 minWidth: 200,
                                 minHeight: 200
