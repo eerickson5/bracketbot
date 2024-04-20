@@ -68,33 +68,31 @@
     const handleRandomize = () => {
         let randomizedPools = data.pools
 
-        const numToChoose = Math.floor(Object.keys(data.teams).length / (data.poolOrder.length - 1))
-        Object.keys(randomizedPools).forEach( poolId => {
-            if (poolId !== "unassigned" && poolId !== `pool-${data.poolOrder - 1}`) {
-                for (let i = 0; i < numToChoose; i ++){
-                    const randomNumber = Math.floor(Math.random() * randomizedPools["unassigned"].teamIds.length)
-                    randomizedPools[poolId].teamIds.push(randomizedPools["unassigned"].teamIds[randomNumber])
-                    randomizedPools["unassigned"].teamIds.splice(randomNumber, 1)
-                }
-            }
-        })
+        let availableTeams = randomizedPools["unassigned"].teamIds
 
-        let poolsAvailableForAnother = Object.keys(randomizedPools).filter(id => id !== "unassigned")
+        //fisher-yates algorithm to shuffle available teams
+        for (let i = availableTeams.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const i_element = availableTeams[i]
+            availableTeams[i] = availableTeams[j]
+            availableTeams[j] = i_element
+        }
 
-        randomizedPools["unassigned"].teamIds.forEach( team => {
-            const randomPoolId = poolsAvailableForAnother[
-                Math.floor(Math.random() * (poolsAvailableForAnother.length))
-            ]
-            randomizedPools[randomPoolId].teamIds.push(team)
-            poolsAvailableForAnother.splice(randomPoolId, 1)
-        })
+        const numOfPools = Object.keys(randomizedPools).length - 1
+
+        let i = 1
+        for(let team of availableTeams){
+            randomizedPools[`pool-${i}`].teamIds.push(team)
+            i < numOfPools ? i ++ : i = 1
+        }
+
         randomizedPools["unassigned"].teamIds = []
-
         setData({
             ...data,
             pools: randomizedPools
         })
     }
+
 
     const onDragEnd = (result) => {
         const { destination, source, draggableId } = result;
