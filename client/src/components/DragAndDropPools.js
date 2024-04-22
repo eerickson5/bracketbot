@@ -1,9 +1,9 @@
     import React, { useState } from 'react';
     import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
     import TeamCard from './TeamCard';
-    import { Button, Container } from 'semantic-ui-react';
+    import { Button, Container, Segment } from 'semantic-ui-react';
 
-    export default function DragAndDropPools({tournament}) {
+    export default function DragAndDropPools({tournament, onSubmitPools}) {
         const [data, setData] = useState(formatData());
 
         function formatData(){
@@ -157,16 +157,19 @@
         setData(newData);
     };
 
-    //TODO - they run off the screen crying emoji
+    function handleSubmit(){
+        onSubmitPools(Object.keys(data.pools).splice(1).map( key => data.pools[key].teamIds ))
+    }
+
     return (
-        <Container style={{maxWidth: '100%'}}>
-            <div style={{display: "flex", flexDirection: 'row', alignItems: 'center'}}>
-                <h1 style={{margin: 20}}>Assign Teams to Pools</h1>
-                <Button content='Add Pool' icon='plus' labelPosition='right' secondary onClick={handleAddPool}
+        <Container style={{maxWidth: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            <h3>This tournament has no pools yet. Once you've added all your teams, generate your pools here.</h3>
+            <div style={{marginBlock: 15, display: "flex", flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', alignSelf: 'center', justifyContent: 'center'}}>
+                <Button style={{margin: 5}} content='Add Pool' icon='plus' labelPosition='right' secondary onClick={handleAddPool}
                 disabled={data.poolOrder.length >= Object.keys(data.teams).length / 2}/>
-                <Button content='Remove Pool' icon='minus' labelPosition='right' onClick={handleRemovePool}
+                <Button style={{margin: 5}} content='Remove Pool' icon='minus' labelPosition='right' secondary onClick={handleRemovePool}
                 disabled={data.poolOrder.length === 1}/>
-                <Button content='Randomize' icon='random' labelPosition='right' secondary onClick={handleRandomize} 
+                <Button style={{margin: 5}} content='Randomize' icon='random' labelPosition='right' secondary onClick={handleRandomize} 
                 disabled={data.pools["unassigned"].teamIds.length === 0 || data.poolOrder.length <= 1}/>
             </div>
             <DragDropContext onDragEnd={onDragEnd}>
@@ -183,14 +186,11 @@
                             <div
                             {...provided.droppableProps}
                             ref={provided.innerRef}
-                            style={{
-                                border: '2px solid lightgrey',
-                                borderRadius: '5px',
-                                padding: 4,
+                            >
+                            <Segment style={{
                                 minWidth: 200,
                                 minHeight: 200
-                            }}
-                            >
+                            }}>
                             {teams.map((team, index) => (
                                 <Draggable
                                 key={team.id}
@@ -215,6 +215,7 @@
                                 </Draggable>
                             ))}
                             {provided.placeholder}
+                            </Segment>
                             </div>
                         )}
                         </Droppable>
@@ -224,6 +225,17 @@
                 </div>
             </DragDropContext>
         
+            <Button
+            style={{marginBlock: 10}}
+            content='Submit Pools'
+            secondary
+            size='large'
+            icon='check circle'
+            label={{ basic: true, content: "Once you submit, you won't be able to add more teams." }}
+            labelPosition='right'
+            disabled={data.pools['unassigned'].teamIds.length !== 0}
+            onClick={handleSubmit}
+            />
         </Container>
     );
     }

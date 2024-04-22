@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Container, Button } from 'semantic-ui-react'
+import DragAndDropPools from "./DragAndDropPools";
 
 export default function PoolsDashboard({tournament, onUpdateTournament}){
 
@@ -11,18 +12,11 @@ export default function PoolsDashboard({tournament, onUpdateTournament}){
         tournament.stages.forEach(pool => {
             somePools.push(pool)
         })
-        console.log(somePools)
         return somePools
     }
     
     if (pools.length === 0) {
-    return (
-            <Container>
-                <h2>This tournament has no pools yet.</h2>
-                <h4>Once you've added all your teams, generate your pools here.</h4>
-                <Button primary>Create Pools</Button>
-            </Container>
-        )
+        return <DragAndDropPools tournament={tournament} onSubmitPools={thepools => console.log(thepools)}/>
     } else {
         return(
             <h1>Pools</h1>
