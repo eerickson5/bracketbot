@@ -138,8 +138,9 @@ class Stage(db.Model, SerializerMixin):
                 if len(team_lists[i]) > longest_length:
                     largest_pool_index = i
             team_lists[largest_pool_index].pop()
+            #technically I should remove that team from available_teams too but it doesn't seem to matter
 
-        while len(available_teams) > 0:
+        while len(available_teams) > 1:
             i = 1
             while(i < len(available_teams) - 1 and team_pools[available_teams[0]] == team_pools[available_teams[i]]):
                 i += 1
@@ -186,6 +187,20 @@ class Stage(db.Model, SerializerMixin):
             if len(timeslots[current_timeslot]) == num_fields:
                 current_timeslot += 1
         return timeslots
+
+    @classmethod
+    def generate_best_pool_schedule(cls, team_lists, num_fields, crossovers_allowed, times_to_run):
+        generated_schedules = []
+        for _ in range(times_to_run):
+            generated_schedules.append(cls.generate_pool_schedule(team_lists, num_fields, crossovers_allowed))
+
+        shortest_schedule = None
+        shortest_schedule_length = 50
+        for schedule in generated_schedules:
+            if len(schedule) < shortest_schedule_length:
+                shortest_schedule = schedule
+        
+        return shortest_schedule
 
 
 class Tournament(db.Model, SerializerMixin):

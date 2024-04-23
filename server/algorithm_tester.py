@@ -14,9 +14,11 @@ if __name__ == '__main__':
     fake = Faker()
     with app.app_context():
         #TODO: test with a odd number of teams
-        team_lists = [["11", "12", "13", "14", '15', "16"], ["34", "37"], ["61", "62", "63", "64"]]
+        team_lists = [["11", "12", "13", "14", '15'], ["34", "37"], ["61", "62", "63", "64"]]
         
-        schedule = Stage.generate_pool_schedule(team_lists, 6, True)
+        schedule = Stage.generate_crossover_matchups(team_lists)
+
+        # schedule = Stage.generate_best_pool_schedule(team_lists, 4, True, 10)
                     
         for row in schedule:
             print(row)
