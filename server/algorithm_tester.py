@@ -13,17 +13,10 @@ from models import db, Team, Tournament, Game, GameScore, Stage, tournament_team
 if __name__ == '__main__':
     fake = Faker()
     with app.app_context():
-        team_lists = []
-        for pool_num in range(randint(2,6)):
-            for _ in range(randint(5,10)):
-                try:
-                    team_lists[pool_num].append(fake.first_name())
-                except IndexError:
-                    team_lists.append([fake.name()])
-
-
-        # print(f"{len(team_lists)} pools, 5 fields")
-
-        easy_example = [["a", "b", "c", "d", "e"], ["f", "g", "h"], ["i", "j", "k", "l"], ["m", "n"], ["o", "p", "q", "r", "s"], ["t", "u"]]
-        Stage.generate_pools(easy_example, 5)
+        #TODO: test with a odd number of teams
+        team_lists = [["11", "12", "13", "14", '15', "16"], ["34", "37"], ["61", "62", "63", "64"]]
         
+        schedule = Stage.generate_pool_schedule(team_lists, 6, True)
+                    
+        for row in schedule:
+            print(row)

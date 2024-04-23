@@ -33,7 +33,7 @@ export default function CreatePoolsForm({tournament, teamArrays}){
 
             <h3>{`You're creating these pools using the ${tournament.teams.length} teams and ${teamArrays.length} pools in your tournament.`}</h3>
             <Form onSubmit={formik.handleSubmit}>
-                <FormInput fluid style={{marginBottom: 20}} name="numFields" size="large"
+                <FormInput fluid style={{marginBottom: 20, maxWidth: 100}} name="numFields" size="large"
                 label='How many fields do you have access to?' placeholder='6' value={formik.values.numFields} onChange={handleChange}/>
 
                 <FormGroup inline>
@@ -43,6 +43,8 @@ export default function CreatePoolsForm({tournament, teamArrays}){
                     label='How long are breaks between games? (minutes)' placeholder='15' value={formik.values.breakLength} onChange={handleChange}/>
                 </FormGroup>
 
+
+{/* TODO: no crossovers if only one pool or odd number of teams */}
                 <h5 style={{marginBottom: 10}}>Are crossover games allowed?</h5>
                 <FormGroup inline>
                     <FormRadio

@@ -114,17 +114,53 @@ class Stage(db.Model, SerializerMixin):
             return list[:-1]
         else:
             return list[:index] + list[index+1:]
+        
+    @classmethod
+    def generate_crossover_matchups(cls, team_lists):
+        from random import shuffle
+        matchups = []
+        team_pools = {}
+        available_teams = []
+        for i in range(len(team_lists)):
+            # shuffle(team_lists[i])
+            for team in team_lists[i]:
+                team_pools[team] = i
+                available_teams.append(team)
+
+        shuffle(available_teams)
+
+        #if there are an odd number of teams, the largest pool removes a team from crossover play
+        
+        if len(available_teams) % 2 != 0:
+            largest_pool_index = 0
+            longest_length = len(team_lists[0])
+            for i in range(len(team_lists)):
+                if len(team_lists[i]) > longest_length:
+                    largest_pool_index = i
+            team_lists[largest_pool_index].pop()
+
+        while len(available_teams) > 0:
+            i = 1
+            while(i < len(available_teams) - 1 and team_pools[available_teams[0]] == team_pools[available_teams[i]]):
+                i += 1
+            matchups.append((available_teams[0], available_teams[i]))
+            available_teams = cls.remove_proper_index(available_teams, 0)
+            available_teams = cls.remove_proper_index(available_teams, i - 1)
+            
+        return matchups
     
 
     ## i currently prefer this way because it won't be run infinite times if the random search takes too long
     @classmethod
-    def generate_pools(cls, team_lists, num_fields):
-        import random
+    def generate_pool_schedule(cls, team_lists, num_fields, crossovers_allowed):
+        from random import shuffle
         matchup_list_by_pools = [cls.generate_matchups(team_list) for team_list in team_lists]
         matchup_list = []
         for matchups in matchup_list_by_pools:
             matchup_list.extend(matchups)
-        random.shuffle(matchup_list)
+        if crossovers_allowed:
+            matchup_list.extend(cls.generate_crossover_matchups(team_lists))
+        shuffle(matchup_list)
         team_timeslots = cls.team_list_to_timeslots(team_lists)
         timeslots = []
         current_timeslot = 0
@@ -149,12 +185,6 @@ class Stage(db.Model, SerializerMixin):
             matchup_list = cls.remove_proper_index(matchup_list, i)
             if len(timeslots[current_timeslot]) == num_fields:
                 current_timeslot += 1
-
-
-        def pretty_list(list):
-            for row in list:
-                print(row)
-        pretty_list(timeslots)
         return timeslots
 
 
