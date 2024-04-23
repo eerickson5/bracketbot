@@ -83,6 +83,81 @@ class Stage(db.Model, SerializerMixin):
     #it ends at c. is that ok?
     #submit THEN assign teams
 
+    @classmethod
+    def generate_matchups(cls, teams):
+        matchups = []
+        for i in range(len(teams)):
+            for j in range(i + 1, len(teams)):
+                matchups.append((teams[i], teams[j]))
+        return matchups
+    
+    @classmethod
+    def convert_matchup_list_to_dict(cls, matchup_list, default_value):
+        matchup_dict = {}
+        for matchup in matchup_list:
+            matchup_dict[matchup] = default_value
+        return matchup_dict
+
+    @classmethod
+    def team_list_to_timeslots(cls, team_lists):
+        team_dict = {}
+        for team_list in team_lists:
+            for team in team_list:
+                team_dict[team] = []
+        return team_dict
+    
+    @classmethod
+    def remove_proper_index(cls, list, index):
+        if len(list) == 1 and index == 0:
+            return []
+        elif index == len(list) - 1:
+            return list[:-1]
+        else:
+            return list[:index] + list[index+1:]
+    
+
+    ## i currently prefer this way because it won't be run infinite times if the random search takes too long
+    @classmethod
+    def generate_pools(cls, team_lists, num_fields):
+        import random
+        matchup_list_by_pools = [cls.generate_matchups(team_list) for team_list in team_lists]
+        matchup_list = []
+        for matchups in matchup_list_by_pools:
+            matchup_list.extend(matchups)
+        random.shuffle(matchup_list)
+        team_timeslots = cls.team_list_to_timeslots(team_lists)
+        timeslots = []
+        current_timeslot = 0
+        def matchup_is_compliant(matchup, _team_timeslots, _current_timeslot):
+            return (_current_timeslot not in _team_timeslots[matchup[0]]
+            and _current_timeslot not in _team_timeslots[matchup[1]])
+        while len(matchup_list) > 0:
+            i = 0
+            while not matchup_is_compliant(matchup_list[i], team_timeslots, current_timeslot):
+                if i + 1 < len(matchup_list):
+                    i += 1
+                else:
+                    current_timeslot += 1
+                    i = 0
+            current_matchup = matchup_list[i]
+            try:
+                timeslots[current_timeslot].append(current_matchup)
+            except IndexError:
+                timeslots.append([current_matchup])
+            team_timeslots[current_matchup[0]].append(current_timeslot)
+            team_timeslots[current_matchup[1]].append(current_timeslot)
+            matchup_list = cls.remove_proper_index(matchup_list, i)
+            if len(timeslots[current_timeslot]) == num_fields:
+                current_timeslot += 1
+
+
+        def pretty_list(list):
+            for row in list:
+                print(row)
+        pretty_list(timeslots)
+        return timeslots
+
+
 class Tournament(db.Model, SerializerMixin):
     __table_name__ = "tournaments"
     id = db.Column(db.Integer, primary_key=True)

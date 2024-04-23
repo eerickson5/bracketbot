@@ -9,7 +9,7 @@
         function formatData(){
             let newData = {
                 teams: teamsToDict(tournament.teams),
-                pools: poolsToDict(2),
+                pools: poolsToDict(1),
             }
             newData['poolOrder'] = Object.keys(newData.pools)
             return newData
@@ -227,11 +227,11 @@
         
             <Button
             style={{marginBlock: 10}}
-            content='Submit Pools'
+            content='Continue with These Pools'
             secondary
             size='large'
             icon='check circle'
-            label={{ basic: true, content: "Once you submit, you won't be able to add more teams." }}
+            label={{ basic: true, content: "You won't be able to add more teams beyond this point." }}
             labelPosition='right'
             disabled={data.pools['unassigned'].teamIds.length !== 0}
             onClick={handleSubmit}
