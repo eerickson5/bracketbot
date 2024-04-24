@@ -4,7 +4,6 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
-    console.log(teamArrays)
 
     const formSchema = yup.object().shape({
         numFields: yup.number().min(1, "You can't play on a tournament with no field!").required()
@@ -15,7 +14,7 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
             numFields: 1,
             gameLength: 60,
             breakLength: 15,
-            crossoverAllowed: true
+            crossoverAllowed: false
         },
         validationSchema: formSchema,
         onSubmit: async (values) => {
@@ -28,10 +27,25 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
         formik.setFieldValue(name, value)
     }
 
+    let largestPoolSize = 0
+    let smallestPoolSize = 100
+    for (const teamArray of teamArrays){
+        const poolSize = teamArray.length
+        if (poolSize > largestPoolSize){
+            largestPoolSize = poolSize
+        } else if (poolSize < smallestPoolSize) {
+            smallestPoolSize = poolSize
+        }
+    }
+    const maxGames = (largestPoolSize - 1 + (formik.values.crossoverAllowed ? 1 : 0))
+    const minGames = (smallestPoolSize - 1 + (formik.values.crossoverAllowed ? 1 : 0))
+    
+
+
     return (
         <Segment color="red" padded style={{marginBottom: 20, marginTop: 50}}>
 
-            <h3>{`You're creating these pools using the ${tournament.teams.length} teams and ${teamArrays.length} pools in your tournament.`}</h3>
+            <h3>You're creating these pools using the {tournament.teams.length} teams and {teamArrays.length} pools in your tournament. <br/> Teams will have between {minGames} and {maxGames} games each.</h3>
             <Form onSubmit={formik.handleSubmit}>
                 <FormInput fluid style={{marginBottom: 20, maxWidth: 100}} name="numFields" size="large"
                 label='How many fields do you have access to?' placeholder='6' value={formik.values.numFields} onChange={handleChange}/>
@@ -66,14 +80,15 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
                     style={{margin: 5}} 
                     content='Back to Pool Editor' 
                     icon='step backward' 
-                    labelPosition='left' 
+                    labelPosition='left'
+                    type="button"
                     secondary 
                     onClick={onGoBack}
                     />
 
                     <Button
                     style={{marginBlock: 10}}
-                    content='Generate Pool Matchups'
+                    content='Generate Pool Schedule'
                     type="submit" name="submit"
                     primary
                     label={{ basic: true, content: "You won't be able to modify teams or pools beyond this point." }}
