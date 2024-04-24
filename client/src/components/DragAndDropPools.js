@@ -3,13 +3,13 @@
     import TeamCard from './TeamCard';
     import { Button, Container, Segment } from 'semantic-ui-react';
 
-    export default function DragAndDropPools({tournament, onSubmitPools}) {
+    export default function DragAndDropPools({tournament, onSubmitPools, pools}) {
         const [data, setData] = useState(formatData());
 
         function formatData(){
             let newData = {
                 teams: teamsToDict(tournament.teams),
-                pools: poolsToDict(1),
+                pools: pools.length ? poolsFromIds(pools) : poolsToDict(1),
             }
             newData['poolOrder'] = Object.keys(newData.pools)
             return newData
@@ -21,6 +21,23 @@
             teamDict[team.id] = {...team, id: String(team.id)}
         });
         return teamDict
+    }
+
+    function poolsFromIds(pools){
+        let poolDict = {
+            'unassigned': {
+                id: 'unassigned',
+                title: "Unassigned Teams",
+                teamIds: []
+            }
+        }
+
+        let i = 1
+        for(let pool of pools){
+            poolDict[`pool-${i}`] = {id: `pool-${i}`, title: `Pool ${i}`, teamIds: pool}
+            i ++
+        }
+        return poolDict
     }
 
     function createPool(num){

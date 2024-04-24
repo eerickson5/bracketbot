@@ -6,6 +6,15 @@ import CreatePoolsForm from "./CreatePoolsForm"
 export default function PoolsDashboard({tournament, onUpdateTournament}){
 
     const [pools, setPools] = React.useState(getPools(tournament))
+    const [currPage, setPage] = React.useState(0)
+
+    const pages = [
+        <DragAndDropPools tournament={tournament} pools={pools} onSubmitPools={teamArrays => {
+            setPools(teamArrays)
+            setPage(1)
+        }}/>,
+        <CreatePoolsForm tournament={tournament} teamArrays={pools} onGoBack={() => setPage(0)}/>
+    ]
 
     function getPools(tournament){
         let somePools = []
@@ -17,8 +26,7 @@ export default function PoolsDashboard({tournament, onUpdateTournament}){
     }
     
     //TODO: only show createpoolsform if pools are teamarrays and not full objects
-    return pools.length === 0 
-    ? <DragAndDropPools tournament={tournament} onSubmitPools={teamArrays => setPools(teamArrays)}/>
-    : <CreatePoolsForm tournament={tournament} teamArrays={pools}/>
+    // return pools.length === 0 
+    return pages[currPage]
     
 }

@@ -3,7 +3,7 @@ import { Form, FormInput, FormRadio, Segment, Button, FormGroup,} from 'semantic
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-export default function CreatePoolsForm({tournament, teamArrays}){
+export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
     console.log(teamArrays)
 
     const formSchema = yup.object().shape({
@@ -43,8 +43,6 @@ export default function CreatePoolsForm({tournament, teamArrays}){
                     label='How long are breaks between games? (minutes)' placeholder='15' value={formik.values.breakLength} onChange={handleChange}/>
                 </FormGroup>
 
-
-{/* TODO: no crossovers if only one pool or odd number of teams */}
                 <h5 style={{marginBottom: 10}}>Are crossover games allowed?</h5>
                 <FormGroup inline>
                     <FormRadio
@@ -52,6 +50,7 @@ export default function CreatePoolsForm({tournament, teamArrays}){
                     value='yesCrossover'
                     checked={formik.values.crossoverAllowed}
                     onChange={(e) => handleChange(e, {name: "crossoverAllowed", value: true})}
+                    disabled={teamArrays.length === 1}
                     />
                     <FormRadio
                     label='No'
@@ -61,10 +60,17 @@ export default function CreatePoolsForm({tournament, teamArrays}){
                     />
                 </FormGroup>
 
-                <h3>There will be {teamArrays.length} pools with X games each, including X crossover game. <br/> It will last X hours and X minutes.</h3>
-
                 <div style={{marginBlock: 15, display: "flex", flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap',}}>
-                    <Button style={{margin: 5}} content='Back to Pool Editor' icon='step backward' labelPosition='left' secondary />
+                    {/* TODO: NOT A SUBMIT BUTTON */}
+                    <Button 
+                    style={{margin: 5}} 
+                    content='Back to Pool Editor' 
+                    icon='step backward' 
+                    labelPosition='left' 
+                    secondary 
+                    onClick={onGoBack}
+                    />
+
                     <Button
                     style={{marginBlock: 10}}
                     content='Generate Pool Matchups'
