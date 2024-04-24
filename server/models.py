@@ -193,12 +193,14 @@ class Stage(db.Model, SerializerMixin):
         generated_schedules = []
         for _ in range(times_to_run):
             generated_schedules.append(cls.generate_pool_schedule(team_lists, num_fields, crossovers_allowed))
+            
 
         shortest_schedule = None
         shortest_schedule_length = 50
         for schedule in generated_schedules:
             if len(schedule) < shortest_schedule_length:
                 shortest_schedule = schedule
+                shortest_schedule_length = len(schedule)
         
         return shortest_schedule
     
