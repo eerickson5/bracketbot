@@ -92,6 +92,13 @@
         })
     }
 
+    const handleReset = () => {
+        setData({
+            ...data,
+            pools: poolsToDict(data['poolOrder'].length - 1)
+        })
+    }
+
 
     const onDragEnd = (result) => {
         const { destination, source, draggableId } = result;
@@ -165,12 +172,17 @@
         <Container style={{maxWidth: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <h3>This tournament has no pools yet. Once you've added all your teams, generate your pools here.</h3>
             <div style={{marginBlock: 15, display: "flex", flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', alignSelf: 'center', justifyContent: 'center'}}>
-                <Button style={{margin: 5}} content='Add Pool' icon='plus' labelPosition='right' secondary onClick={handleAddPool}
-                disabled={data.poolOrder.length >= Object.keys(data.teams).length / 2}/>
-                <Button style={{margin: 5}} content='Remove Pool' icon='minus' labelPosition='right' secondary onClick={handleRemovePool}
-                disabled={data.poolOrder.length === 1}/>
+                <Button style={{margin: 5}} content='Reset' icon='repeat' labelPosition='right' secondary onClick={handleReset} 
+                disabled={data.pools["unassigned"].teamIds.length !== 0 || data.poolOrder.length <= 1}/>
+
                 <Button style={{margin: 5}} content='Randomize' icon='random' labelPosition='right' secondary onClick={handleRandomize} 
                 disabled={data.pools["unassigned"].teamIds.length === 0 || data.poolOrder.length <= 1}/>
+
+                <Button style={{margin: 5}} content='Add Pool' icon='plus' labelPosition='right' secondary onClick={handleAddPool}
+                disabled={data.poolOrder.length >= Object.keys(data.teams).length / 2}/>
+
+                <Button style={{margin: 5}} content='Remove Pool' icon='minus' labelPosition='right' secondary onClick={handleRemovePool}
+                disabled={data.poolOrder.length === 2}/>
             </div>
             <DragDropContext onDragEnd={onDragEnd}>
                 <div style={{ display: 'flex', flexWrap:'wrap' }}>
