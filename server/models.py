@@ -201,6 +201,24 @@ class Stage(db.Model, SerializerMixin):
                 shortest_schedule = schedule
         
         return shortest_schedule
+    
+    @classmethod
+    def add_game_timing(cls, num_timeslots, start_time, game_length, break_length):
+        from datetime import timedelta
+        game_start_times = []
+        last_game_end = None
+        for _ in range(num_timeslots):
+            if len(game_start_times) == 0:
+                game_start_times.append(start_time)
+                last_game_end = start_time + timedelta(minutes=game_length)
+            else:
+                next_start_time = last_game_end + timedelta(minutes=break_length)
+                game_start_times.append(next_start_time)
+                last_game_end = next_start_time + timedelta(minutes=game_length)
+        
+        return game_start_times
+            
+
 
 
 class Tournament(db.Model, SerializerMixin):
