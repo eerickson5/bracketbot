@@ -1,24 +1,73 @@
-import React from "react";
-import { Form, FormInput, FormRadio, Segment, Button, FormGroup,} from 'semantic-ui-react'
+import React, {useState} from "react";
+import { Form, FormInput, FormRadio, Segment, Button, FormGroup, Dropdown} from 'semantic-ui-react'
 import { useFormik } from "formik";
 import * as yup from "yup";
 
 export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const formSchema = yup.object().shape({
         numFields: yup.number().min(1, "You can't play on a tournament with no field!").required()
     })
+
+    const getHours = () => {
+        const hourOptions = Array.from({ length: 12 }, (_, index) => index + 1).map(int => {
+            return {
+                key: int.toString(),
+                text: int < 10 ? `0${int.toString()}` : int.toString(),
+                value: int.toString()
+            }
+        })
+        return hourOptions
+    }
+
+    const getMinutes = () => {
+        const minutesOptions = Array.from({ length: 4 }, (_, index) => index * 15).map(int => {
+            return {
+                key: int.toString(),
+                text: int < 10 ? `0${int.toString()}` : int.toString(),
+                value: int.toString()
+            }
+        })
+        return minutesOptions
+    }
+    
 
     const formik = useFormik({
         initialValues: {
             numFields: 1,
             gameLength: 60,
             breakLength: 15,
-            crossoverAllowed: false
+            crossoversAllowed: false, 
+            startHours: "7",
+            startMinutes: "00",
+            startSuffix: "am"
         },
         validationSchema: formSchema,
-        onSubmit: async (values) => {
-            console.log("submitted")
+    onSubmit: async (values) => {
+        setIsLoading(true)
+        const request_data = {
+            type: "pool",
+            team_lists: teamArrays,
+            num_fields: values.numFields,
+            crossovers_allowed: values.crossoversAllowed,
+        }
+
+            fetch("http://localhost:5555/generate_schedule", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(request_data),
+            }).then(res => res.json())
+            .then(schedule => {
+                setIsLoading(false)
+                formik.resetForm()
+                console.log(schedule)
+                //go to next screen
+            })
+            .catch(e => console.log(e))
         }
     })
 
@@ -37,8 +86,8 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
             smallestPoolSize = poolSize
         }
     }
-    const maxGames = (largestPoolSize - 1 + (formik.values.crossoverAllowed ? 1 : 0))
-    const minGames = (smallestPoolSize - 1 + (formik.values.crossoverAllowed ? 1 : 0))
+    const maxGames = (largestPoolSize - 1 + (formik.values.crossoversAllowed ? 1 : 0))
+    const minGames = (smallestPoolSize - 1 + (formik.values.crossoversAllowed ? 1 : 0))
     
 
 
@@ -46,7 +95,7 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
         <Segment color="red" padded style={{marginBottom: 20, marginTop: 50}}>
 
             <h3>You're creating these pools using the {tournament.teams.length} teams and {teamArrays.length} pools in your tournament. <br/> Teams will have between {minGames} and {maxGames} games each.</h3>
-            <Form onSubmit={formik.handleSubmit}>
+            <Form onSubmit={formik.handleSubmit} loading={isLoading}>
                 <FormInput fluid style={{marginBottom: 20, maxWidth: 100}} name="numFields" size="large"
                 label='How many fields do you have access to?' placeholder='6' value={formik.values.numFields} onChange={handleChange}/>
 
@@ -62,20 +111,40 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
                     <FormRadio
                     label='Yes'
                     value='yesCrossover'
-                    checked={formik.values.crossoverAllowed}
-                    onChange={(e) => handleChange(e, {name: "crossoverAllowed", value: true})}
+                    checked={formik.values.crossoversAllowed}
+                    onChange={(e) => handleChange(e, {name: "crossoversAllowed", value: true})}
                     disabled={teamArrays.length === 1}
                     />
                     <FormRadio
                     label='No'
                     value='noCrossover'
-                    checked={!formik.values.crossoverAllowed}
-                    onChange={(e) => handleChange(e, {name: "crossoverAllowed", value: false})}
+                    checked={!formik.values.crossoversAllowed}
+                    onChange={(e) => handleChange(e, {name: "crossoversAllowed", value: false})}
                     />
                 </FormGroup>
 
+                <h5 style={{marginBottom: 10}}>When does the tournament start?</h5>
+                <div style={{display: "flex", flexDirection: 'row', alignContent: 'center'}}>
+                    <Dropdown placeholder='Hours' selection compact name="startHours"
+                    value={formik.values.startHours} onChange={handleChange} options={getHours()}/>
+                    <h2 style={{marginInline: 20}}>:</h2>
+                    <Dropdown placeholder='Minutes' selection compact name="startMinutes"
+                     options={getMinutes()} />
+                    <Dropdown placeholder='am' selection compact value={formik.values.startSuffix} onChange={handleChange} name="startSuffix"
+                    options={[
+                        {
+                            key: "am",
+                            text: "am",
+                            value: "am"
+                        }, {
+                            key: "pm",
+                            text: "pm",
+                            value: "pm"
+                        }
+                    ]} />
+                </div>
+
                 <div style={{marginBlock: 15, display: "flex", flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap',}}>
-                    {/* TODO: NOT A SUBMIT BUTTON */}
                     <Button 
                     style={{margin: 5}} 
                     content='Back to Pool Editor' 

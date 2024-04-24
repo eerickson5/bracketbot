@@ -3,7 +3,7 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request, make_response
+from flask import request, make_response, jsonify
 from flask_restful import Resource
 
 # Local imports
@@ -43,6 +43,7 @@ class CreateTeam(Resource):
     # else:
     #     return make_response({"error": "Not logged in"}, 401)
 api.add_resource(CreateTeam, '/team')
+
 
 
 class TournamentByID(Resource):
@@ -91,6 +92,31 @@ class CreateTournament(Resource):
     # else:
     #     return make_response({"error": "Not logged in"}, 401)
 api.add_resource(CreateTournament, '/tournament')
+
+class GenerateGameSchedule(Resource):
+    def post(self):
+        data = request.json
+        if data.get("type") == "pool":
+            matchups_schedule = Stage.generate_best_pool_schedule(
+                data.get("team_lists"),
+                data.get("num_fields"),
+                data.get("crossovers_allowed"),
+                10
+            )
+            return make_response(jsonify(matchups_schedule), 200)
+        elif data.get("type") == "start_times":
+            start_times = Stage.add_game_timing(
+                data.num_timeslots,
+                data.start_time,
+                data.game_length,
+                data.break_length
+            )
+        elif data.get("type") == "bracket":
+            pass
+        
+
+api.add_resource(GenerateGameSchedule, '/generate_schedule')
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
