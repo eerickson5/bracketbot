@@ -25,9 +25,9 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
     const getMinutes = () => {
         const minutesOptions = Array.from({ length: 4 }, (_, index) => index * 15).map(int => {
             return {
-                key: int.toString(),
+                key: int < 10 ? `0${int.toString()}` : int.toString(),
                 text: int < 10 ? `0${int.toString()}` : int.toString(),
-                value: int.toString()
+                value: int < 10 ? `0${int.toString()}` : int.toString()
             }
         })
         return minutesOptions
@@ -52,6 +52,11 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
             team_lists: teamArrays,
             num_fields: values.numFields,
             crossovers_allowed: values.crossoversAllowed,
+            start_time: {
+                hours: values.startHours,
+                minutes: values.startMinutes,
+                suffix: values.startSuffix
+            }
         }
 
             fetch("http://localhost:5555/generate_schedule", {
@@ -106,6 +111,27 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
                     label='How long are breaks between games? (minutes)' placeholder='15' value={formik.values.breakLength} onChange={handleChange}/>
                 </FormGroup>
 
+                <h5 style={{marginBottom: 10}}>When does the tournament start?</h5>
+                <div style={{display: "flex", flexDirection: 'row', alignContent: 'center', marginBottom: 20}}>
+                    <Dropdown placeholder='0' selection compact name="startHours"
+                    value={formik.values.startHours} onChange={handleChange} options={getHours()}/>
+                    <h2 style={{marginInline: 20}}>:</h2>
+                    <Dropdown placeholder='00' selection compact name="startMinutes"
+                     options={getMinutes()} />
+                    <Dropdown placeholder='am' selection compact value={formik.values.startSuffix} onChange={handleChange} name="startSuffix"
+                    options={[
+                        {
+                            key: "am",
+                            text: "am",
+                            value: "am"
+                        }, {
+                            key: "pm",
+                            text: "pm",
+                            value: "pm"
+                        }
+                    ]} />
+                </div>
+
                 <h5 style={{marginBottom: 10}}>Are crossover games allowed?</h5>
                 <FormGroup inline>
                     <FormRadio
@@ -123,26 +149,6 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
                     />
                 </FormGroup>
 
-                <h5 style={{marginBottom: 10}}>When does the tournament start?</h5>
-                <div style={{display: "flex", flexDirection: 'row', alignContent: 'center'}}>
-                    <Dropdown placeholder='Hours' selection compact name="startHours"
-                    value={formik.values.startHours} onChange={handleChange} options={getHours()}/>
-                    <h2 style={{marginInline: 20}}>:</h2>
-                    <Dropdown placeholder='Minutes' selection compact name="startMinutes"
-                     options={getMinutes()} />
-                    <Dropdown placeholder='am' selection compact value={formik.values.startSuffix} onChange={handleChange} name="startSuffix"
-                    options={[
-                        {
-                            key: "am",
-                            text: "am",
-                            value: "am"
-                        }, {
-                            key: "pm",
-                            text: "pm",
-                            value: "pm"
-                        }
-                    ]} />
-                </div>
 
                 <div style={{marginBlock: 15, display: "flex", flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap',}}>
                     <Button 
@@ -160,8 +166,10 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
                     content='Generate Pool Schedule'
                     type="submit" name="submit"
                     primary
-                    label={{ basic: true, content: "You won't be able to modify teams or pools beyond this point." }}
+                    icon='wait' 
                     labelPosition='right'
+                    // label={{ basic: true, content: "You won't be able to modify pool settings beyond this point." }}
+                    // labelPosition='right'
                     />
                 </div>
                 
