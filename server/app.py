@@ -103,16 +103,24 @@ class GenerateGameSchedule(Resource):
                 data.get("crossovers_allowed"),
                 10
             )
-            return make_response(jsonify(matchups_schedule), 200)
-        elif data.get("type") == "start_times":
+
+            from datetime import time
+            start_time = time(data.get("start_hours"), data.get("start_minutes"))
+
             start_times = Stage.add_game_timing(
-                data.num_timeslots,
-                data.start_time,
-                data.game_length,
-                data.break_length
+                len(matchups_schedule),
+                start_time,
+                data.get("game_length"),
+                data.get("break_length")
             )
-        elif data.get("type") == "bracket":
-            pass
+
+            print(matchups_schedule, start_times)
+            return make_response({
+                "matchups_schedule": matchups_schedule,
+                "start_times": start_times
+            }, 200)
+        # elif data.get("type") == "bracket":
+        #     pass
         
 
 api.add_resource(GenerateGameSchedule, '/generate_schedule')

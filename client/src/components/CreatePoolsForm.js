@@ -16,7 +16,7 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
             return {
                 key: int.toString(),
                 text: int < 10 ? `0${int.toString()}` : int.toString(),
-                value: int.toString()
+                value: int
             }
         })
         return hourOptions
@@ -27,7 +27,7 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
             return {
                 key: int < 10 ? `0${int.toString()}` : int.toString(),
                 text: int < 10 ? `0${int.toString()}` : int.toString(),
-                value: int < 10 ? `0${int.toString()}` : int.toString()
+                value: int
             }
         })
         return minutesOptions
@@ -40,8 +40,8 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
             gameLength: 60,
             breakLength: 15,
             crossoversAllowed: false, 
-            startHours: "7",
-            startMinutes: "00",
+            startHours: 7,
+            startMinutes: 0,
             startSuffix: "am"
         },
         validationSchema: formSchema,
@@ -50,13 +50,12 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
         const request_data = {
             type: "pool",
             team_lists: teamArrays,
-            num_fields: values.numFields,
+            num_fields: parseInt(values.numFields),
             crossovers_allowed: values.crossoversAllowed,
-            start_time: {
-                hours: values.startHours,
-                minutes: values.startMinutes,
-                suffix: values.startSuffix
-            }
+            start_hours: values.startSuffix === "pm" ? values.startHours + 12 : values.startHours,
+            start_minutes: values.startMinutes,
+            game_length: parseInt(values.gameLength),
+            break_length: parseInt(values.breakLength)
         }
 
             fetch("http://localhost:5555/generate_schedule", {
@@ -66,10 +65,10 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
             },
             body: JSON.stringify(request_data),
             }).then(res => res.json())
-            .then(schedule => {
+            .then(response => {
                 setIsLoading(false)
                 formik.resetForm()
-                console.log(schedule)
+                console.log(response)
                 //go to next screen
             })
             .catch(e => console.log(e))
