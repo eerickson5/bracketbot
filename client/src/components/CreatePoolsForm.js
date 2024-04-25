@@ -7,7 +7,7 @@ import ScheduleDisplay from "./ScheduleDisplay";
 export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
 
     const [isLoading, setIsLoading] = useState(false)
-    const [tempSchedule, setTempSchedule] = useState({timeslots: [], matchups: []})
+    const [tempSchedule, setTempSchedule] = useState({timeslots: [], matchups: [[]]})
 
     const formSchema = yup.object().shape({
         numFields: yup.number().min(1, "You can't play on a tournament with no field!").required()
@@ -89,7 +89,8 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
         const poolSize = teamArray.length
         if (poolSize > largestPoolSize){
             largestPoolSize = poolSize
-        } else if (poolSize < smallestPoolSize) {
+        } 
+        if (poolSize < smallestPoolSize) {
             smallestPoolSize = poolSize
         }
     }
@@ -170,14 +171,40 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
                     primary
                     icon='wait' 
                     labelPosition='right'
-                    // label={{ basic: true, content: "You won't be able to modify pool settings beyond this point." }}
-                    // labelPosition='right'
                     />
                 </div>
                 
             </Form>
 
-            <ScheduleDisplay matchups={tempSchedule.matchups} timeslots={tempSchedule.timeslots}/>
+            <div style={{alignSelf: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                <h3>Temporary Schedule ...</h3>
+                <ScheduleDisplay 
+                matchups={tempSchedule.matchups} 
+                timeslots={tempSchedule.timeslots}
+                />
+            </div>
+
+
+        {/* TODO: show individual pool schedules as well or color based on pool
+            align below button to the right
+            save changes to DB
+            add team names using a context provider for the entire team dashboard
+        */}
+
+            <div style={{marginBlock: 15, display: "flex", flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap',}}>
+
+                    <Button
+                    style={{marginBlock: 10}}
+                    content='Accept and Save Pool Play Schedule'
+                    type="submit" name="submit"
+                    primary
+                    icon='download' 
+                    labelPosition='left'
+                    label={{ basic: true, content: "You won't be able to modify pool settings beyond this point." }}
+                    // labelPosition='right'
+                    />
+            </div>
+            
         </Segment>
         
         
