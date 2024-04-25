@@ -114,10 +114,9 @@ class GenerateGameSchedule(Resource):
                 data.get("break_length")
             )
 
-            print(matchups_schedule, start_times)
             return make_response({
-                "matchups_schedule": matchups_schedule,
-                "start_times": start_times
+                "matchups": matchups_schedule,
+                "timeslots": start_times
             }, 200)
         # elif data.get("type") == "bracket":
         #     pass

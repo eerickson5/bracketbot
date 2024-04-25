@@ -2,10 +2,12 @@ import React, {useState} from "react";
 import { Form, FormInput, FormRadio, Segment, Button, FormGroup, Dropdown} from 'semantic-ui-react'
 import { useFormik } from "formik";
 import * as yup from "yup";
+import ScheduleDisplay from "./ScheduleDisplay";
 
 export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
 
     const [isLoading, setIsLoading] = useState(false)
+    const [tempSchedule, setTempSchedule] = useState({timeslots: [], matchups: []})
 
     const formSchema = yup.object().shape({
         numFields: yup.number().min(1, "You can't play on a tournament with no field!").required()
@@ -67,8 +69,9 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
             }).then(res => res.json())
             .then(response => {
                 setIsLoading(false)
-                formik.resetForm()
+                // formik.resetForm()
                 console.log(response)
+                setTempSchedule(response)
                 //go to next screen
             })
             .catch(e => console.log(e))
@@ -173,6 +176,8 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
                 </div>
                 
             </Form>
+
+            <ScheduleDisplay matchups={tempSchedule.matchups} timeslots={tempSchedule.timeslots}/>
         </Segment>
         
         
