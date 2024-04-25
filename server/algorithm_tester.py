@@ -17,7 +17,7 @@ if __name__ == '__main__':
         team_lists = [["11", "12", "13", "14", '15'], ["34", "37"], ["61", "62", "63", "64"],]
         
         #TODO: when below is true, error....?
-        schedule = Stage.generate_best_pool_schedule(team_lists, 3, False, 10)
+        schedule = Stage.generate_best_pool_schedule(team_lists, 3, True, 10)
         # schedule = Stage.generate_pool_schedule(team_lists, 4, False)
 
         # now_time = datetime.now()

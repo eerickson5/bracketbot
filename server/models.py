@@ -117,12 +117,11 @@ class Stage(db.Model, SerializerMixin):
         
     @classmethod
     def generate_crossover_matchups(cls, team_lists):
-        from random import shuffle
+        from random import shuffle, randint
         matchups = []
         team_pools = {}
         available_teams = []
         for i in range(len(team_lists)):
-            # shuffle(team_lists[i])
             for team in team_lists[i]:
                 team_pools[team] = i
                 available_teams.append(team)
@@ -130,19 +129,18 @@ class Stage(db.Model, SerializerMixin):
         shuffle(available_teams)
 
         #if there are an odd number of teams, the largest pool removes a team from crossover play
-        
         if len(available_teams) % 2 != 0:
-            largest_pool_index = 0
-            longest_length = len(team_lists[0])
+            largest_pool = []
             for i in range(len(team_lists)):
-                if len(team_lists[i]) > longest_length:
-                    largest_pool_index = i
-            team_lists[largest_pool_index].pop()
+                if len(team_lists[i]) > len(largest_pool):
+                    largest_pool = team_lists[i]
+            random_index = randint(0,len(largest_pool) - 1)
+            team_pools.pop(largest_pool[random_index])
             #technically I should remove that team from available_teams too but it doesn't seem to matter
 
         while len(available_teams) > 1:
             i = 1
-            while(i < len(available_teams) - 1 and team_pools[available_teams[0]] == team_pools[available_teams[i]]):
+            while(i < len(available_teams) - 1 and team_pools.get(available_teams[0]) == team_pools.get(available_teams[i])):
                 i += 1
             matchups.append((available_teams[0], available_teams[i]))
             available_teams = cls.remove_proper_index(available_teams, 0)
@@ -165,9 +163,11 @@ class Stage(db.Model, SerializerMixin):
         team_timeslots = cls.team_list_to_timeslots(team_lists)
         timeslots = []
         current_timeslot = 0
+
         def matchup_is_compliant(matchup, _team_timeslots, _current_timeslot):
             return (_current_timeslot not in _team_timeslots[matchup[0]]
             and _current_timeslot not in _team_timeslots[matchup[1]])
+            
         while len(matchup_list) > 0:
             i = 0
             while not matchup_is_compliant(matchup_list[i], team_timeslots, current_timeslot):
