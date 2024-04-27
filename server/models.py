@@ -115,6 +115,7 @@ class Stage(db.Model, SerializerMixin):
         else:
             return list[:index] + list[index+1:]
         
+    #this is generating a crossover that isn't a crossover :(
     @classmethod
     def generate_crossover_matchups(cls, team_lists):
         from random import shuffle, randint
@@ -124,9 +125,6 @@ class Stage(db.Model, SerializerMixin):
         for i in range(len(team_lists)):
             for team in team_lists[i]:
                 team_pools[team] = i
-                available_teams.append(team)
-
-        shuffle(available_teams)
 
         #if there are an odd number of teams, the largest pool removes a team from crossover play
         if len(available_teams) % 2 != 0:
@@ -138,6 +136,8 @@ class Stage(db.Model, SerializerMixin):
             team_pools.pop(largest_pool[random_index])
             #technically I should remove that team from available_teams too but it doesn't seem to matter
 
+        available_teams = [team for team in list(team_pools.keys())]
+        shuffle(available_teams)
         while len(available_teams) > 1:
             i = 1
             while(i < len(available_teams) - 1 and team_pools.get(available_teams[0]) == team_pools.get(available_teams[i])):
@@ -145,7 +145,6 @@ class Stage(db.Model, SerializerMixin):
             matchups.append((available_teams[0], available_teams[i]))
             available_teams = cls.remove_proper_index(available_teams, 0)
             available_teams = cls.remove_proper_index(available_teams, i - 1)
-            
         return matchups
     
 
