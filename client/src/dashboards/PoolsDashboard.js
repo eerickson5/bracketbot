@@ -11,7 +11,7 @@ export default function PoolsDashboard(){
     const [currPage, setPage] = React.useState(0)
 
     const pages = [
-        <DragAndDropPools tournament={tournament} pools={pools} onSubmitPools={teamArrays => {
+        <DragAndDropPools pools={pools} onSubmitPools={teamArrays => {
             setPools(teamArrays)
             setPage(1)
         }}/>,

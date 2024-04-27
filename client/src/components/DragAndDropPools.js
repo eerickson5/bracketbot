@@ -1,9 +1,11 @@
-    import React, { useState } from 'react';
-    import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-    import TeamCard from './TeamCard';
-    import { Button, Container, Segment } from 'semantic-ui-react';
+import React, { useContext, useState } from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import TeamCard from './TeamCard';
+import { Button, Container, Segment } from 'semantic-ui-react';
+import TournamentContext from '../TournamentContextProvider';
 
-    export default function DragAndDropPools({tournament, onSubmitPools, pools}) {
+    export default function DragAndDropPools({onSubmitPools, pools}) {
+        const [tournament] = useContext(TournamentContext)
         const [data, setData] = useState(formatData());
 
         function formatData(){

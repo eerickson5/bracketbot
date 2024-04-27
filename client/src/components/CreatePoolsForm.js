@@ -1,11 +1,13 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import { Form, FormInput, FormRadio, Segment, Button, FormGroup, Dropdown} from 'semantic-ui-react'
 import { useFormik } from "formik";
 import * as yup from "yup";
 import ScheduleDisplay from "./ScheduleDisplay";
+import TournamentContext from "../TournamentContextProvider";
 
-export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
+export default function CreatePoolsForm({teamArrays, onGoBack}){
 
+    const [tournament, setTournament] = useContext(TournamentContext)
     const [isLoading, setIsLoading] = useState(false)
     const [tempSchedule, setTempSchedule] = useState({timeslots: [], matchups: [[]]})
 
