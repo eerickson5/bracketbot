@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Button } from 'semantic-ui-react'
-import DragAndDropPools from "./DragAndDropPools";
-import CreatePoolsForm from "./CreatePoolsForm"
+import DragAndDropPools from "../components/DragAndDropPools";
+import CreatePoolsForm from "../components/CreatePoolsForm"
 
 export default function PoolsDashboard({tournament, onUpdateTournament}){
 

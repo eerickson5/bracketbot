@@ -3,9 +3,9 @@ import { Container, Button} from 'semantic-ui-react'
 import { useParams } from "react-router-dom";
 import TournamentHeader from "../components/TournamentHeader";
 import TournamentMenu from "../components/TournamentMenu";
-import TournamentDashboard from "../components/TournamentDashboard";
-import TournamentTeamDashboard from "../components/TournamentTeamDashboard";
-import PoolsDashboard from "../components/PoolsDashboard";
+import TournamentDashboard from "../dashboards/TournamentDashboard";
+import TournamentTeamDashboard from "../dashboards/TournamentTeamDashboard";
+import PoolsDashboard from "../dashboards/PoolsDashboard";
 import CreatePoolsForm from "../components/CreatePoolsForm";
 
 export default function TournamentDashboardContainer(){

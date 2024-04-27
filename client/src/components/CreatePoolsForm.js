@@ -178,6 +178,7 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
 
             <div style={{alignSelf: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 <h3>Temporary Schedule ...</h3>
+                <h5 style={{marginBlock: 5}}>colored by pool / crossover</h5>
                 <ScheduleDisplay 
                 matchups={tempSchedule.matchups} 
                 timeslots={tempSchedule.timeslots}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import TeamAdder from "./TeamAdder";
+import TeamAdder from "../components/TeamAdder";
 import { Container, Button } from "semantic-ui-react";
 
 export default function TournamentTeamDashboard({tournament, onUpdateTournament}){
