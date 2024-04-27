@@ -6,6 +6,7 @@ import * as ReactDOM from "react-dom";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import 'semantic-ui-css/semantic.min.css';
+import { TournamentProvider } from "./TournamentContextProvider";
 
 const router = createBrowserRouter([
     {
@@ -14,7 +15,9 @@ const router = createBrowserRouter([
     },
     {
         path: "/tournament/:id",
-        element: <TournamentDashboardContainer/>,
+        element: <TournamentProvider>
+                <TournamentDashboardContainer/>
+            </TournamentProvider>,
     }
 ])
 const root = ReactDOM.createRoot(document.getElementById("root"))

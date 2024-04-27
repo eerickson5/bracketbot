@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import TeamAdder from "../components/TeamAdder";
 import { Container, Button } from "semantic-ui-react";
+import TournamentContext from "../TournamentContextProvider";
 
-export default function TournamentTeamDashboard({tournament, onUpdateTournament}){
+export default function TournamentTeamDashboard(){
+    const [tournament, setTournament] = React.useContext(TournamentContext)
     const [teams, setTeams] = useState(tournament.teams)
     const [error, setError] = useState("")
 
@@ -19,7 +21,7 @@ export default function TournamentTeamDashboard({tournament, onUpdateTournament}
             body: JSON.stringify({"teams": teams, "operation": "rationalize_teams"}),
             }).then(res => res.json())
             .then(newTournament => {
-                onUpdateTournament(newTournament)
+                setTournament(newTournament)
             })
             .catch(e => resetFromError(e))
         }

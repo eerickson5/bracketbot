@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Container, Button} from 'semantic-ui-react'
 import { useParams } from "react-router-dom";
 import GameCard from "../components/GameCard";
 import TeamCard from "../components/TeamCard";
+import TournamentContext from "../TournamentContextProvider";
 
-export default function TournamentDashboard({tournament}){
+export default function TournamentDashboard(){
+  const [tournament, setTournament] = useContext(TournamentContext)
     return(
       <Container>
         <Container>

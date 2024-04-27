@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { Container, Button} from 'semantic-ui-react'
+import React, { useContext, useEffect, useState } from "react";
+import { Container } from 'semantic-ui-react'
 import { useParams } from "react-router-dom";
 import TournamentHeader from "../components/TournamentHeader";
 import TournamentMenu from "../components/TournamentMenu";
 import TournamentDashboard from "../dashboards/TournamentDashboard";
 import TournamentTeamDashboard from "../dashboards/TournamentTeamDashboard";
 import PoolsDashboard from "../dashboards/PoolsDashboard";
-import CreatePoolsForm from "../components/CreatePoolsForm";
+import TournamentContext from "../TournamentContextProvider"
 
 export default function TournamentDashboardContainer(){
 
+  const [tournament, setTournament] = useContext(TournamentContext)
   const tourn_id = useParams().id
-  const [tournament, setTournament] = useState({teams:[]})
   const [selectedMenu, setSelectedMenu] = useState("home")
 
   //todo: change when anything about the tournament changes via the other menus
@@ -21,28 +21,21 @@ export default function TournamentDashboardContainer(){
       setTournament(data)
     })
     .catch(e => console.log(e))
-  }, [tourn_id])
+  }, [tourn_id, setTournament])
 
-  function getPools(){
-    let somePools = []
-
-    tournament.stages.forEach(pool => {
-      somePools.push(pool)
-    })
-    return somePools
-}
 
     return(
-      <Container>
-        <TournamentHeader name={tournament.name} image={tournament.image}/>
-        <TournamentMenu selectedMenu={selectedMenu} onSelectMenu={(menu) => setSelectedMenu(menu)}/>
+        <Container>
+          <TournamentHeader/>
+          <TournamentMenu selectedMenu={selectedMenu} onSelectMenu={(menu) => setSelectedMenu(menu)}/>
 
-        {selectedMenu === "home" 
-        ? <TournamentDashboard tournament={tournament}/> 
-        : selectedMenu === "teams"
-        ? <TournamentTeamDashboard tournament={tournament} onUpdateTournament={setTournament}/>
-        : <PoolsDashboard tournament={tournament} onUpdateTournament={setTournament}/> }
-      </Container>
+          {selectedMenu === "home" 
+          ? <TournamentDashboard/> 
+          : selectedMenu === "teams"
+          ? <TournamentTeamDashboard/>
+          : <PoolsDashboard /> }
+        </Container>
+      
      
     )
 }
