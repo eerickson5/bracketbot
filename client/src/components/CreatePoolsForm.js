@@ -181,6 +181,7 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
                 <ScheduleDisplay 
                 matchups={tempSchedule.matchups} 
                 timeslots={tempSchedule.timeslots}
+                teamArrays={teamArrays}
                 />
             </div>
 
@@ -198,7 +199,7 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
                     content='Accept and Save Pool Play Schedule'
                     type="submit" name="submit"
                     primary
-                    icon='download' 
+                    icon='checkmark' 
                     labelPosition='left'
                     label={{ basic: true, content: "You won't be able to modify pool settings beyond this point." }}
                     // labelPosition='right'
