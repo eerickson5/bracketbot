@@ -186,10 +186,8 @@ export default function CreatePoolsForm({tournament, teamArrays, onGoBack}){
             </div>
 
 
-        {/* TODO: show individual pool schedules as well or color based on pool
-            align below button to the right
-            save changes to DB
-            add team names using a context provider for the entire team dashboard
+        {/* TODO: 
+            add team names and a team-> pool map using a context provider for the entire team dashboard
         */}
 
             <div style={{marginBlock: 15, display: "flex", flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap',}}>

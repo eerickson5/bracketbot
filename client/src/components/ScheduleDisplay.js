@@ -18,7 +18,7 @@ export default function ScheduleDisplay({matchups, timeslots, teamArrays}){
         return <div/>
     }
 
-    const colors = ["white", "#D57A7C", "#68908F", "#D7BD82", "#9FB58D", "#D59C7F", "#4C839A", "#CD9D62", "#6F8292", "#8C98A3"]
+    const colors = ["#DDE0E4", "#D57A7C", "#68908F", "#D7BD82", "#9FB58D", "#D59C7F", "#4C839A", "#CD9D62", "#6F8292", "#8C98A3"]
     const matchupPools = matchupsByPool()
 
     //TODO: convert teamArrays to a map way earlier in the program
