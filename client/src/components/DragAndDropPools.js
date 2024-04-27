@@ -196,7 +196,7 @@
                 disabled={data.pools["unassigned"].teamIds.length === 0 || data.poolOrder.length <= 1}/>
 
                 <Button style={{margin: 5}} content='Add Pool' icon='plus' labelPosition='right' secondary onClick={handleAddPool}
-                disabled={data.poolOrder.length >= Object.keys(data.teams).length / 2}/>
+                disabled={data.poolOrder.length >= Object.keys(data.teams).length / 2 || data.poolOrder.length >= 8}/>
 
                 <Button style={{margin: 5}} content='Remove Pool' icon='minus' labelPosition='right' secondary onClick={handleRemovePool}
                 disabled={data.poolOrder.length === 2}/>
