@@ -10,6 +10,7 @@ from flask_restful import Resource
 from config import app, db, api
 # Add your model imports
 from models import Team, Tournament, Game, GameScore, Stage
+from scheduling_helpers import generate_best_pool_schedule, add_game_timing
 
 # Views go here!
 
@@ -97,7 +98,7 @@ class GenerateGameSchedule(Resource):
     def post(self):
         data = request.json
         if data.get("type") == "pool":
-            matchups_schedule = Stage.generate_best_pool_schedule(
+            matchups_schedule = generate_best_pool_schedule(
                 data.get("team_lists"),
                 data.get("num_fields"),
                 data.get("crossovers_allowed"),
@@ -107,7 +108,7 @@ class GenerateGameSchedule(Resource):
             from datetime import time
             start_time = time(data.get("start_hours"), data.get("start_minutes"))
 
-            start_times = Stage.add_game_timing(
+            start_times = add_game_timing(
                 len(matchups_schedule),
                 start_time,
                 data.get("game_length"),
