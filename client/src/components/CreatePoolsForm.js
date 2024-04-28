@@ -12,7 +12,19 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
     const [tempSchedule, setTempSchedule] = useState({timeslots: [], matchups: [[]]})
 
     const formSchema = yup.object().shape({
-        numFields: yup.number().min(1, "You can't play on a tournament with no field!").required()
+        numFields: yup.number().required()
+            .typeError("Fields need to be a number!")
+            .min(1, "You need at least 1 field to play a tournament."),
+        gameLength: yup.number().required()
+            .typeError('Game length must be a number.')
+            .min(10, "Games need to be longer than that."),
+        breakLength: yup.number().required()
+            .typeError('Break length must be a number')
+            .min(0, "You need breaks!"),
+        crossoversAllowed: yup.boolean().required(), 
+        startHours: yup.number().oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]).required(),
+        startMinutes: yup.number().oneOf([0, 15, 30, 45]).required(),
+        startSuffix: yup.string().oneOf(["am", "pm"]).required()
     })
 
     const getHours = () => {
@@ -49,18 +61,18 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
             startSuffix: "am"
         },
         validationSchema: formSchema,
-    onSubmit: async (values) => {
-        setIsLoading(true)
-        const request_data = {
-            type: "pool",
-            team_lists: teamArrays,
-            num_fields: parseInt(values.numFields),
-            crossovers_allowed: values.crossoversAllowed,
-            start_hours: values.startSuffix === "pm" ? values.startHours + 12 : values.startHours,
-            start_minutes: values.startMinutes,
-            game_length: parseInt(values.gameLength),
-            break_length: parseInt(values.breakLength)
-        }
+        onSubmit: async (values) => {
+            setIsLoading(true)
+            const request_data = {
+                type: "pool",
+                team_lists: teamArrays,
+                num_fields: parseInt(values.numFields),
+                crossovers_allowed: values.crossoversAllowed,
+                start_hours: values.startSuffix === "pm" ? values.startHours + 12 : values.startHours,
+                start_minutes: values.startMinutes,
+                game_length: parseInt(values.gameLength),
+                break_length: parseInt(values.breakLength)
+            }
 
             fetch("http://localhost:5555/generate_schedule", {
             method: "POST",
@@ -79,6 +91,16 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
             .catch(e => console.log(e))
         }
     })
+
+    const renderErrors = () => {
+        const errorMessages = Object.values(formik.errors);
+        if (errorMessages.length === 0) {
+          return null;
+        }
+        return (
+          <p style={{color: 'red'}}>{errorMessages[0]}</p>
+        );
+      };
 
 //TODO hookup buttons
     function handleChange(e, { name, value }){
@@ -154,6 +176,7 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
                     />
                 </FormGroup>
 
+                {renderErrors()}
 
                 <div style={{marginBlock: 15, display: "flex", flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap',}}>
                     <Button 
