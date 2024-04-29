@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import DragAndDropPools from "../components/DragAndDropPools";
 import CreatePoolsForm from "../components/CreatePoolsForm"
 import TournamentContext from "../TournamentContextProvider";
-import { Container } from "semantic-ui-react";
 import PoolVisualizer from "../components/PoolVisualizer";
 
 export default function PoolsDashboard(){
@@ -45,9 +44,9 @@ export default function PoolsDashboard(){
     else{
         console.log(getTeamLists())
         return (
-            <Container>
+            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
                 {getTeamLists().map(pool => <PoolVisualizer poolName={pool.poolName} teams={pool.teams}/>)}
-            </Container>  
+            </div>  
         )
     }
 }

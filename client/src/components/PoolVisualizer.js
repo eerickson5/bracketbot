@@ -1,15 +1,11 @@
-import React, { useContext } from "react";
-import { Container } from "semantic-ui-react";
+import React from "react";
 import TeamCard from "./TeamCard";
 
 export default function PoolVisualizer({poolName, teams}){
-    console.log(teams)
     return(
-        <Container>
-            <h4>{poolName}</h4>
-            {
-                teams.map(team => <TeamCard team={team}/>)
-            }
-        </Container>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', margin: 10}}>
+            <h3>{poolName}</h3>
+            { teams.map(team => <TeamCard team={team}/>) }
+        </div>
     )
 }
