@@ -50,7 +50,10 @@ class TournamentByID(Resource):
     def get(self, id):
         tournament = Tournament.query.filter(Tournament.id == id).first()
         if tournament:
-            return make_response(tournament.to_dict(), 200)
+            team_dict = {}
+            for team in tournament.teams:
+                team_dict[team.id] = team.to_dict()
+            return make_response({"tournament": tournament.to_dict(), "teams": team_dict}, 200)
         else:
             return make_response("No tournament exists with that id", 404)
         

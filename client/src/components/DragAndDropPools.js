@@ -4,25 +4,17 @@ import TeamCard from './TeamCard';
 import { Button, Container, Segment } from 'semantic-ui-react';
 import TournamentContext from '../TournamentContextProvider';
 
-    export default function DragAndDropPools({onSubmitPools, pools}) {
-        const [tournament] = useContext(TournamentContext)
-        const [data, setData] = useState(formatData());
+export default function DragAndDropPools({onSubmitPools, pools}) {
+    const [tournament] = useContext(TournamentContext)
+    const [data, setData] = useState(formatData());
 
-        function formatData(){
-            let newData = {
-                teams: teamsToDict(tournament.teams),
-                pools: pools.length ? poolsFromIds(pools) : poolsToDict(1),
-            }
-            newData['poolOrder'] = Object.keys(newData.pools)
-            return newData
+    function formatData(){
+        let newData = {
+            teams: tournament.teams,
+            pools: pools.length ? poolsFromIds(pools) : poolsToDict(1),
         }
-
-    function teamsToDict(teams){
-        let teamDict = {}
-        teams.forEach(team => {
-            teamDict[team.id] = {...team, id: String(team.id)}
-        });
-        return teamDict
+        newData['poolOrder'] = Object.keys(newData.pools).map(key => String(key))
+        return newData
     }
 
     function poolsFromIds(pools){
@@ -51,7 +43,7 @@ import TournamentContext from '../TournamentContextProvider';
             'unassigned': {
                 id: 'unassigned',
                 title: "Unassigned Teams",
-                teamIds: tournament.teams.map( team => String(team.id))
+                teamIds: Object.keys(tournament.teams).map( key => String(key))
             }
         }
         for (let i = 1; i <= numPools; i++) {
@@ -225,7 +217,7 @@ import TournamentContext from '../TournamentContextProvider';
                             {teams.map((team, index) => (
                                 <Draggable
                                 key={team.id}
-                                draggableId={team.id}
+                                draggableId={String(team.id)}
                                 index={index}
                                 >
                                 {(provided) => (

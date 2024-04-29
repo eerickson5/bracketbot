@@ -5,7 +5,7 @@ import TournamentContext from "../TournamentContextProvider";
 
 export default function TournamentTeamDashboard(){
     const [tournament, setTournament] = React.useContext(TournamentContext)
-    const [teams, setTeams] = useState(tournament.teams)
+    const [teams, setTeams] = useState(Object.values(tournament.teams))
     const [error, setError] = useState("")
 
     //TODO: if teams already have a game, can't add new ones

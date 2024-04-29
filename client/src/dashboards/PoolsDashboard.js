@@ -15,19 +15,23 @@ export default function PoolsDashboard(){
             setPools(teamArrays)
             setPage(1)
         }}/>,
+        //TODO: remove tournament prop drill from this one too
         <CreatePoolsForm tournament={tournament} teamArrays={pools} onGoBack={() => setPage(0)}/>
     ]
 
     function getPools(tournament){
         let somePools = []
+        //TODO: return tournament.stages ?? if ! is_brackets
 
         tournament.stages.forEach(pool => {
             somePools.push(pool)
+            console.log("pool: ", pool)
         })
         return somePools
     }
     
     //TODO: only show createpoolsform if pools are teamarrays and not full objects
+    //DONT RENDER if pools already exist
     // return pools.length === 0 
     return pages[currPage]
     

@@ -18,7 +18,7 @@ export default function TournamentDashboardContainer(){
   useEffect(() => {
     fetch(`http://localhost:5555/tournament/${tourn_id}`).then(res => res.json())
     .then(data => {
-      setTournament(data)
+      setTournament({...data.tournament, teams: data.teams})
     })
     .catch(e => console.log(e))
   }, [tourn_id, setTournament])

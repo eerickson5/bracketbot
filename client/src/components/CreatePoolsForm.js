@@ -224,8 +224,6 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
             </Form>
 
             <div style={{alignSelf: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                <h3>Temporary Schedule ...</h3>
-                <h5 style={{marginBlock: 5}}>colored by pool / crossover</h5>
                 <ScheduleDisplay 
                 matchups={tempSchedule.matchups} 
                 timeslots={tempSchedule.timeslots}
@@ -233,20 +231,18 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
                 />
             </div>
 
-            <div style={{marginBlock: 15, display: "flex", flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap',}}>
-
-                    <Button
-                    style={{marginBlock: 10}}
-                    content='Accept and Save Pool Play Schedule'
-                    type="submit" name="submit"
-                    primary
-                    icon='checkmark' 
-                    labelPosition='left'
-                    label={{ basic: true, content: "You won't be able to modify pool settings beyond this point." }}
-                    onClick={submitPoolSchedule}
-                    // labelPosition='right'
-                    />
-            </div>
+        
+            <Button
+            style={{marginBlock: 10}}
+            content='Accept and Save Pool Play Schedule'
+            type="submit" name="submit"
+            primary
+            icon='checkmark' 
+            labelPosition='left'
+            label={{ basic: true, content: "You won't be able to modify pool settings beyond this point." }}
+            onClick={submitPoolSchedule}
+            // labelPosition='right'
+            />
             
         </Segment>
         
