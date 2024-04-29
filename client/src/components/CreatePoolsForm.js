@@ -125,7 +125,7 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
         body: JSON.stringify(request_data),
         }).then(res => res.json())
         .then(response => {
-            console.log(response)
+            setTournament({...tournament, stages: response})
         })
     }
 

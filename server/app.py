@@ -142,8 +142,12 @@ class AcceptSchedule(Resource):
         from scheduling_helpers import map_matchups
         from datetime import datetime
         data = request.json
+        tournament_id = data.get("tournamentId")
         if data.get("type") == "pool":
-            tournament_id = data.get("tournamentId")
+            tournament = Tournament.query.filter(Tournament.id == tournament_id).first()
+            if len(tournament.stages) > 0:
+                return make_response({"error": "This tournament already has pools."}, 400)
+            
             timeslots = data.get("timeslots")
 
             crossover_pool = Stage(
