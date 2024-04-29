@@ -16,7 +16,6 @@ import TournamentContext from "../TournamentContextProvider";
 
 export default function ScheduleDisplay({matchups, timeslots, teamPools, teamsById}){
     const [tournament, ] = React.useContext(TournamentContext)
-    console.log(tournament)
 
     const colors = ["#DDE0E4", "#D57A7C", "#85C7F2", "#68908F", "#D7BD82", "#9FB58D", "#D59C7F", "#4C839A", "#CD9D62", "#6F8292"]
     const matchupPools = matchupsByPool()
@@ -57,7 +56,11 @@ export default function ScheduleDisplay({matchups, timeslots, teamPools, teamsBy
                                 <TableCell>
                                     <h4>{time}</h4>
                                 </TableCell>
-                                {matchups[index].map(matchup => <TableCell key={matchup} style={{backgroundColor: colors[matchupPools[matchup]]}}>{teamsById[matchup[0]].team_name} vs {teamsById[matchup[1]].team_name}</TableCell>)}
+                                {matchups[index].map(
+                                    matchup => <TableCell key={matchup} style={{backgroundColor: colors[matchupPools[matchup]]}}>
+                                    {tournament.teams[matchup[0]].team_name} vs {tournament.teams[matchup[1]].team_name}
+                                    </TableCell>
+                                )}
                             </TableRow>)
                     })}
                 </TableBody>
