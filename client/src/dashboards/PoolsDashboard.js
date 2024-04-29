@@ -19,8 +19,7 @@ export default function PoolsDashboard(){
             setTeamPools(teamArrays)
             setPage(1)
         }}/>,
-        //TODO: remove tournament prop drill from this one too
-        <CreatePoolsForm tournament={tournament} teamArrays={teamPools} onGoBack={() => setPage(0)}/>
+        <CreatePoolsForm teamArrays={teamPools} onGoBack={() => setPage(0)}/>
     ]
 
     const getTeamLists = () => {
