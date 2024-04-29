@@ -10,7 +10,6 @@ from flask_restful import Resource
 from config import app, db, api
 # Add your model imports
 from models import Team, Tournament, Game, GameScore, Stage
-from scheduling_helpers import generate_best_pool_schedule, add_game_timing
 
 # Views go here!
 
@@ -96,6 +95,7 @@ api.add_resource(CreateTournament, '/tournament')
 
 class GenerateGameSchedule(Resource):
     def post(self):
+        from scheduling_helpers import generate_best_pool_schedule, add_game_timing
         data = request.json
         if data.get("type") == "pool":
             matchups_schedule = generate_best_pool_schedule(
@@ -115,16 +115,93 @@ class GenerateGameSchedule(Resource):
                 data.get("break_length")
             )
 
+            team_pools = {}
+            i = 1
+            for pool in data.get("team_lists"):
+                for team in pool:
+                    team_pools[team] = i
+                i += 1
+
+
+            #map teams to pools
+
             return make_response({
                 "matchups": matchups_schedule,
-                "timeslots": start_times
+                "timeslots": start_times,
+                "teamPools": team_pools
             }, 200)
         # elif data.get("type") == "bracket":
         #     pass
-        
-
 api.add_resource(GenerateGameSchedule, '/generate_schedule')
 
+class AcceptSchedule(Resource):
+    def post(self):
+        from scheduling_helpers import map_matchups
+        from datetime import datetime
+        data = request.json
+        if data.get("type") == "pool":
+            tournament_id = data.get("tournamentId")
+            timeslots = data.get("timeslots")
+
+            crossover_pool = Stage(
+                is_bracket = False,
+                tournament_id = tournament_id,
+                name = f"Crossovers",
+                start_time = datetime.strptime(timeslots[0], '%I:%M %p'),
+                #hold a string in the DB instead
+            )
+            db.session.add(crossover_pool)
+            stages = [crossover_pool]
+
+            letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I" ,"J"]
+            i = 0
+            for _ in range(data.get("numStages")):
+                stage = Stage(
+                    is_bracket = False,
+                    tournament_id = tournament_id,
+                    name = f"Pool {letters[i]}",
+                    start_time = datetime.strptime(timeslots[0], '%I:%M %p'),
+                )
+                db.session.add(stage)
+                stages.append(stage)
+                i += 1
+            
+            db.session.commit()
+
+            mapped_matchups = map_matchups(data.get("matchups"), timeslots, data.get("teamPools"))
+            for matchup in mapped_matchups:
+                matchup["game"] = Game(
+                    location= matchup["location"],
+                    start_time = matchup["start_time"],
+                    stage = stages[matchup["pool_index"]]
+                )
+                db.session.add(matchup["game"])
+
+            db.session.commit()
+
+            for matchup in mapped_matchups:
+                matchup["game_score_1"] = GameScore(
+                    team_id=matchup["matchup"][0],
+                    game = matchup["game"]
+                    )
+                matchup["game_score_2"] = GameScore(
+                    team_id=matchup["matchup"][1],
+                    game = matchup["game"]
+                    )
+                db.session.add(matchup["game_score_1"])
+                db.session.add(matchup["game_score_2"])
+
+            db.session.commit()
+            
+            return make_response({
+                "stages": [stage.to_dict() for stage in stages]
+            }, 201)
+
+            ##TODO: don't serialize Game -> Team -> Gamescore
+            ## fix location in games
+            
+
+api.add_resource(AcceptSchedule, '/accept_schedule')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

@@ -131,3 +131,17 @@ def add_game_timing(num_timeslots, start_time, game_length, break_length):
     game_start_times = [time_date.strftime('%I:%M %p') for time_date in game_start_times]
     return game_start_times
     
+
+def map_matchups(matchups, timeslots, team_pools):
+    from datetime import datetime
+    game_maps = []
+    for timeslot_index in range(len(matchups)):
+        for field_index in range(len(matchups[timeslot_index])):
+            matchup = matchups[timeslot_index][field_index]
+            game_maps.append({
+                "matchup": matchup,
+                "start_time": datetime.strptime(timeslots[timeslot_index], '%I:%M %p'),
+                "location": field_index,
+                "pool_index": team_pools[matchup[0]] if team_pools[matchup[0]] == team_pools[matchup[1]] else 0
+            })
+    return game_maps

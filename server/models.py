@@ -71,17 +71,7 @@ class Stage(db.Model, SerializerMixin):
     tournament = db.relationship("Tournament", back_populates = "stages")
     games = db.relationship("Game", back_populates = "stage")
 
-    serialize_only = ('games', 'name')
-
-    #Calculating brackets notes:
-    #get length of games and rests and number of games
-    #make pools
-    #check if there are enough fields
-    #adjust
-    # this tournament will last x hours y minutes with b brackets. is that ok?
-    #when should it start?
-    #it ends at c. is that ok?
-    #submit THEN assign teams      
+    serialize_only = ('games', 'name')  
 
 
 

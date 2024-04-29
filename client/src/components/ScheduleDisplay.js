@@ -13,7 +13,7 @@ import {
     Table,
   } from 'semantic-ui-react'
 
-export default function ScheduleDisplay({matchups, timeslots, teamArrays}){
+export default function ScheduleDisplay({matchups, timeslots, teamPools}){
     if(matchups.length === 0){
         return <div/>
     }
@@ -23,13 +23,7 @@ export default function ScheduleDisplay({matchups, timeslots, teamArrays}){
 
     //TODO: convert teamArrays to a map way earlier in the program
     function matchupsByPool() {
-        let teamPools = {}
         const matchupPools = {}
-        for(let i = 0; i < teamArrays.length; i ++){
-            for(const team of teamArrays[i]){
-                teamPools[team] = i
-            }
-        }
         for(const matchupRow of matchups){
             for(const matchup of matchupRow){
                 if(teamPools[matchup[0]] !== teamPools[matchup[1]]){

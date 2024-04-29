@@ -10,6 +10,7 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
     const [tournament, setTournament] = useContext(TournamentContext)
     const [isLoading, setIsLoading] = useState(false)
     const [tempSchedule, setTempSchedule] = useState({timeslots: [], matchups: [[]]})
+    const [teamPools, setTeamPools] = useState({})
 
     const formSchema = yup.object().shape({
         numFields: yup.number().required()
@@ -85,7 +86,8 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
                 setIsLoading(false)
                 // formik.resetForm()
                 console.log(response)
-                setTempSchedule(response)
+                setTempSchedule({matchups: response.matchups, timeslots: response.timeslots})
+                setTeamPools(response.teamPools)
                 //go to next screen
             })
             .catch(e => console.log(e))
@@ -100,11 +102,31 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
         return (
           <p style={{color: 'red'}}>{errorMessages[0]}</p>
         );
-      };
+    };
 
-//TODO hookup buttons
     function handleChange(e, { name, value }){
         formik.setFieldValue(name, value)
+    }
+
+    function submitPoolSchedule(){
+        const request_data = {
+            type: "pool",
+            timeslots: tempSchedule.timeslots,
+            matchups: tempSchedule.matchups,
+            tournamentId: tournament.id,
+            teamPools: teamPools,
+            numStages: teamArrays.length
+        }
+        fetch("http://localhost:5555/accept_schedule", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(request_data),
+        }).then(res => res.json())
+        .then(response => {
+            console.log(response)
+        })
     }
 
     let largestPoolSize = 0
@@ -207,14 +229,9 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
                 <ScheduleDisplay 
                 matchups={tempSchedule.matchups} 
                 timeslots={tempSchedule.timeslots}
-                teamArrays={teamArrays}
+                teamPools={teamPools}
                 />
             </div>
-
-
-        {/* TODO: 
-            add team names and a team-> pool map using a context provider for the entire team dashboard
-        */}
 
             <div style={{marginBlock: 15, display: "flex", flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap',}}>
 
@@ -226,6 +243,7 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
                     icon='checkmark' 
                     labelPosition='left'
                     label={{ basic: true, content: "You won't be able to modify pool settings beyond this point." }}
+                    onClick={submitPoolSchedule}
                     // labelPosition='right'
                     />
             </div>
