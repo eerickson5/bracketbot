@@ -141,7 +141,7 @@ def map_matchups(matchups, timeslots, team_pools):
             game_maps.append({
                 "matchup": matchup,
                 "start_time": datetime.strptime(timeslots[timeslot_index], '%I:%M %p'),
-                "location": field_index,
+                "location": f"Field {field_index + 1}",
                 "pool_index": team_pools[matchup[0]] if team_pools[matchup[0]] == team_pools[matchup[1]] else 0
             })
     return game_maps

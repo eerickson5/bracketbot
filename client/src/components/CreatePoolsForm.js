@@ -144,7 +144,7 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
     const minGames = (smallestPoolSize - 1 + (formik.values.crossoversAllowed ? 1 : 0))
     
 
-
+//TODO: add names/ids to form fields
     return (
         <Segment color="red" padded style={{marginBottom: 20, marginTop: 50}}>
 
