@@ -14,7 +14,7 @@ import {
   } from 'semantic-ui-react'
 import TournamentContext from "../TournamentContextProvider";
 
-export default function ScheduleDisplay({matchups, timeslots, teamPools}){
+export default function ScheduleDisplay({matchups, timeslots, teamPools, teamsById}){
     const [tournament, ] = React.useContext(TournamentContext)
     console.log(tournament)
 
@@ -57,7 +57,7 @@ export default function ScheduleDisplay({matchups, timeslots, teamPools}){
                                 <TableCell>
                                     <h4>{time}</h4>
                                 </TableCell>
-                                {matchups[index].map(matchup => <TableCell key={matchup} style={{backgroundColor: colors[matchupPools[matchup]]}}>{matchup[0]} vs {matchup[1]}</TableCell>)}
+                                {matchups[index].map(matchup => <TableCell key={matchup} style={{backgroundColor: colors[matchupPools[matchup]]}}>{teamsById[matchup[0]].team_name} vs {teamsById[matchup[1]].team_name}</TableCell>)}
                             </TableRow>)
                     })}
                 </TableBody>

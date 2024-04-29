@@ -228,6 +228,7 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
                 matchups={tempSchedule.matchups} 
                 timeslots={tempSchedule.timeslots}
                 teamPools={teamPools}
+                teamsById={tournament.teams}
                 />
             </div>
 
