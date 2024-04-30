@@ -8,12 +8,13 @@ import {
     TableBody,
     Table,
   } from 'semantic-ui-react'
-import TournamentContext from "../TournamentContextProvider";
 
 export default function ScheduleDisplay({pools}){
-    const [tournament, ] = React.useContext(TournamentContext)
     const poolsToColors = {"Crossovers": "#DDE0E4", "Pool A": "#D57A7C", "Pool B": "#85C7F2", "Pool C": "#68908F", "Pool D": "#D7BD82", "Pool E": "#9FB58D", "Pool F": "#D59C7F", "Pool G": "#4C839A", "Pool H": "#CD9D62", "Pool I": "#6F8292"}
     //Temporary solution for ease of coding above
+
+    //TODO: make sure fields are in order
+    //TODO: make sure times are in order
 
     function timeslotsToGames(){
         let timeslots = []
@@ -27,7 +28,7 @@ export default function ScheduleDisplay({pools}){
             }
         }
         for(let key in timeslots){
-            timeslots[key].sort((a, b) => a.location - b.location)
+            timeslots[key].sort((a, b) => parseInt(a.location.match(/\d+/)[0]) - parseInt(b.location.match(/\d+/)[0]))
         }
         //TODO: make sure its always in order!!
         return timeslots

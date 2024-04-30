@@ -1,8 +1,6 @@
 import React from "react";
 import { Card } from 'semantic-ui-react'
 
-//game.game_score.own_score
-//game.stage.name
 export default function GameCard({game, color}){
     return (
         <Card
