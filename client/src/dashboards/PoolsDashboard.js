@@ -3,6 +3,7 @@ import DragAndDropPools from "../components/DragAndDropPools";
 import CreatePoolsForm from "../components/CreatePoolsForm"
 import TournamentContext from "../TournamentContextProvider";
 import PoolVisualizer from "../components/PoolVisualizer";
+import ScheduleDisplay from "../components/ScheduleDisplay";
 
 export default function PoolsDashboard(){
     const [tournament, setTournament] = useContext(TournamentContext)
@@ -41,11 +42,14 @@ export default function PoolsDashboard(){
     if(!pools.length)
         return creationPages[currPage]
     else{
-        console.log(getTeamLists())
         return (
-            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                {getTeamLists().map(pool => <PoolVisualizer poolName={pool.poolName} teams={pool.teams}/>)}
-            </div>  
+            <div>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
+                    {getTeamLists().map(pool => <PoolVisualizer poolName={pool.poolName} teams={pool.teams}/>)}
+                </div>  
+                <ScheduleDisplay pools={pools}/>
+            </div>
+            
         )
     }
 }

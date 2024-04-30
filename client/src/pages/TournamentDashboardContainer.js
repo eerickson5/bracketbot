@@ -28,7 +28,7 @@ export default function TournamentDashboardContainer(){
         <Container>
           <TournamentHeader/>
           <TournamentMenu selectedMenu={selectedMenu} onSelectMenu={(menu) => setSelectedMenu(menu)}/>
-
+{/* TODO: teams can't be changed once pools are finalized */}
           {selectedMenu === "home" 
           ? <TournamentDashboard/> 
           : selectedMenu === "teams"

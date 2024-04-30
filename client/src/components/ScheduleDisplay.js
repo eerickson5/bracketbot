@@ -1,69 +1,69 @@
-import React from "react";
+import React, {useState} from "react";
+import GameCard from "./GameCard";
 import {
     TableRow,
     TableHeaderCell,
     TableHeader,
-    TableFooter,
     TableCell,
     TableBody,
-    MenuItem,
-    Icon,
-    Label,
-    Menu,
     Table,
   } from 'semantic-ui-react'
 import TournamentContext from "../TournamentContextProvider";
 
-export default function ScheduleDisplay({matchups, timeslots, teamPools, teamsById}){
+export default function ScheduleDisplay({pools}){
     const [tournament, ] = React.useContext(TournamentContext)
+    const poolsToColors = {"Crossovers": "#DDE0E4", "Pool A": "#D57A7C", "Pool B": "#85C7F2", "Pool C": "#68908F", "Pool D": "#D7BD82", "Pool E": "#9FB58D", "Pool F": "#D59C7F", "Pool G": "#4C839A", "Pool H": "#CD9D62", "Pool I": "#6F8292"}
+    //Temporary solution for ease of coding above
 
-    const colors = ["#DDE0E4", "#D57A7C", "#85C7F2", "#68908F", "#D7BD82", "#9FB58D", "#D59C7F", "#4C839A", "#CD9D62", "#6F8292"]
-    const matchupPools = matchupsByPool()
-
-    function matchupsByPool() {
-        const matchupPools = {}
-        for(const matchupRow of matchups){
-            for(const matchup of matchupRow){
-                if(teamPools[matchup[0]] !== teamPools[matchup[1]]){
-                    matchupPools[matchup] = 0
-                } else {
-                    matchupPools[matchup] = teamPools[matchup[0]]
-                }
+    function timeslotsToGames(){
+        let timeslots = []
+        for(const pool of pools){
+            for(const game of pool.games){
+                game["poolColor"] = poolsToColors[pool.name]
+                if(game.start_time in timeslots)
+                    timeslots[game.start_time].push(game)
+                else
+                    timeslots[game.start_time] = [game]
             }
         }
-        return matchupPools
+        for(let key in timeslots){
+            timeslots[key].sort((a, b) => a.location - b.location)
+        }
+        //TODO: make sure its always in order!!
+        return timeslots
     }
 
-    if (timeslots.length === 0){
-        return null
-    }
+    const timeslots = timeslotsToGames()
+
     return(
         <div style={{marginBlock: 15, display: "flex", flexDirection: 'column', alignItems: 'center', flexWrap: 'wrap',}}>
-            <h3>Temporary Schedule ...</h3>
+            <h3>Pool Play Schedule</h3>
             <h5 style={{marginBlock: 5}}>colored by pool / crossover</h5>
             <Table celled collapsing color='red'>
+
+                
                 <TableHeader>
                     <TableRow>
                         <TableHeaderCell />
-                        {matchups[0].map((matchup, index) => <TableHeaderCell key={index}>Field {index + 1}</TableHeaderCell>)}
+                        {Object.values(timeslots)[0].map((time, index) => <TableHeaderCell key={index}>Field {index + 1}</TableHeaderCell>)}
                     </TableRow>
                 </TableHeader>
-            
+           
                 <TableBody>
-                    {timeslots.map((time, index) => {
+                    {Object.values(timeslots).map((games, index) => {
                         return (
                             <TableRow key={index}>
                                 <TableCell>
-                                    <h4>{time}</h4>
+                                    <h4>{games[0].start_time}</h4>
                                 </TableCell>
-                                {matchups[index].map(
-                                    matchup => <TableCell key={matchup} style={{backgroundColor: colors[matchupPools[matchup]]}}>
-                                    {tournament.teams[matchup[0]].team_name} vs {tournament.teams[matchup[1]].team_name}
+                                {games.map(
+                                    game => <TableCell key={game.id} style={{backgroundColor: game.poolColor}}>
+                                        <GameCard game={game} color={game.color}/>
                                     </TableCell>
                                 )}
                             </TableRow>)
                     })}
-                </TableBody>
+                </TableBody> 
         
             </Table>
         </div>

@@ -2,7 +2,7 @@ import React, {useContext, useState} from "react";
 import { Form, FormInput, FormRadio, Segment, Button, FormGroup, Dropdown} from 'semantic-ui-react'
 import { useFormik } from "formik";
 import * as yup from "yup";
-import ScheduleDisplay from "./ScheduleDisplay";
+import TempScheduleDisplay from "./TempScheduleDisplay";
 import TournamentContext from "../TournamentContextProvider";
 
 export default function CreatePoolsForm({teamArrays, onGoBack}){
@@ -224,7 +224,7 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
             </Form>
 
             <div style={{alignSelf: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                <ScheduleDisplay 
+                <TempScheduleDisplay 
                 matchups={tempSchedule.matchups} 
                 timeslots={tempSchedule.timeslots}
                 teamPools={teamPools}
