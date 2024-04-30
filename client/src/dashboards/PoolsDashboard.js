@@ -43,7 +43,7 @@ export default function PoolsDashboard(){
         return creationPages[currPage]
     else{
         return (
-            <div>
+            <div style={{paddingBottom: 30}}>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
                     {getTeamLists().map(pool => <PoolVisualizer poolName={pool.poolName} teams={pool.teams}/>)}
                 </div>  

@@ -21,10 +21,11 @@ export default function ScheduleDisplay({pools}){
         for(const pool of pools){
             for(const game of pool.games){
                 game["poolColor"] = poolsToColors[pool.name]
-                if(game.start_time in timeslots)
-                    timeslots[game.start_time].push(game)
+                game["readableTime"] = game.start_time.split(' ')[1]
+                if(game.readableTime in timeslots)
+                    timeslots[game.readableTime].push(game)
                 else
-                    timeslots[game.start_time] = [game]
+                    timeslots[game.readableTime] = [game]
             }
         }
         for(let key in timeslots){
@@ -33,6 +34,11 @@ export default function ScheduleDisplay({pools}){
         //TODO: make sure its always in order!!
         return timeslots
     }
+
+    const timeStringToMinutes = (timeString) => {
+        const [hours, minutes] = timeString.split(':').map(Number);
+        return hours * 60 + minutes;
+    };
 
     const timeslots = timeslotsToGames()
 
@@ -51,11 +57,14 @@ export default function ScheduleDisplay({pools}){
                 </TableHeader>
            
                 <TableBody>
-                    {Object.values(timeslots).map((games, index) => {
+                    {Object.keys(timeslots)
+                    .sort((a,b) => timeStringToMinutes(a) - timeStringToMinutes(b))
+                    .map((key, index) => {
+                        const games = timeslots[key]
                         return (
                             <TableRow key={index}>
                                 <TableCell>
-                                    <h4>{games[0].start_time}</h4>
+                                    <h4>{games[0].readableTime}</h4>
                                 </TableCell>
                                 {games.map(
                                     game => <TableCell key={game.id} style={{backgroundColor: game.poolColor}}>
@@ -63,7 +72,8 @@ export default function ScheduleDisplay({pools}){
                                     </TableCell>
                                 )}
                             </TableRow>)
-                    })}
+                    })
+                    }
                 </TableBody> 
         
             </Table>
