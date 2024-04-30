@@ -52,7 +52,7 @@ export default function ScheduleDisplay({pools}){
                 <TableHeader>
                     <TableRow>
                         <TableHeaderCell />
-                        {Object.values(timeslots)[0].map((time, index) => <TableHeaderCell key={index}>Field {index + 1}</TableHeaderCell>)}
+                        {Object.values(timeslots)[0].map((_, index) => <TableHeaderCell key={index}>Field {index + 1}</TableHeaderCell>)}
                     </TableRow>
                 </TableHeader>
            

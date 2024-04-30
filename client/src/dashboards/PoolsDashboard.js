@@ -45,7 +45,7 @@ export default function PoolsDashboard(){
         return (
             <div style={{paddingBottom: 30}}>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                    {getTeamLists().map(pool => <PoolVisualizer poolName={pool.poolName} teams={pool.teams}/>)}
+                    {getTeamLists().map(pool => <PoolVisualizer key={pool.poolName} poolName={pool.poolName} teams={pool.teams}/>)}
                 </div>  
                 <ScheduleDisplay pools={pools}/>
             </div>
