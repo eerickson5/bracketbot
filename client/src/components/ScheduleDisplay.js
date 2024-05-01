@@ -9,7 +9,7 @@ import {
     Table,
   } from 'semantic-ui-react'
 
-export default function ScheduleDisplay({pools}){
+export default function ScheduleDisplay({pools, scoresEditable=false}){
     const poolsToColors = {"Crossovers": "#DDE0E4", "Pool A": "#D57A7C", "Pool B": "#85C7F2", "Pool C": "#68908F", "Pool D": "#D7BD82", "Pool E": "#9FB58D", "Pool F": "#D59C7F", "Pool G": "#4C839A", "Pool H": "#CD9D62", "Pool I": "#6F8292"}
     //Temporary solution for ease of coding above
 
@@ -68,7 +68,7 @@ export default function ScheduleDisplay({pools}){
                                 </TableCell>
                                 {games.map(
                                     game => <TableCell key={game.id} style={{backgroundColor: game.poolColor}}>
-                                        <GameCard game={game} scoreEditable/>
+                                        <GameCard game={game} scoreEditable={scoresEditable}/>
                                     </TableCell>
                                 )}
                             </TableRow>)
