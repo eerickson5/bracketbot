@@ -42,6 +42,9 @@ export default function ScheduleDisplay({pools, scoresEditable=false}){
 
     const timeslots = timeslotsToGames()
 
+    if(!pools.length){
+        return null
+    }
     return(
         <div style={{marginBlock: 15, display: "flex", flexDirection: 'column', alignItems: 'center', flexWrap: 'wrap',}}>
             <h3>Pool Play Schedule</h3>

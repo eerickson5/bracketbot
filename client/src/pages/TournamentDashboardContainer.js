@@ -15,10 +15,12 @@ export default function TournamentDashboardContainer(){
 
   //todo: change when anything about the tournament changes via the other menus
   useEffect(() => {
+    console.log("FETCHING...")
     fetch(`http://localhost:5555/tournament/${tourn_id}`).then(res => res.json())
     .then(data => {
+      console.log("FETCHING...")
       setTournament({...data.tournament, teams: data.teams})
-    })
+    }) 
     .catch(e => console.log(e))
   }, [tourn_id, setTournament])
 
@@ -32,7 +34,5 @@ export default function TournamentDashboardContainer(){
           ? <TournamentDashboard/>
           : <PoolsDashboard /> }
         </Container>
-      
-     
     )
 }

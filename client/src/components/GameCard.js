@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardMeta, CardDescription, Input } from 'semantic-ui-react'
 
 export default function GameCard({game, scoreEditable}){
+    const [score0, setScore0] = useState(game.teams[0])
+    const [score1, setScore1] = useState()
+
+console.log(game)
     return (
         <Card fluid style={{padding: 10}}>
             <CardHeader>

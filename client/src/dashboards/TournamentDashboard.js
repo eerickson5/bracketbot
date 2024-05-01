@@ -7,6 +7,7 @@ import TournamentTeamEditor from "./TournamentTeamEditor";
 
 export default function TournamentDashboard(){
   const [tournament, setTournament] = useContext(TournamentContext)
+  console.log(tournament)
     return(
       <Container style={{paddingBottom: 20}}>
 
