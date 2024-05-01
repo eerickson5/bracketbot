@@ -11,11 +11,12 @@ export default function TournamentDashboard(){
       <Container style={{paddingBottom: 20}}>
 
         {tournament.stages 
-          ? <TournamentTeamEditor/>
-          : <Container>
+          ? <Container style={{margin: 30}}>
               <h2>Teams</h2>
               { Object.values(tournament.teams).map( team => <TeamCard team={team} key={team.id}/>) }
             </Container>
+          : <TournamentTeamEditor/>
+          
         }
       
         <Container>
