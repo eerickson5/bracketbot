@@ -3,7 +3,7 @@ import TeamAdder from "../components/TeamAdder";
 import { Container, Button } from "semantic-ui-react";
 import TournamentContext from "../TournamentContextProvider";
 
-export default function TournamentTeamDashboard(){
+export default function TournamentTeamEditor(){
     const [tournament, setTournament] = React.useContext(TournamentContext)
     const [teams, setTeams] = useState(Object.values(tournament.teams))
     const [error, setError] = useState("")
@@ -34,7 +34,8 @@ export default function TournamentTeamDashboard(){
 
     return (
         <Container>
-            <h2 style={{marginBottom: 20}}>Edit Team List</h2>
+            <h2>Add or Remove Teams</h2>
+            <h4 style={{marginBottom: 20}}>available until games are generated</h4>
             <TeamAdder teams={teams} onEditTeams={(newTeams) => setTeams(newTeams)}/>
             <h4 style={{color: 'red', marginBlock: 20}}>{error}</h4>
             <Button content='Submit New Teams' size="large" onClick={handleEditTeams}/>

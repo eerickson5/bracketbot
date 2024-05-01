@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import TournamentHeader from "../components/TournamentHeader";
 import TournamentMenu from "../components/TournamentMenu";
 import TournamentDashboard from "../dashboards/TournamentDashboard";
-import TournamentTeamDashboard from "../dashboards/TournamentTeamDashboard";
 import PoolsDashboard from "../dashboards/PoolsDashboard";
 import TournamentContext from "../TournamentContextProvider"
 
@@ -30,9 +29,7 @@ export default function TournamentDashboardContainer(){
           <TournamentMenu selectedMenu={selectedMenu} onSelectMenu={(menu) => setSelectedMenu(menu)}/>
 {/* TODO: teams can't be changed once pools are finalized */}
           {selectedMenu === "home" 
-          ? <TournamentDashboard/> 
-          : selectedMenu === "teams"
-          ? <TournamentTeamDashboard/>
+          ? <TournamentDashboard/>
           : <PoolsDashboard /> }
         </Container>
       

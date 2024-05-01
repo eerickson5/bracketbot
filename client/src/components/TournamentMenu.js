@@ -14,14 +14,6 @@ export default function TournamentMenu({selectedMenu, onSelectMenu}){
             <Icon name='clipboard list' />
             Home
           </MenuItem>
-        <MenuItem
-          name='teams'
-          active={selectedMenu === "teams"}
-          onClick={() => onSelectMenu("teams")}
-        >
-          <Icon name='users' />
-          Edit Teams
-        </MenuItem>
 
         <MenuItem
           name='pools'
