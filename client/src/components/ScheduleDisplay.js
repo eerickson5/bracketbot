@@ -68,7 +68,7 @@ export default function ScheduleDisplay({pools}){
                                 </TableCell>
                                 {games.map(
                                     game => <TableCell key={game.id} style={{backgroundColor: game.poolColor}}>
-                                        <GameCard game={game} color={game.color}/>
+                                        <GameCard game={game} scoreEditable/>
                                     </TableCell>
                                 )}
                             </TableRow>)
