@@ -16,7 +16,6 @@ export default function TournamentDashboard(){
               { Object.values(tournament.teams).map( team => <TeamCard team={team} key={team.id}/>) }
             </Container>
           : <TournamentTeamEditor/>
-          
         }
       
         <Container>
