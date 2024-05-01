@@ -4,22 +4,20 @@ import { useParams } from "react-router-dom";
 import GameCard from "../components/GameCard";
 import TeamCard from "../components/TeamCard";
 import TournamentContext from "../TournamentContextProvider";
+import ScheduleDisplay from "../components/ScheduleDisplay";
 
 export default function TournamentDashboard(){
   const [tournament, setTournament] = useContext(TournamentContext)
     return(
-      <Container>
+      <Container style={{paddingBottom: 20}}>
         <Container>
           <h2>Teams</h2>
           { Object.values(tournament.teams).map( team => <TeamCard team={team} key={team.id}/>) }
         </Container>
-        <Button
-          content='Like'
-          icon='heart'
-          label={{ as: 'a', basic: true, content: '2,048' }}
-          labelPosition='right'
-          size='huge'
-        />
+        
+        <Container>
+          <ScheduleDisplay pools={tournament.stages.filter(stage => !stage.is_bracket)}/>
+        </Container>
         
       </Container>
      
