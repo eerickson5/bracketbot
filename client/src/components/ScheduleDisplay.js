@@ -13,9 +13,6 @@ export default function ScheduleDisplay({pools, scoresEditable=false}){
     const poolsToColors = {"Crossovers": "#DDE0E4", "Pool A": "#D57A7C", "Pool B": "#85C7F2", "Pool C": "#68908F", "Pool D": "#D7BD82", "Pool E": "#9FB58D", "Pool F": "#D59C7F", "Pool G": "#4C839A", "Pool H": "#CD9D62", "Pool I": "#6F8292"}
     //Temporary solution for ease of coding above
 
-    //TODO: make sure fields are in order
-    //TODO: make sure times are in order
-
     function timeslotsToGames(){
         let timeslots = []
         for(const pool of pools){
@@ -39,6 +36,34 @@ export default function ScheduleDisplay({pools, scoresEditable=false}){
         const [hours, minutes] = timeString.split(':').map(Number);
         return hours * 60 + minutes;
     };
+
+    const handleSubmitScore = scoresEditable ? ({gameScoreId, teamId, newScore}) => {
+        fetch(`http://localhost:5555/game_score/${gameScoreId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                team_id: teamId,
+                new_score: newScore,
+            }),
+        })
+        .then(response => response.json())
+        .then(gameScore => {
+            console.log('did edit score')
+            
+            // const updateTournament = {
+            //     ...tournament,
+            //     stages[gameScore.game.stage_id].games[gameScore.game.id].game_score[gameScoreIndex].own_score = value
+            // }
+            
+            // stage[game.stage.id] -> games[game.id] -> game_score['score0' ? game.game_scores[0].id : game.game_scores[1].id] -> own_score
+            //dig into the tournament object to change this game_score
+        })
+        .catch(error => {
+            console.error('Error updating score:', error);
+        });
+    } : null
 
     const timeslots = timeslotsToGames()
 
@@ -71,7 +96,7 @@ export default function ScheduleDisplay({pools, scoresEditable=false}){
                                 </TableCell>
                                 {games.map(
                                     game => <TableCell key={game.id} style={{backgroundColor: game.poolColor}}>
-                                        <GameCard game={game} scoreEditable={scoresEditable}/>
+                                        <GameCard game={game} onSubmitScore={handleSubmitScore}/>
                                     </TableCell>
                                 )}
                             </TableRow>)

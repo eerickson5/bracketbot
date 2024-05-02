@@ -11,3 +11,6 @@ export function TournamentProvider({children}){
 }
 
 export default TournamentContext;
+
+//change stages into an object to access via ID ?
+//change games into an object to access via ID ?

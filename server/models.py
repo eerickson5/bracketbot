@@ -38,8 +38,7 @@ class GameScore(db.Model, SerializerMixin):
     game_id = db.Column(db.Integer, db.ForeignKey('game.id'))
     game = db.relationship("Game", back_populates = "game_scores")
 
-    serialize_only = ('id', 'team_id', 'own_score', 'opponent_score',
-                      'game.id', 'game.stage.id',)
+    serialize_only = ('id', 'team_id', 'own_score', 'opponent_score', 'game_id')
 
 class Game(db.Model, SerializerMixin):
     __table_name__ = "games"
