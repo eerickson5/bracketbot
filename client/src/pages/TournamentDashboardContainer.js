@@ -6,6 +6,7 @@ import TournamentMenu from "../components/TournamentMenu";
 import TournamentDashboard from "../dashboards/TournamentDashboard";
 import PoolsDashboard from "../dashboards/PoolsDashboard";
 import TournamentContext from "../TournamentContextProvider"
+import BracketDashboard from "../dashboards/BracketDashboard";
 
 export default function TournamentDashboardContainer(){
 
@@ -30,7 +31,9 @@ export default function TournamentDashboardContainer(){
 {/* TODO: teams can't be changed once pools are finalized */}
           {selectedMenu === "home" 
           ? <TournamentDashboard/>
-          : <PoolsDashboard /> }
+          : selectedMenu === "pools" 
+          ? <PoolsDashboard /> 
+          : <BracketDashboard/>}
         </Container>
     )
 }
