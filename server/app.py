@@ -45,7 +45,6 @@ class CreateTeam(Resource):
 api.add_resource(CreateTeam, '/team')
 
 
-
 class TournamentByID(Resource):
     def get(self, id):
         tournament = Tournament.query.filter(Tournament.id == id).first()
@@ -206,9 +205,19 @@ class AcceptSchedule(Resource):
 
             ##TODO: don't serialize Game -> Team -> Gamescore
             ## fix location in games
-            
 
 api.add_resource(AcceptSchedule, '/accept_schedule')
+
+class GameScoreByID(Resource):
+    def patch(self, id):
+        game_score = GameScore.query.filter(GameScore.id == id).first()
+        if game_score and game_score.team_id == request.json.get("team_id"):
+            game_score.own_score = request.json.get("new_score")
+            db.session.add(game_score)
+            db.session.commit()
+        return make_response(game_score.to_dict(), 200)
+
+api.add_resource(GameScoreByID, '/game_score/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
