@@ -26,7 +26,9 @@ export default function GameCard({game, onSubmitScore = null}){
         onSubmitScore({
             teamId: e.target.name === 'score0' ? team0.id : team1.id,
             newScore: Number(e.target.value),
-            gameScoreId: e.target.name === 'score0' ? game.game_scores[0].id : game.game_scores[1].id
+            gameScoreId: e.target.name === 'score0' ? game.game_scores[0].id : game.game_scores[1].id,
+            gameIndex: game.gameIndex,
+            poolIndex: game.poolIndex
         })
     }
 

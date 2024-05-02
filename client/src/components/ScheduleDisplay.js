@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import GameCard from "./GameCard";
 import {
     TableRow,
@@ -8,17 +8,26 @@ import {
     TableBody,
     Table,
   } from 'semantic-ui-react'
+import TournamentContext from "../TournamentContextProvider";
 
 export default function ScheduleDisplay({pools, scoresEditable=false}){
     const poolsToColors = {"Crossovers": "#DDE0E4", "Pool A": "#D57A7C", "Pool B": "#85C7F2", "Pool C": "#68908F", "Pool D": "#D7BD82", "Pool E": "#9FB58D", "Pool F": "#D59C7F", "Pool G": "#4C839A", "Pool H": "#CD9D62", "Pool I": "#6F8292"}
     //Temporary solution for ease of coding above
 
+    const [tournament, setTournament] = useContext(TournamentContext)
+
     function timeslotsToGames(){
         let timeslots = []
         for(const pool of pools){
+            let i = 0
             for(const game of pool.games){
                 game["poolColor"] = poolsToColors[pool.name]
                 game["readableTime"] = game.start_time.split(' ')[1]
+                if(scoresEditable){
+                    game["gameIndex"] = i
+                    game["poolIndex"] = pool.poolIndex
+                    i ++
+                }
                 if(game.readableTime in timeslots)
                     timeslots[game.readableTime].push(game)
                 else
@@ -37,7 +46,7 @@ export default function ScheduleDisplay({pools, scoresEditable=false}){
         return hours * 60 + minutes;
     };
 
-    const handleSubmitScore = scoresEditable ? ({gameScoreId, teamId, newScore}) => {
+    const handleSubmitScore = scoresEditable ? ({gameScoreId, teamId, newScore, gameIndex, poolIndex}) => {
         fetch(`http://localhost:5555/game_score/${gameScoreId}`, {
             method: 'PATCH',
             headers: {
@@ -50,12 +59,16 @@ export default function ScheduleDisplay({pools, scoresEditable=false}){
         })
         .then(response => response.json())
         .then(gameScore => {
-            console.log('did edit score')
-            
-            // const updateTournament = {
-            //     ...tournament,
-            //     stages[gameScore.game.stage_id].games[gameScore.game.id].game_score[gameScoreIndex].own_score = value
-            // }
+            const stages = tournament.stages
+            const eligibleGameScores = stages[poolIndex].games[gameIndex].game_scores
+            if(eligibleGameScores[0].id === gameScore.id)
+                eligibleGameScores[0].own_score = gameScore.own_score
+            else if (eligibleGameScores[1].id === gameScore.id)
+                eligibleGameScores[1].own_score = gameScore.own_score
+            setTournament({
+                ...tournament,
+                stages: stages
+            })
             
             // stage[game.stage.id] -> games[game.id] -> game_score['score0' ? game.game_scores[0].id : game.game_scores[1].id] -> own_score
             //dig into the tournament object to change this game_score
@@ -66,7 +79,6 @@ export default function ScheduleDisplay({pools, scoresEditable=false}){
     } : null
 
     const timeslots = timeslotsToGames()
-
     if(!pools.length){
         return null
     }
