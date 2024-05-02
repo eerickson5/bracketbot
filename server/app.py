@@ -205,7 +205,6 @@ class AcceptSchedule(Resource):
 
             ##TODO: don't serialize Game -> Team -> Gamescore
             ## fix location in games
-
 api.add_resource(AcceptSchedule, '/accept_schedule')
 
 class GameScoreByID(Resource):
@@ -216,8 +215,26 @@ class GameScoreByID(Resource):
             db.session.add(game_score)
             db.session.commit()
         return make_response(game_score.to_dict(), 200)
-
 api.add_resource(GameScoreByID, '/game_score/<int:id>')
+
+class PoolsAreComplete(Resource):
+    def get(self, id):
+        from sqlalchemy.orm import joinedload
+        # tournament = Tournament.query.filter(Tournament.id == id).first()
+        # all_game_scores = []
+        # for stage in tournament.stages:
+        #     if not stage.is_bracket:
+        stage = db.session.query(Stage).filter(Stage.tournament_id == id, Stage.is_bracket == False).options(joinedload(Stage.games).joinedload(Game.game_scores)).first()
+        if stage:
+            for game in stage.games:
+                if game.game_scores[0].own_score == None or game.game_scores[0].own_score == None:
+                    make_response({"completed": False}, 200)
+            make_response({"completed": True}, 200)
+        else:
+            make_response({"error": "Tournament has no pools."}, 400)
+
+api.add_resource(PoolsAreComplete, '/pools_completed/<int:id>')
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

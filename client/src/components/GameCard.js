@@ -42,12 +42,12 @@ export default function GameCard({game, onSubmitScore = null}){
             ?<CardContent>
                 <div style={{display: 'flex', alignItems: 'center'}}>
                     {team0.image}
-                    <Input placeholder='0' fluid style={{minWidth: 55}} 
+                    <Input placeholder='-' fluid style={{minWidth: 55}} 
                     name={"score0"} value={scores["score0"]} 
                     onChange={handleChange}
                     onBlur={handleOnSubmitScore}/>
                     vs
-                    <Input placeholder='0' fluid style={{minWidth: 55}} 
+                    <Input placeholder='-' fluid style={{minWidth: 55}} 
                     name={"score1"} value={scores["score1"]} 
                     onChange={handleChange}
                     onBlur={handleOnSubmitScore}/>
