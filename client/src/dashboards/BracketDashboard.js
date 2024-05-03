@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import TournamentContext from "../TournamentContextProvider";
+import CreateBracketForm from "../components/CreateBracketForm";
 
 export default function BracketDashboard(){
 
@@ -20,5 +21,7 @@ export default function BracketDashboard(){
     }, [tournament])
 
     
-    return poolsComplete ? <h1>Yay</h1> : <h2>Brackets cannot be created until every pool game has a score.</h2>
+    return !poolsComplete 
+    ? <h2>Brackets cannot be created until every pool game has a score.</h2>
+    : <CreateBracketForm/>
 }

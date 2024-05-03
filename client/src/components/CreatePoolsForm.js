@@ -148,7 +148,7 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
     return (
         <Segment color="red" padded style={{marginBottom: 20, marginTop: 50}}>
 
-            <h3>You're creating these pools using the {tournament.teams.length} teams and {teamArrays.length} pools in your tournament. <br/> Teams will have between {minGames} and {maxGames} games each.</h3>
+            <h3>You're creating these pools using the {Object.keys(tournament.teams).length} teams and {teamArrays.length} pools in your tournament. <br/> Teams will have between {minGames} and {maxGames} games each.</h3>
             <Form onSubmit={formik.handleSubmit} loading={isLoading}>
                 <FormInput fluid style={{marginBottom: 20, maxWidth: 100}} name="numFields" size="large"
                 label='How many fields do you have access to?' placeholder='6' value={formik.values.numFields} onChange={handleChange}/>
