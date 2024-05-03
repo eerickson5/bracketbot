@@ -22,6 +22,7 @@ export default function PoolsDashboard(){
         }}/>,
         <CreatePoolsForm teamArrays={teamPools} onGoBack={() => setPage(0)}/>
     ]
+    //TODO: If a bracket exists, schedule display (scores) cannot be edited!
 
     const getTeamLists = () => {
         return pools

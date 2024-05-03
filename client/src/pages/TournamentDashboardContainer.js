@@ -16,7 +16,8 @@ export default function TournamentDashboardContainer(){
 
   //todo: change when anything about the tournament changes via the other menus
   useEffect(() => {
-    fetch(`http://localhost:5555/tournament/${tourn_id}`).then(res => res.json())
+    fetch(`http://localhost:5555/tournament/${tourn_id}`)
+    .then(res => res.json())
     .then(data => {
       setTournament({...data.tournament, teams: data.teams})
     }) 

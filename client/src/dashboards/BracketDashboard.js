@@ -11,9 +11,10 @@ export default function BracketDashboard(){
             fetch(`http://localhost:5555/pools_completed/${tournament.id}`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
-            }).then(res => res.json())
+            })
+            .then(res => res.json())
             .then(data => {
-                setPoolsComplete(data)
+                setPoolsComplete(data.completed)
             })
             .catch(e => console.log(e))
     }, [tournament])
