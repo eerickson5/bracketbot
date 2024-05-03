@@ -1,8 +1,7 @@
 import React, {useContext, useState} from "react";
-import { Form, FormInput, FormRadio, Segment, Button, FormGroup, Dropdown, ButtonGroup} from 'semantic-ui-react'
+import { Form, FormInput, Segment, Button, FormGroup, Dropdown, ButtonGroup} from 'semantic-ui-react'
 import { useFormik } from "formik";
 import * as yup from "yup";
-import TempScheduleDisplay from "./TempScheduleDisplay";
 import TournamentContext from "../TournamentContextProvider";
 
 export default function CreateBracketForm(){
@@ -20,6 +19,7 @@ export default function CreateBracketForm(){
         breakLength: yup.number().required()
             .typeError('Break length must be a number')
             .min(0, "You need breaks!"),
+        numTeams: yup.number().required().min(2, "Select a numer of rounds for bracket play."),
         startHours: yup.number().oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]).required(),
         startMinutes: yup.number().oneOf([0, 15, 30, 45]).required(),
         startSuffix: yup.string().oneOf(["am", "pm"]).required()
@@ -51,6 +51,7 @@ export default function CreateBracketForm(){
     const formik = useFormik({
         initialValues: {
             numFields: 1,
+            numTeams: 2,
             gameLength: 60,
             breakLength: 15, 
             startHours: 7,
@@ -77,11 +78,12 @@ export default function CreateBracketForm(){
         formik.setFieldValue(name, value)
     }
 
-    const createSizeOptions = () => {
+    const createBracketSizeOptions = () => {
         let options = []
-        for(let i = 0; 2^i < Object.keys(tournament.teams).length; i++){
-
+        for(let i = 1; Math.pow(2, i) < Object.keys(tournament.teams).length; i++){
+            options.push({rounds: i, teams: Math.pow(2, i), })
         }
+        return options
     }
 
 //TODO: add names/ids to form fields
@@ -99,10 +101,17 @@ export default function CreateBracketForm(){
                 <h5 style={{marginBottom: 10}}>How many rounds is bracket play?</h5>
                 <FormGroup inline>
                     <ButtonGroup>
-                        {/* {--.map()} */}
-                        <Button>One</Button>
-                        <Button>Two</Button>
-                        <Button>Three</Button>
+                        {/* toggle active =  */}
+                        {createBracketSizeOptions().map(option => <Button
+                            toggle active={formik.values.numTeams === option.teams}
+                            type="button" name="numTeams" value={option.teams} key={option.rounds}
+                            onClick={handleChange}
+                            >
+                            {option.rounds} round{option.rounds > 1 ? 's' : ''}
+                            <br/>
+                             {option.rounds > 1 ? `${option.teams} teams enter first round` : 'One final matchup'} 
+                        </Button>
+                        )}
                     </ButtonGroup>
                 </FormGroup>
 
