@@ -2,7 +2,7 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 # from sqlalchemy import MetaData
 from config import db
-import functools
+from sqlalchemy.orm import backref
 
 
 
@@ -53,6 +53,16 @@ class Game(db.Model, SerializerMixin):
     game_scores = db.relationship("GameScore", back_populates = "game")
     teams = association_proxy('game_scores', 'team', creator=lambda team_obj: GameScore(team=team_obj))
     tournaments = association_proxy('stages', 'tournament', creator=lambda tourney_obj: Stage(tournament=tourney_obj))
+
+    #references for bracket as binary tree
+    next_game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=True)
+    next_game = db.relationship('Game', remote_side=[id], foreign_keys=[next_game_id], backref=backref('previous_games', lazy=True))
+    
+    left_previous_game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=True)
+    left_previous_game = db.relationship('Game', foreign_keys=[left_previous_game_id], backref=backref('left_next_game', remote_side=[id], uselist=False))
+    
+    right_previous_game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=True)
+    right_previous_game = db.relationship('Game', foreign_keys=[right_previous_game_id], backref=backref('right_next_game', remote_side=[id], uselist=False))
 
     serialize_only = ('id', 'location', 'start_time', 
                       'teams', 

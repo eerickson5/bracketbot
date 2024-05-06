@@ -145,3 +145,11 @@ def map_matchups(matchups, timeslots, team_pools):
                 "pool_index": team_pools[matchup[0]] if team_pools[matchup[0]] == team_pools[matchup[1]] else 0
             })
     return game_maps
+
+def generate_bracket(teams, num_rounds, num_fields):
+    #get ranking function
+    #generate matchups based on current record
+    #distribute matchups to field
+    #create games with empty teams (no game scores)
+    #point to future games from previous games
+    pass
