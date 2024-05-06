@@ -30,7 +30,8 @@ class Team(db.Model, SerializerMixin):
     def ranking_details_by_stage(self, stage_ids):
         team_rank = {
         "record": 0,
-        "point_diff": 0
+        "point_diff": 0,
+        "num_games": len(self.games),
         }
 
         for game in self.games:
@@ -48,6 +49,13 @@ class Team(db.Model, SerializerMixin):
                     team_rank["record"] += 3
                 elif winner_id == None:
                     team_rank["record"] += 1
+
+        return team_rank
+
+    def weighted_ranking_details_by_stage(self, stage_ids):
+        team_rank = self.ranking_details_by_stage(stage_ids)
+        team_rank["record"] = team_rank["record"] / team_rank["num_games"]
+        team_rank["point_diff"] = team_rank["point_diff"] / team_rank["num_games"]
         return team_rank
 
 class GameScore(db.Model, SerializerMixin):

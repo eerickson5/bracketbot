@@ -14,6 +14,7 @@ from datetime import datetime
 if __name__ == '__main__':
     fake = Faker()
     with app.app_context():
-        test_team = Team.query.filter(Team.id == 2).first()
+        test_team = Team.query.filter(Team.id == 7).first()
         print(test_team.to_dict())
         print(test_team.ranking_details_by_stage([1, 2, 3]))
+        print(test_team.weighted_ranking_details_by_stage([1, 2, 3]))
