@@ -10,11 +10,10 @@ from faker import Faker
 from app import app
 from models import db, Team, Tournament, Game, GameScore, Stage, tournament_teams
 from datetime import datetime
+from scheduling_helpers import rank_pool_teams
 
 if __name__ == '__main__':
     fake = Faker()
     with app.app_context():
-        test_team = Team.query.filter(Team.id == 7).first()
-        print(test_team.to_dict())
-        print(test_team.ranking_details_by_stage([1, 2, 3]))
-        print(test_team.weighted_ranking_details_by_stage([1, 2, 3]))
+        teams = Team.query.all()
+        print (rank_pool_teams(teams, [1,2,3]))

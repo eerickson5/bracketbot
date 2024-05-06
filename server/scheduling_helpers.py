@@ -154,7 +154,9 @@ def generate_bracket(teams, num_rounds, num_fields):
     #point to future games from previous games
     pass
 
-def rank_teams(teams):
-    #or order teams by record and then point differential and then matchup vs other
-    team_ranks = [{"team_id": team.team_id, **team.ranking_details} for team in teams]
-    pass
+def rank_pool_teams(teams, stage_ids):
+    return sorted(
+        [{"team_id": team.id, **team.weighted_ranking_details_by_stage(stage_ids)} for team in teams],
+        key=lambda x: (x["record"], x["point_diff"], x["num_games"]),
+        reverse=True
+    )
