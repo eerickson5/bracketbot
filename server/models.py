@@ -26,6 +26,30 @@ class Team(db.Model, SerializerMixin):
 
     serialize_only = ('id', 'team_name', 'image',)
 
+    #dont forget to send in crossovers if applicable
+    def ranking_details_by_stage(self, stage_ids):
+        team_rank = {
+        "record": 0,
+        "point_diff": 0
+        }
+
+        for game in self.games:
+            if game.stage_id in stage_ids:
+                score = game.score
+                if score[0]["team_id"] == self.id:
+                    team_rank["point_diff"] += score[0]['score']
+                    team_rank["point_diff"] -= score[1]['score']
+                else:
+                    team_rank["point_diff"] += score[1]['score']
+                    team_rank["point_diff"] -= score[0]['score']
+
+                winner_id = game.winner.id
+                if winner_id == self.id:
+                    team_rank["record"] += 3
+                elif winner_id == None:
+                    team_rank["record"] += 1
+        return team_rank
+
 class GameScore(db.Model, SerializerMixin):
     __table_name__ = "gamescores"
     id = db.Column(db.Integer, primary_key=True)
@@ -68,6 +92,24 @@ class Game(db.Model, SerializerMixin):
                       'teams', 
                       'stage.name',
                       'game_scores.own_score', 'game_scores.team', 'game_scores.id')
+
+    @property
+    def score(self):
+        return[{'team_id': gs.team_id, 'score': gs.own_score} for gs in self.game_scores]
+    
+    @property
+    def winner(self):
+        try:
+            if self.game_scores[0].own_score > self.game_scores[1].own_score:
+                return self.game_scores[0].team
+            elif self.game_scores[0].own_score < self.game_scores[1].own_score:
+                return self.game_scores[1].team
+            else:
+                return Team()
+        except IndexError:
+            return None
+
+
 
 class Stage(db.Model, SerializerMixin):
     __table_name__ = "stages"

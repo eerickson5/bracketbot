@@ -153,3 +153,8 @@ def generate_bracket(teams, num_rounds, num_fields):
     #create games with empty teams (no game scores)
     #point to future games from previous games
     pass
+
+def rank_teams(teams):
+    #or order teams by record and then point differential and then matchup vs other
+    team_ranks = [{"team_id": team.team_id, **team.ranking_details} for team in teams]
+    pass
