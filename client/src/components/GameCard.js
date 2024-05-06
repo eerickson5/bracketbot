@@ -35,7 +35,7 @@ export default function GameCard({game, onSubmitScore = null}){
     return (
         <Card fluid style={{padding: 10}}>
             <CardHeader>
-                <h3>{team0.image}{team0.team_name} vs {team1.team_name}{team1.image}</h3>
+                <h5>{team0.image}{team0.team_name} vs {team1.team_name}{team1.image}</h5>
             </CardHeader>
             <CardMeta>{game.location + " | " + game.stage.name}</CardMeta>
             {onSubmitScore
