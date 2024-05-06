@@ -11,7 +11,7 @@ export default function TournamentDashboard(){
     return(
       <Container style={{paddingBottom: 20}}>
 
-        {tournament.stages 
+        {tournament.stages.length 
           ? <Container style={{margin: 30}}>
               <h2>Teams</h2>
               { Object.values(tournament.teams).map( team => <TeamCard team={team} key={team.id}/>) }

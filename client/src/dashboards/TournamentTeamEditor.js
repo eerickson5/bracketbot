@@ -34,8 +34,7 @@ export default function TournamentTeamEditor(){
 
     return (
         <Container>
-            <h2>Add or Remove Teams</h2>
-            <h4 style={{marginBottom: 20}}>available until games are generated</h4>
+            <h2>Add or remove teams before generating game schedules</h2>
             <TeamAdder teams={teams} onEditTeams={(newTeams) => setTeams(newTeams)}/>
             <h4 style={{color: 'red', marginBlock: 20}}>{error}</h4>
             <Button content='Submit New Teams' size="large" onClick={handleEditTeams}/>
