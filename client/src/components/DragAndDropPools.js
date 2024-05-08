@@ -217,7 +217,7 @@ export default function DragAndDropPools({onSubmitPools, pools}) {
                             {teams.map((team, index) => (
                                 <Draggable
                                 key={team.id}
-                                draggableId={String(team.id)}
+                                draggableId={String(team.id)} //TODO: it doesn't work right after a team is added... make sure tournament is being update
                                 index={index}
                                 >
                                 {(provided) => (

@@ -5,6 +5,8 @@ import TournamentContext from "../TournamentContextProvider";
 import ScheduleDisplay from "../components/ScheduleDisplay";
 import TournamentTeamEditor from "./TournamentTeamEditor";
 
+//TODO: once pools are submitted... the ui isn't automatically updated ?? and then if I try to navigate it freaks out??
+//TODO: teams are not automatically fetched :/
 export default function TournamentDashboard(){
   const [tournament, setTournament] = useContext(TournamentContext)
   console.log(tournament)

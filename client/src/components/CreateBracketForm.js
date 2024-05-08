@@ -80,7 +80,7 @@ export default function CreateBracketForm(){
 
     const createBracketSizeOptions = () => {
         let options = []
-        for(let i = 1; Math.pow(2, i) < Object.keys(tournament.teams).length; i++){
+        for(let i = 1; Math.pow(2, i) <= Object.keys(tournament.teams).length; i++){
             options.push({rounds: i, teams: Math.pow(2, i), })
         }
         return options

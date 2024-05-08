@@ -9,6 +9,8 @@ import {
     Table,
   } from 'semantic-ui-react'
 import TournamentContext from "../TournamentContextProvider";
+//TODO: save last schedule so user can go back in case next generation sucks
+//TODO: it runs off the screen if 5 or more fields
 
 export default function ScheduleDisplay({pools, scoresEditable=false}){
     const poolsToColors = {"Crossovers": "#DDE0E4", "Pool A": "#D57A7C", "Pool B": "#85C7F2", "Pool C": "#68908F", "Pool D": "#D7BD82", "Pool E": "#9FB58D", "Pool F": "#D59C7F", "Pool G": "#4C839A", "Pool H": "#CD9D62", "Pool I": "#6F8292"}

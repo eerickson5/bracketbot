@@ -15,10 +15,10 @@ if __name__ == '__main__':
     with app.app_context():
         print("Deleting all records...")
         #Team.query.delete()
-        Game.query.delete()
-        GameScore.query.delete()
-        #Tournament.query.delete()
-        Stage.query.delete()
+        # Game.query.delete()
+        # GameScore.query.delete()
+        # #Tournament.query.delete()
+        # Stage.query.delete()
         #db.session.query(tournament_teams).delete()
 
         # print("Starting seed...")
