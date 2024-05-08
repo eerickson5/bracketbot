@@ -220,13 +220,11 @@ api.add_resource(GameScoreByID, '/game_score/<int:id>')
 class PoolsAreComplete(Resource):
     def get(self, id):
         from sqlalchemy.orm import joinedload
-        stages = db.session.query(Stage).filter(Stage.tournament_id == id, Stage.is_bracket == False).options(joinedload(Stage.games).joinedload(Game.game_scores)).all()
+        stages = db.session.query(Stage).filter(Stage.tournament_id == id, Stage.is_bracket == False).all()
         if stages:
             for stage in stages:
-                for game in stage.games:
-                    if game.game_scores[0].own_score == None or game.game_scores[0].own_score == None:
-                        print("false")
-                        return make_response({"completed": False}, 200)
+                if not stage.all_games_scored():
+                    return make_response({"completed": False}, 200)
             return make_response({"completed": True}, 200)
         else:
             return make_response({"error": "Tournament has no pools."}, 400)

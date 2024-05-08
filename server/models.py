@@ -136,6 +136,11 @@ class Stage(db.Model, SerializerMixin):
 
     serialize_only = ('games', 'name')  
 
+    def all_games_scored(self):
+        for game in self.games:
+            if game.game_scores[0].own_score == None or game.game_scores[1].own_score == None:
+                return False
+        return True
 
 
 class Tournament(db.Model, SerializerMixin):
@@ -182,5 +187,11 @@ class Tournament(db.Model, SerializerMixin):
     @property
     def brackets(self):
         return [a for a in self.stages if a.is_bracket]
+    
+    def all_games_scored(self):
+        for stage in self.stages:
+            if not stage.all_games_scored():
+                return False
+        return True
 
     # on delete also delete stages, games, gamescores, and tournament-teams
