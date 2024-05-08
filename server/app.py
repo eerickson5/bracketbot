@@ -138,70 +138,17 @@ api.add_resource(GenerateGameSchedule, '/generate_schedule')
 
 class AcceptSchedule(Resource):
     def post(self):
-        from scheduling_helpers import map_matchups
-        from datetime import datetime
         data = request.json
-        tournament_id = data.get("tournamentId")
+        tournament = Tournament.query.filter(Tournament.id == data.get("tournamentId")).first()
         if data.get("type") == "pool":
-            tournament = Tournament.query.filter(Tournament.id == tournament_id).first()
             if len(tournament.stages) > 0:
                 return make_response({"error": "This tournament already has pools."}, 400)
-            
-            timeslots = data.get("timeslots")
-
-            crossover_pool = Stage(
-                is_bracket = False,
-                tournament_id = tournament_id,
-                name = f"Crossovers",
-                start_time = datetime.strptime(timeslots[0], '%I:%M %p'),
-                #hold a string in the DB instead
-            )
-            db.session.add(crossover_pool)
-            stages = [crossover_pool]
-
-            letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I" ,"J"]
-            i = 0
-            for _ in range(data.get("numStages")):
-                stage = Stage(
-                    is_bracket = False,
-                    tournament_id = tournament_id,
-                    name = f"Pool {letters[i]}",
-                    start_time = datetime.strptime(timeslots[0], '%I:%M %p'),
-                )
-                db.session.add(stage)
-                stages.append(stage)
-                i += 1
-            
-            db.session.commit()
-
-            mapped_matchups = map_matchups(data.get("matchups"), timeslots, data.get("teamPools"))
-            for matchup in mapped_matchups:
-                matchup["game"] = Game(
-                    location= matchup["location"],
-                    start_time = matchup["start_time"],
-                    stage = stages[matchup["pool_index"]]
-                )
-                db.session.add(matchup["game"])
-
-            db.session.commit()
-
-            for matchup in mapped_matchups:
-                matchup["game_score_1"] = GameScore(
-                    team_id=matchup["matchup"][0],
-                    game = matchup["game"]
-                    )
-                matchup["game_score_2"] = GameScore(
-                    team_id=matchup["matchup"][1],
-                    game = matchup["game"]
-                    )
-                db.session.add(matchup["game_score_1"])
-                db.session.add(matchup["game_score_2"])
-
-            db.session.commit()
-            
-            return make_response({
-                "stages": [stage.to_dict() for stage in stages]
-            }, 201)
+            else:
+                from scheduling_helpers import accept_pool_schedule
+                stages = accept_pool_schedule(data)
+                return make_response({
+                    "stages": [stage.to_dict() for stage in stages]
+                }, 201)
 
             ##TODO: don't serialize Game -> Team -> Gamescore
             ## fix location in games
@@ -228,7 +175,6 @@ class PoolsAreComplete(Resource):
             return make_response({"completed": True}, 200)
         else:
             return make_response({"error": "Tournament has no pools."}, 400)
-
 api.add_resource(PoolsAreComplete, '/pools_completed/<int:id>')
 
 

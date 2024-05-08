@@ -112,6 +112,59 @@ def generate_best_pool_schedule(team_lists, num_fields, crossovers_allowed, time
     
     return shortest_schedule
 
+def accept_pool_schedule(data):
+    from models import Stage, Game, GameScore, db
+    from datetime import datetime
+            
+    timeslots = data.get("timeslots")
+    tournament_id = data.get("tournamentId")
+
+    crossover_pool = Stage(
+        is_bracket = False,
+        tournament_id = tournament_id,
+        name = f"Crossovers",
+        start_time = datetime.strptime(timeslots[0], '%I:%M %p'),
+        #hold a string in the DB instead
+    )
+    db.session.add(crossover_pool)
+    stages = [crossover_pool]
+
+    letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I" ,"J"]
+    i = 0
+    for _ in range(data.get("numStages")):
+        stage = Stage(
+            is_bracket = False,
+            tournament_id = tournament_id,
+            name = f"Pool {letters[i]}",
+            start_time = datetime.strptime(timeslots[0], '%I:%M %p'),
+        )
+        db.session.add(stage)
+        stages.append(stage)
+        i += 1
+
+    mapped_matchups = map_matchups(data.get("matchups"), timeslots, data.get("teamPools"))
+    for matchup in mapped_matchups:
+        matchup["game"] = Game(
+            location= matchup["location"],
+            start_time = matchup["start_time"],
+            stage = stages[matchup["pool_index"]]
+        )
+        db.session.add(matchup["game"])
+
+    for matchup in mapped_matchups:
+        matchup["game_score_1"] = GameScore(
+            team_id=matchup["matchup"][0],
+            game = matchup["game"]
+            )
+        matchup["game_score_2"] = GameScore(
+            team_id=matchup["matchup"][1],
+            game = matchup["game"]
+            )
+        db.session.add(matchup["game_score_1"])
+        db.session.add(matchup["game_score_2"])
+
+    db.session.commit()
+    return stages
 
 def add_game_timing(num_timeslots, start_time, game_length, break_length):
     from datetime import timedelta, datetime

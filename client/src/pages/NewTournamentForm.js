@@ -63,6 +63,7 @@ export default function NewTournamentForm(){
         
     }
 
+    //TODO: enter button adds team, not submit tournament
     return (
         <Container style={{marginTop: 50}}>
             <Segment color="red" padded >
