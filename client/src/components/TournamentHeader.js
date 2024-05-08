@@ -3,6 +3,7 @@ import { Header } from 'semantic-ui-react'
 import DynamicImage from "./DynamicImage";
 import TournamentContext from "../TournamentContextProvider";
 
+//TODO: emojis hello
 export default function TournamentHeader(){
     const [tournament] = React.useContext(TournamentContext)
     return(
