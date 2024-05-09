@@ -226,10 +226,6 @@ def generate_bracket( tournament, data ):
     matchups = assign_times_and_fields(matchups, num_fields, times["start_time"], times["game_length"], times["break_length"])
     add_game_info_to_database(matchups)
 
-    for matchup in matchups:
-        print(matchup["game"])
-    #We also gotta check to see if the data is what we want!
-
     rounds = [[]]
     for matchup in matchups:
         try:
@@ -242,8 +238,9 @@ def generate_bracket( tournament, data ):
         if len(curr_round) > 1:
             upcoming_matchup_index = 0
             for matchup_index in range(len(curr_round) // 2):
-                curr_round[matchup_index]["game"].next_game = rounds[round_index + 1][upcoming_matchup_index]["game"]
-                curr_round[-matchup_index - 1]["game"].next_game = rounds[round_index + 1][upcoming_matchup_index]["game"]
+                next_game = rounds[round_index + 1][upcoming_matchup_index]["game"]
+                curr_round[matchup_index]["game"].next_game = next_game
+                curr_round[-matchup_index - 1]["game"].next_game = next_game
                 upcoming_matchup_index += 1
 
     for matchup in matchups:
@@ -306,5 +303,4 @@ def assign_times_and_fields(matchups, num_fields, start_time, game_length, break
 
     
     start_times = add_game_timing(len(timeslots), start_time, game_length, break_length, False)
-    print(start_times)
     return [ {"start_time": start_times[matchup["timeslot"]], **matchup} for matchup in matchups ]

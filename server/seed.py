@@ -13,15 +13,23 @@ from models import db, Team, Tournament, Game, GameScore, Stage, tournament_team
 if __name__ == '__main__':
     fake = Faker()
     with app.app_context():
-        print("Deleting all records...")
+        #print("Deleting all records...")
         #Team.query.delete()
         # Game.query.delete()
         # GameScore.query.delete()
         # #Tournament.query.delete()
         # brackets = Stage.query.filter(Stage.is_bracket == True).all()
-        # for obj in brackets:
-        #     db.session.delete(obj)
-        #     db.session.commit()
+        # for bracket in brackets:
+        #     for game in bracket.games:
+        #         for game_score in game.game_scores:
+        #             db.session.delete(game_score)
+        #         db.session.delete(game)
+        #     db.session.delete(bracket)
+        # db.session.commit()
+
+        final_round = Game.query.filter(Game.id == 35).first()
+        print(final_round.previous_games)
+
         # Stage.query.delete()
         #db.session.query(tournament_teams).delete()
 

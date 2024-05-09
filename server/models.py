@@ -91,6 +91,7 @@ class Game(db.Model, SerializerMixin):
     next_game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=True)
     next_game = db.relationship('Game', remote_side=[id], foreign_keys=[next_game_id], backref=backref('previous_games', lazy=True))
     
+    #following 2 are unneccessary
     left_previous_game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=True)
     left_previous_game = db.relationship('Game', foreign_keys=[left_previous_game_id], backref=backref('left_next_game', remote_side=[id], uselist=False))
     
