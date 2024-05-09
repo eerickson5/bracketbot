@@ -113,8 +113,7 @@ def generate_best_pool_schedule(team_lists, num_fields, crossovers_allowed, time
     return shortest_schedule
 
 def accept_pool_schedule(data):
-    from models import Stage, Game, GameScore, db
-    from datetime import datetime
+    from models import Stage, db
             
     timeslots = data.get("timeslots")
     tournament_id = data.get("tournamentId")
@@ -149,7 +148,7 @@ def accept_pool_schedule(data):
     db.session.commit()
     return stages
 
-def add_game_timing(num_timeslots, start_time, game_length, break_length):
+def add_game_timing(num_timeslots, start_time, game_length, break_length, as_string=True):
     from datetime import timedelta, datetime
     game_start_times = []
     last_game_end = None
@@ -164,7 +163,8 @@ def add_game_timing(num_timeslots, start_time, game_length, break_length):
             game_start_times.append(next_start_time)
             last_game_end = next_start_time + timedelta(minutes=game_length)
 
-    game_start_times = [time_date.strftime('%I:%M %p') for time_date in game_start_times]
+    if as_string:
+        game_start_times = [time_date.strftime('%I:%M %p') for time_date in game_start_times]
     return game_start_times
     
 
@@ -185,16 +185,24 @@ def map_matchups(matchups, timeslots, team_pools):
 # num_games = 2^(total_rounds - current_round)
 # num_teams = 2^(total_rounds - current_round + 1)
 #TODO: triple check all games are scored before running this
-def generate_bracket(teams, num_rounds, num_fields, tournament, start_time, game_length, break_length):
-    
+def generate_bracket( tournament, data ):
+    from datetime import time
     from models import Stage, db
+
+    teams = tournament.teams
+    num_rounds = data.get("numRounds")
+    num_fields = data.get("numFields")
+    times = {
+        "start_time": time(data.get("startHours"), data.get("startMinutes")),
+        "game_length": data.get("gameLength"), 
+        "break_length": data.get("breakLength")}
+
     bracket = Stage(
         name= "Bracket",
         is_bracket = True,
         tournament = tournament
     )
     db.session.add(bracket)
-    db.session.commit()
     
     pools = [stage.id for stage in tournament.stages if not stage.is_bracket]
     ranked_teams = rank_teams(teams, pools)[0 : 2**num_rounds]
@@ -215,8 +223,12 @@ def generate_bracket(teams, num_rounds, num_fields, tournament, start_time, game
                 "stage": bracket
             })  
 
-    matchups = assign_times_and_fields(matchups, num_fields, start_time, game_length, break_length)
+    matchups = assign_times_and_fields(matchups, num_fields, times["start_time"], times["game_length"], times["break_length"])
     add_game_info_to_database(matchups)
+
+    for matchup in matchups:
+        print(matchup["game"])
+    #We also gotta check to see if the data is what we want!
 
     rounds = [[]]
     for matchup in matchups:
@@ -238,12 +250,9 @@ def generate_bracket(teams, num_rounds, num_fields, tournament, start_time, game
         db.session.add(matchup["game"])
 
     db.session.commit()
-    return [{
-        "game_scores": [] if matchup["matchup"] == [0,0] else [matchup["game_score_1"], matchup["game_score_2"]], 
-        "game": matchup["game"]
-        } for matchup in matchups]
 
-#TODO: use this when accepting pool schedule for DRY code
+    return bracket
+
 def add_game_info_to_database(matchups):
     from models import Game, GameScore, db
 
@@ -296,5 +305,6 @@ def assign_times_and_fields(matchups, num_fields, start_time, game_length, break
             previous_round = matchup["round"]
 
     
-    start_times = add_game_timing(len(timeslots), start_time, game_length, break_length)
+    start_times = add_game_timing(len(timeslots), start_time, game_length, break_length, False)
+    print(start_times)
     return [ {"start_time": start_times[matchup["timeslot"]], **matchup} for matchup in matchups ]

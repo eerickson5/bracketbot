@@ -13,13 +13,13 @@ export default function CreateBracketForm(){
         numFields: yup.number().required()
             .typeError("Fields need to be a number!")
             .min(1, "You need at least 1 field to play a tournament."),
+        numRounds: yup.number().required().min(1),
         gameLength: yup.number().required()
             .typeError('Game length must be a number.')
             .min(10, "Games need to be longer than that."),
         breakLength: yup.number().required()
             .typeError('Break length must be a number')
             .min(0, "You need breaks!"),
-        numTeams: yup.number().required().min(2, "Select a numer of rounds for bracket play."),
         startHours: yup.number().oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]).required(),
         startMinutes: yup.number().oneOf([0, 15, 30, 45]).required(),
         startSuffix: yup.string().oneOf(["am", "pm"]).required()
@@ -51,16 +51,43 @@ export default function CreateBracketForm(){
     const formik = useFormik({
         initialValues: {
             numFields: 1,
-            numTeams: 2,
             gameLength: 60,
             breakLength: 15, 
             startHours: 7,
             startMinutes: 0,
-            startSuffix: "am"
+            startSuffix: "am",
+            numRounds: 1,
         },
         validationSchema: formSchema,
         onSubmit: async (values) => {
-            
+            setIsLoading(true)
+            console.log("sending request")
+            const request_data = {
+                type: "bracket",
+                numFields: parseInt(values.numFields),
+                numRounds: parseInt(values.numRounds),
+                startHours: values.startSuffix === "pm" ? values.startHours + 12 : values.startHours,
+                startMinutes: values.startMinutes,
+                gameLength: parseInt(values.gameLength),
+                breakLength: parseInt(values.breakLength),
+                tournamentId: tournament.id
+            }
+
+            fetch("http://localhost:5555/accept_schedule", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(request_data),
+            }).then(res => res.json())
+            .then(response => {
+                setIsLoading(false)
+                // formik.resetForm()
+                //TODO: for this and pool form, prevent action if isLoading
+                console.log(response)
+                //go to next screen
+            })
+            .catch(e => console.log(e))
         }
     })
 
@@ -101,10 +128,9 @@ export default function CreateBracketForm(){
                 <h5 style={{marginBottom: 10}}>How many rounds is bracket play?</h5>
                 <FormGroup inline>
                     <ButtonGroup>
-                        {/* toggle active =  */}
                         {createBracketSizeOptions().map(option => <Button
-                            toggle active={formik.values.numTeams === option.teams}
-                            type="button" name="numTeams" value={option.teams} key={option.rounds}
+                            toggle active={formik.values.numRounds === option.rounds}
+                            type="button" name="numRounds" value={option.rounds} key={option.rounds}
                             onClick={handleChange}
                             >
                             {option.rounds} round{option.rounds > 1 ? 's' : ''}
@@ -143,23 +169,22 @@ export default function CreateBracketForm(){
                     ]} />
                 </div>
 
-
-
                 {renderErrors()}
-                
+
+                 <Button
+                style={{marginBlock: 10}}
+                content='Accept Settings and Generate Bracket'
+                type="submit" name="submit"
+                primary
+                icon='checkmark' 
+                labelPosition='left'
+                label={{ basic: true, content: "You won't be able to modify the bracket beyond this point." }}
+                // labelPosition='right'
+                />
             </Form>
 
         
-            <Button
-            style={{marginBlock: 10}}
-            content='Accept Settings and Generate Bracket'
-            type="submit" name="submit"
-            primary
-            icon='checkmark' 
-            labelPosition='left'
-            label={{ basic: true, content: "You won't be able to modify the bracket beyond this point." }}
-            // labelPosition='right'
-            />
+           
             
         </Segment>
         

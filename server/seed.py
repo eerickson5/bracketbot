@@ -18,6 +18,10 @@ if __name__ == '__main__':
         # Game.query.delete()
         # GameScore.query.delete()
         # #Tournament.query.delete()
+        # brackets = Stage.query.filter(Stage.is_bracket == True).all()
+        # for obj in brackets:
+        #     db.session.delete(obj)
+        #     db.session.commit()
         # Stage.query.delete()
         #db.session.query(tournament_teams).delete()
 

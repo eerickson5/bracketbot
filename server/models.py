@@ -72,6 +72,7 @@ class GameScore(db.Model, SerializerMixin):
 
     serialize_only = ('id', 'team_id', 'own_score', 'opponent_score', 'game_id')
 
+#I need to assign via right previous game and left previous game NOT next game ?
 class Game(db.Model, SerializerMixin):
     __table_name__ = "games"
     id = db.Column(db.Integer, primary_key=True)

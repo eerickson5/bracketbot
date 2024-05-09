@@ -140,8 +140,9 @@ class AcceptSchedule(Resource):
     def post(self):
         data = request.json
         tournament = Tournament.query.filter(Tournament.id == data.get("tournamentId")).first()
+
         if data.get("type") == "pool":
-            if len(tournament.stages) > 0:
+            if len(tournament.pools) > 0:
                 return make_response({"error": "This tournament already has pools."}, 400)
             else:
                 from scheduling_helpers import accept_pool_schedule
@@ -149,9 +150,21 @@ class AcceptSchedule(Resource):
                 return make_response({
                     "stages": [stage.to_dict() for stage in stages]
                 }, 201)
-
+            
+        elif data.get("type") == "bracket":
+            if len(tournament.brackets) > 0:
+                return make_response({"error": "This tournament already has a bracket."}, 400)
+            else:
+                from scheduling_helpers import generate_bracket
+                bracket = generate_bracket(tournament, data)
+                return make_response({
+                    "bracket": bracket.to_dict()
+                }, 201)
+        
+        else:
+            return make_response({"message": "Invalid type."}, 400)
             ##TODO: don't serialize Game -> Team -> Gamescore
-            ## fix location in games
+            ## fix location in games ?? what
 api.add_resource(AcceptSchedule, '/accept_schedule')
 
 class GameScoreByID(Resource):
