@@ -121,6 +121,7 @@ class Game(db.Model, SerializerMixin):
 
 
 
+
 class Stage(db.Model, SerializerMixin):
     __table_name__ = "stages"
     id = db.Column(db.Integer, primary_key=True)

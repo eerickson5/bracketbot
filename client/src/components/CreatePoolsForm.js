@@ -231,6 +231,7 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
                 />
             </div>
 
+            {/* //TODO: only active if a schedule was already generated */}
         
             <Button
             style={{marginBlock: 10}}

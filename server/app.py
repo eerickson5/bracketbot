@@ -97,7 +97,8 @@ api.add_resource(CreateTournament, '/tournament')
 
 class GenerateGameSchedule(Resource):
     def post(self):
-        from scheduling_helpers import generate_best_pool_schedule, add_game_timing
+        from algorithms.pool_algorithms import generate_best_pool_schedule
+        from algorithms.shared_algorithms import add_game_timing
         data = request.json
         if data.get("type") == "pool":
             matchups_schedule = generate_best_pool_schedule(
@@ -145,7 +146,7 @@ class AcceptSchedule(Resource):
             if len(tournament.pools) > 0:
                 return make_response({"error": "This tournament already has pools."}, 400)
             else:
-                from scheduling_helpers import accept_pool_schedule
+                from algorithms.pool_algorithms import accept_pool_schedule
                 stages = accept_pool_schedule(data)
                 return make_response({
                     "stages": [stage.to_dict() for stage in stages]
@@ -155,7 +156,7 @@ class AcceptSchedule(Resource):
             if len(tournament.brackets) > 0:
                 return make_response({"error": "This tournament already has a bracket."}, 400)
             else:
-                from scheduling_helpers import generate_bracket
+                from algorithms.bracket_algorithms import generate_bracket
                 bracket = generate_bracket(tournament, data)
                 return make_response({
                     "bracket": bracket.to_dict()

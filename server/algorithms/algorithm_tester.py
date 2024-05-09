@@ -10,7 +10,7 @@ from faker import Faker
 from app import app
 from models import db, Team, Tournament, Game, GameScore, Stage, tournament_teams
 from datetime import datetime
-from scheduling_helpers import rank_teams, generate_bracket
+from algorithms.pool_algorithms import rank_teams, generate_bracket
 
 ##TODO: add seed.py and algorithm_tester.py to .gitignore
 if __name__ == '__main__':

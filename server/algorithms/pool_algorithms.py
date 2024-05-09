@@ -143,30 +143,12 @@ def accept_pool_schedule(data):
     for matchup in mapped_matchups:
         matchup["stage"] = stages[matchup["pool_index"]]
 
-    add_game_info_to_database(mapped_matchups)
+    from algorithms.shared_algorithms import add_game_info_to_database
+    for matchup in mapped_matchups:
+        add_game_info_to_database(matchup)
 
     db.session.commit()
     return stages
-
-def add_game_timing(num_timeslots, start_time, game_length, break_length, as_string=True):
-    from datetime import timedelta, datetime
-    game_start_times = []
-    last_game_end = None
-    temporary_start_time_date = datetime.combine(datetime.today(), start_time)
-
-    for _ in range(num_timeslots):
-        if len(game_start_times) == 0:
-            game_start_times.append(temporary_start_time_date)
-            last_game_end = temporary_start_time_date + timedelta(minutes=game_length)
-        else:
-            next_start_time = last_game_end + timedelta(minutes=break_length)
-            game_start_times.append(next_start_time)
-            last_game_end = next_start_time + timedelta(minutes=game_length)
-
-    if as_string:
-        game_start_times = [time_date.strftime('%I:%M %p') for time_date in game_start_times]
-    return game_start_times
-    
 
 def map_matchups(matchups, timeslots, team_pools):
     from datetime import datetime
@@ -182,125 +164,3 @@ def map_matchups(matchups, timeslots, team_pools):
             })
     return game_maps
 
-# num_games = 2^(total_rounds - current_round)
-# num_teams = 2^(total_rounds - current_round + 1)
-#TODO: triple check all games are scored before running this
-def generate_bracket( tournament, data ):
-    from datetime import time
-    from models import Stage, db
-
-    teams = tournament.teams
-    num_rounds = data.get("numRounds")
-    num_fields = data.get("numFields")
-    times = {
-        "start_time": time(data.get("startHours"), data.get("startMinutes")),
-        "game_length": data.get("gameLength"), 
-        "break_length": data.get("breakLength")}
-
-    bracket = Stage(
-        name= "Bracket",
-        is_bracket = True,
-        tournament = tournament
-    )
-    db.session.add(bracket)
-    
-    pools = [stage.id for stage in tournament.stages if not stage.is_bracket]
-    ranked_teams = rank_teams(teams, pools)[0 : 2**num_rounds]
-
-    matchups = []
-    for i in range(len(ranked_teams) // 2):
-        matchups.append({
-            "matchup": [ranked_teams[i]["team"].id, ranked_teams[(- i - 1)]["team"].id],
-            "round": 1,
-            "stage": bracket
-        })
-        
-    for curr_round in range(2, num_rounds + 1):
-        for i in range(2**(num_rounds - curr_round)):
-            matchups.append({
-                "matchup": [0,0],
-                "round": curr_round,
-                "stage": bracket
-            })  
-
-    matchups = assign_times_and_fields(matchups, num_fields, times["start_time"], times["game_length"], times["break_length"])
-    add_game_info_to_database(matchups)
-
-    rounds = [[]]
-    for matchup in matchups:
-        try:
-            rounds[matchup["round"]].append(matchup)
-        except IndexError:
-            rounds.append([matchup])
-
-    for round_index in range(1, len(rounds) - 1):
-        curr_round = rounds[round_index]
-        if len(curr_round) > 1:
-            upcoming_matchup_index = 0
-            for matchup_index in range(len(curr_round) // 2):
-                next_game = rounds[round_index + 1][upcoming_matchup_index]["game"]
-                curr_round[matchup_index]["game"].next_game = next_game
-                curr_round[-matchup_index - 1]["game"].next_game = next_game
-                upcoming_matchup_index += 1
-
-    for matchup in matchups:
-        db.session.add(matchup["game"])
-
-    db.session.commit()
-
-    return bracket
-
-def add_game_info_to_database(matchups):
-    from models import Game, GameScore, db
-
-    for matchup in matchups:
-        matchup["game"] = Game(
-            location= matchup["location"],
-            start_time = matchup["start_time"],
-            stage = matchup["stage"]
-        )
-        db.session.add(matchup["game"])
-
-    for matchup in matchups:
-        if matchup["matchup"][0] != 0:
-            matchup["game_score_1"] = GameScore(
-                    team_id=matchup["matchup"][0],
-                    game = matchup["game"]
-                    )
-            matchup["game_score_2"] = GameScore(
-                team_id=matchup["matchup"][1],
-                game = matchup["game"]
-                )
-            db.session.add(matchup["game_score_1"])
-            db.session.add(matchup["game_score_2"])
-
-def rank_teams(teams, stage_ids):
-    return sorted(
-        [{"team": team, **team.weighted_ranking_details_by_stage(stage_ids)} for team in teams],
-        key=lambda x: (x["record"], x["point_diff"], x["num_games"]),
-        reverse=True
-    )
-
-def assign_times_and_fields(matchups, num_fields, start_time, game_length, break_length):
-    timeslots = [1]
-    curr_timeslot = 0
-    curr_field = 0
-    previous_round = 1
-    for matchup in matchups:
-        if timeslots[curr_timeslot] <= num_fields and matchup["round"] == previous_round:
-            curr_field += 1
-            timeslots[curr_timeslot] += 1
-            matchup["location"] = f"Field {curr_field}"
-            matchup["timeslot"] = curr_timeslot
-            previous_round = matchup["round"]
-        else:
-            timeslots.append(1)
-            curr_timeslot += 1
-            curr_field = 1
-            matchup["timeslot"] = curr_timeslot
-            matchup["location"] = f"Field {curr_field}"
-            previous_round = matchup["round"]
-
-    
-    start_times = add_game_timing(len(timeslots), start_time, game_length, break_length, False)
-    return [ {"start_time": start_times[matchup["timeslot"]], **matchup} for matchup in matchups ]
