@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { GridRow, GridColumn, Grid, Image } from 'semantic-ui-react'
 import TournamentContext from "../TournamentContextProvider";
 import GameCard from "./GameCard";
 
@@ -13,7 +12,10 @@ export default function BracketSchedule(){
         //find the game with zero next_game
         let finalGame = {}
         const gameDict = {}
+        let i = 0
         for(let game of games){
+            game.gameIndex = i
+            i++
             gameDict[game.id] = game
             if(!game.next_game_id)
                 finalGame = game.id
@@ -44,10 +46,36 @@ export default function BracketSchedule(){
         return rounds.reverse()
     }
 
+    const handleSubmitScore = ({gameScoreId, teamId, newScore, gameIndex}) => {
+        fetch(`http://localhost:5555/game_score/${gameScoreId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                team_id: teamId,
+                new_score: newScore,
+            }),
+        })
+        .then(response => response.json())
+        .then(gameScore => {
+            const stages = tournament.stages
+            const eligibleGameScores = stages.filter(stage => stage.is_bracket)[0].games[gameIndex].game_scores
+            if(eligibleGameScores[0].id === gameScore.id)
+                eligibleGameScores[0].own_score = gameScore.own_score
+            else if (eligibleGameScores[1].id === gameScore.id)
+                eligibleGameScores[1].own_score = gameScore.own_score
+            setTournament({
+                ...tournament,
+                stages: stages //not sure if this worked but we'll see
+            })
+    })
+}
+
     const renderColumn = (round) => {
         return  (
             <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly'}}>
-                    {round.map(game=><GameCard game={game}/>)}
+                    {round.map(game=><GameCard game={game} onSubmitScore={handleSubmitScore}/>)}
             </div>
             )
     }
