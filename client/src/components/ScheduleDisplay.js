@@ -12,12 +12,12 @@ import TournamentContext from "../TournamentContextProvider";
 //TODO: save last schedule so user can go back in case next generation sucks
 //TODO: it runs off the screen if 5 or more fields
 
-export default function ScheduleDisplay({pools, scoresEditable=false}){
+export default function ScheduleDisplay({pools, scoresEditable=false, title, subtitle}){
     const poolsToColors = {"Crossovers": "#DDE0E4", "Pool A": "#D57A7C", "Pool B": "#85C7F2", "Pool C": "#68908F", "Pool D": "#D7BD82", "Pool E": "#9FB58D", "Pool F": "#D59C7F", "Pool G": "#4C839A", "Pool H": "#CD9D62", "Pool I": "#6F8292"}
     //Temporary solution for ease of coding above
 
     const [tournament, setTournament] = useContext(TournamentContext)
-    console.log(pools)
+    
     function timeslotsToGames(){
         let timeslots = []
         for(const pool of pools){
@@ -85,9 +85,9 @@ export default function ScheduleDisplay({pools, scoresEditable=false}){
         return null
     }
     return(
-        <div style={{marginBlock: 15, display: "flex", flexDirection: 'column', alignItems: 'center', flexWrap: 'wrap',}}>
-            <h3>Pool Play Schedule</h3>
-            <h5 style={{marginBlock: 5}}>colored by pool / crossover</h5>
+        <div style={{paddingBlock: 15, display: "flex", flexDirection: 'column', alignItems: 'center', flexWrap: 'wrap',}}>
+            <h3>{title}</h3>
+            <h5 style={{marginBlock: 5}}>{subtitle}</h5>
             <Table celled collapsing color='red'>
 
                 

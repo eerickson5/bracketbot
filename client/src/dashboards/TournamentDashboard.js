@@ -22,8 +22,15 @@ export default function TournamentDashboard(){
         }
       
         <Container>
-          <ScheduleDisplay pools={tournament.stages.filter(stage => !stage.is_bracket)}/>
-          <ScheduleDisplay pools={tournament.stages.filter(stage => stage.is_bracket)}/>
+          <ScheduleDisplay 
+            pools={tournament.stages.filter(stage => !stage.is_bracket)} 
+            title="Pool Play Schedule" 
+            subtitle="colored by pool / crossover"
+            />
+          <ScheduleDisplay 
+            pools={tournament.stages.filter(stage => stage.is_bracket)} 
+            title="Bracket Play Schedule"
+            />
         </Container>
         
       </Container>

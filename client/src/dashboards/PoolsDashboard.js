@@ -49,7 +49,8 @@ export default function PoolsDashboard(){
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
                     {getTeamLists().map(pool => <PoolVisualizer key={pool.poolName} poolName={pool.poolName} teams={pool.teams}/>)}
                 </div>  
-                <ScheduleDisplay pools={pools} scoresEditable/>
+                <ScheduleDisplay pools={pools} scoresEditable 
+                title="Pool Play Schedule" subtitle="colored by pool / crossover"/>
             </div>
             
         )
