@@ -39,7 +39,6 @@ export default function ScheduleDisplay({pools, scoresEditable=false, title, sub
         for(let key in timeslots){
             timeslots[key].sort((a, b) => parseInt(a.location.match(/\d+/)[0]) - parseInt(b.location.match(/\d+/)[0]))
         }
-        //TODO: make sure its always in order!!
         return timeslots
     }
 

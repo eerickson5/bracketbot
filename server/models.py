@@ -98,9 +98,17 @@ class Game(db.Model, SerializerMixin):
     right_previous_game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=True)
     right_previous_game = db.relationship('Game', foreign_keys=[right_previous_game_id], backref=backref('right_next_game', remote_side=[id], uselist=False))
 
+    @property
+    def previous_games_ids(self):
+        # Return a list of IDs of previous games
+        return [game.id for game in self.previous_games]
+
+
     serialize_only = ('id', 'location', 'start_time', 
                       'teams', 
                       'stage.name',
+                      'previous_games_ids',
+                      'next_game_id',
                       'game_scores.own_score', 'game_scores.team', 'game_scores.id')
 
     @property
@@ -198,3 +206,5 @@ class Tournament(db.Model, SerializerMixin):
         return True
 
     # on delete also delete stages, games, gamescores, and tournament-teams
+
+    #TODO: remove right/left, add cascades, update upcoming games with gamescores when bracket games are scored, delete tournaments
