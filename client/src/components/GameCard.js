@@ -9,7 +9,7 @@ export default function GameCard({game, onSubmitScore = null}){
     })
 
     useEffect(() => {
-        if(game.game_scores.length)
+        if(game.game_scores.length === 2)
             setScores({
                 "score0": game.game_scores[0].own_score ?? "", 
                 "score1": game.game_scores[1].own_score ?? ""

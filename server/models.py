@@ -71,6 +71,7 @@ class GameScore(db.Model, SerializerMixin):
     game = db.relationship("Game", back_populates = "game_scores")
 
     serialize_only = ('id', 'team_id', 'own_score', 'opponent_score', 'game_id')
+    
 
 #I need to assign via right previous game and left previous game NOT next game ?
 class Game(db.Model, SerializerMixin):
@@ -106,7 +107,28 @@ class Game(db.Model, SerializerMixin):
     @property 
     def readable_time(self):
         return self.start_time.strftime("%I:%M %p").lower()
+    
+    def create_game_score(self, team_id):
+        if len(self.game_scores) == 0 or (len(self.game_scores) == 1 and self.game_scores[0].team_id != team_id):
+            new_game_score = GameScore(
+                team_id= team_id,
+                game= self,
+            )
+            db.session.add(new_game_score)
+            return new_game_score
 
+    def assign_next_game_to_winner(self):
+        if len(self.game_scores) == 2:
+            relevant_game_score = None
+            for next_game_score in self.next_game.game_scores:
+                if next_game_score.team in [gs.team for gs in self.game_scores]:
+                    relevant_game_score = next_game_score
+            if relevant_game_score:
+                relevant_game_score.team = self.winner
+                db.session.add(relevant_game_score)
+            else:
+                relevant_game_score = self.create_game_score(self.winner.id)
+            return relevant_game_score
 
     serialize_only = ('id', 'location', 'start_time', 'readable_time',
                       'teams', 
@@ -127,7 +149,7 @@ class Game(db.Model, SerializerMixin):
             elif self.game_scores[0].own_score < self.game_scores[1].own_score:
                 return self.game_scores[1].team
             else:
-                return Team()
+                return None
         except IndexError:
             return None
 
