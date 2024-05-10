@@ -1,14 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardMeta, CardDescription, Input } from 'semantic-ui-react'
 
 export default function GameCard({game, onSubmitScore = null}){
 
+    const[scores, setScores] = useState({
+        "score0": "", 
+        "score1": ""
+    })
+
+    useEffect(() => {
+        if(game.game_scores.length)
+            setScores({
+                "score0": game.game_scores[0].own_score ?? "", 
+                "score1": game.game_scores[1].own_score ?? ""
+            })
+    }, [game.game_scores])
+
+
+    if(!game.game_scores.length){
+        return(
+            <Card fluid
+            header={<h5>Undetermined Teams</h5>}
+            meta={game.location + " | " + game.stage.name}
+            />
+        )
+    } else if (game.game_scores.length === 1){
+        return(
+            <Card fluid style={{padding: 10}}
+            header={<h5>{game.game_scores[0].team.team_name} vs ?</h5>}
+            meta={game.location + " | " + game.stage.name}
+            />
+        )
+    }
+
+
     const team0 = game.game_scores[0].team
     const team1 = game.game_scores[1].team
-    const[scores, setScores] = useState({
-        "score0": game.game_scores[0].own_score ?? "", 
-        "score1": game.game_scores[1].own_score ?? ""
-    })
 
     const handleChange = (e) => {
         if(Number.isInteger(Number(e.target.value)) && Number(e.target.value) < 200){

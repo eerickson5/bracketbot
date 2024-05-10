@@ -23,6 +23,7 @@ export default function TournamentDashboard(){
       
         <Container>
           <ScheduleDisplay pools={tournament.stages.filter(stage => !stage.is_bracket)}/>
+          <ScheduleDisplay pools={tournament.stages.filter(stage => stage.is_bracket)}/>
         </Container>
         
       </Container>
