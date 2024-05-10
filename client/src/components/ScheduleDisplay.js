@@ -24,16 +24,15 @@ export default function ScheduleDisplay({pools, scoresEditable=false, title, sub
             let i = 0
             for(const game of pool.games){
                 game["poolColor"] = poolsToColors[pool.name]
-                game["readableTime"] = game.start_time.split(' ')[1]
                 if(scoresEditable){
                     game["gameIndex"] = i
                     game["poolIndex"] = pool.poolIndex
                     i ++
                 }
-                if(game.readableTime in timeslots)
-                    timeslots[game.readableTime].push(game)
+                if(game.readable_time in timeslots)
+                    timeslots[game.readable_time].push(game)
                 else
-                    timeslots[game.readableTime] = [game]
+                    timeslots[game.readable_time] = [game]
             }
         }
         for(let key in timeslots){
@@ -107,7 +106,7 @@ export default function ScheduleDisplay({pools, scoresEditable=false, title, sub
                         return (
                             <TableRow key={index}>
                                 <TableCell>
-                                    <h4>{games[0].readableTime}</h4>
+                                    <h4>{games[0].readable_time}</h4>
                                 </TableCell>
                                 {games.map(
                                     game => <TableCell key={game.id} style={{backgroundColor: game.poolColor}}>

@@ -102,9 +102,13 @@ class Game(db.Model, SerializerMixin):
     def previous_games_ids(self):
         # Return a list of IDs of previous games
         return [game.id for game in self.previous_games]
+    
+    @property 
+    def readable_time(self):
+        return self.start_time.strftime("%I:%M %p").lower()
 
 
-    serialize_only = ('id', 'location', 'start_time', 
+    serialize_only = ('id', 'location', 'start_time', 'readable_time',
                       'teams', 
                       'stage.name',
                       'previous_games_ids',

@@ -16,7 +16,7 @@ export default function GameCard({game, onSubmitScore = null}){
             })
     }, [game.game_scores])
 
-    const metaText = game.location + " | " + game.stage.name + " | " + game.readableTime
+    const metaText = game.location + " | " + game.stage.name + " | " + game.readable_time
 
     if(!game.game_scores.length){
         return(
