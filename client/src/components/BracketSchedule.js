@@ -67,7 +67,7 @@ export default function BracketSchedule(){
                 eligibleGameScores[1].own_score = gameScore.own_score
             setTournament({
                 ...tournament,
-                stages: stages //not sure if this worked but we'll see
+                stages: stages
             })
     })
 }
@@ -82,7 +82,7 @@ export default function BracketSchedule(){
 
 
     return(
-        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', paddingBlock: 20}}>
             {getRounds().map(round => renderColumn(round))}
         </div>
     )

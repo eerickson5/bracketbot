@@ -16,19 +16,20 @@ export default function GameCard({game, onSubmitScore = null}){
             })
     }, [game.game_scores])
 
+    const metaText = game.location + " | " + game.stage.name + " | " + game.readableTime
 
     if(!game.game_scores.length){
         return(
             <Card fluid
             header={<h5>Undetermined Teams</h5>}
-            meta={game.location + " | " + game.stage.name}
+            meta={metaText}
             />
         )
     } else if (game.game_scores.length === 1){
         return(
             <Card fluid style={{padding: 10}}
             header={<h5>{game.game_scores[0].team.team_name} vs ?</h5>}
-            meta={game.location + " | " + game.stage.name}
+            meta={metaText}
             />
         )
     }
@@ -64,7 +65,7 @@ export default function GameCard({game, onSubmitScore = null}){
             <CardHeader>
                 <h5>{team0.image}{team0.team_name} vs {team1.team_name}{team1.image}</h5>
             </CardHeader>
-            <CardMeta>{game.location + " | " + game.stage.name}</CardMeta>
+            <CardMeta>{metaText}</CardMeta>
             {onSubmitScore
             ?<CardContent>
                 <div style={{display: 'flex', alignItems: 'center'}}>
