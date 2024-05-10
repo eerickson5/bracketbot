@@ -17,7 +17,7 @@ export default function ScheduleDisplay({pools, scoresEditable=false}){
     //Temporary solution for ease of coding above
 
     const [tournament, setTournament] = useContext(TournamentContext)
-
+    console.log(pools)
     function timeslotsToGames(){
         let timeslots = []
         for(const pool of pools){

@@ -137,7 +137,7 @@ class Stage(db.Model, SerializerMixin):
     tournament = db.relationship("Tournament", back_populates = "stages")
     games = db.relationship("Game", back_populates = "stage")
 
-    serialize_only = ('games', 'name')  
+    serialize_only = ('games', 'name', 'is_bracket')  
 
     def all_games_scored(self):
         for game in self.games:
