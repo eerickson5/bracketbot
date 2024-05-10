@@ -42,7 +42,8 @@ export default function ScheduleDisplay({pools, scoresEditable=false, title, sub
     }
 
     const timeStringToMinutes = (timeString) => {
-        const [hours, minutes] = timeString.split(':').map(Number);
+        const [hours, minutes] = timeString.split(':')
+                                    .map(str => str.length > 2 ? Number(str.slice(0,2)) : Number(str));
         return hours * 60 + minutes;
     };
 

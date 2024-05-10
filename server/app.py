@@ -176,6 +176,7 @@ class GameScoreByID(Resource):
             db.session.add(game_score)
             if(game_score.game.next_game):
                 game_score.game.assign_next_game_to_winner()
+                #TODO: return next game's game_score so the ui updates immediately
             db.session.commit()
         return make_response(game_score.to_dict(), 200)
 api.add_resource(GameScoreByID, '/game_score/<int:id>')
