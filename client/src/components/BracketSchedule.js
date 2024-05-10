@@ -72,10 +72,10 @@ export default function BracketSchedule(){
     })
 }
 
-    const renderColumn = (round) => {
+    const renderColumn = (round, index) => {
         return  (
-            <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly'}}>
-                    {round.map(game=><GameCard game={game} onSubmitScore={handleSubmitScore}/>)}
+            <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly'}} key={`round-${index}`}>
+                    {round.map(game=><GameCard game={game} onSubmitScore={handleSubmitScore} key={game.id}/>)}
             </div>
             )
     }
@@ -83,7 +83,7 @@ export default function BracketSchedule(){
 
     return(
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', paddingBlock: 20}}>
-            {getRounds().map(round => renderColumn(round))}
+            {getRounds().map((round, index) => renderColumn(round, index))}
         </div>
     )
 }
