@@ -118,16 +118,18 @@ class Game(db.Model, SerializerMixin):
             return new_game_score
 
     def assign_next_game_to_winner(self):
-        if len(self.game_scores) == 2:
+        if len(self.game_scores) == 2 and self.winner:
             relevant_game_score = None
             for next_game_score in self.next_game.game_scores:
                 if next_game_score.team in [gs.team for gs in self.game_scores]:
                     relevant_game_score = next_game_score
-            if relevant_game_score:
+            if relevant_game_score and relevant_game_score.team != self.winner:
+                print("a")
                 relevant_game_score.team = self.winner
                 db.session.add(relevant_game_score)
             else:
-                relevant_game_score = self.create_game_score(self.winner.id)
+                print("b")
+                relevant_game_score = self.next_game.create_game_score(self.winner.id)
             return relevant_game_score
 
     serialize_only = ('id', 'location', 'start_time', 'readable_time',
@@ -150,7 +152,7 @@ class Game(db.Model, SerializerMixin):
                 return self.game_scores[1].team
             else:
                 return None
-        except IndexError:
+        except IndexError and TypeError:
             return None
 
 
