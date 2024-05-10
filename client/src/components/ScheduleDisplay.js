@@ -13,7 +13,7 @@ import TournamentContext from "../TournamentContextProvider";
 //TODO: it runs off the screen if 5 or more fields
 
 export default function ScheduleDisplay({pools, scoresEditable=false, title, subtitle}){
-    const poolsToColors = {"Crossovers": "#DDE0E4", "Pool A": "#D57A7C", "Pool B": "#85C7F2", "Pool C": "#68908F", "Pool D": "#D7BD82", "Pool E": "#9FB58D", "Pool F": "#D59C7F", "Pool G": "#4C839A", "Pool H": "#CD9D62", "Pool I": "#6F8292"}
+    const poolsToColors = {"Crossovers": "#DDE0E4", "Pool A": "#D57A7C", "Pool B": "#85C7F2", "Pool C": "#68908F", "Pool D": "#D7BD82", "Pool E": "#9FB58D", "Pool F": "#D59C7F", "Pool G": "#4C839A", "Pool H": "#CD9D62", "Bracket": "#6F8292"}
     //Temporary solution for ease of coding above
 
     const [tournament, setTournament] = useContext(TournamentContext)
@@ -89,12 +89,14 @@ export default function ScheduleDisplay({pools, scoresEditable=false, title, sub
             <h3>{title}</h3>
             <h5 style={{marginBlock: 5}}>{subtitle}</h5>
             <Table celled collapsing color='red'>
-
                 
                 <TableHeader>
                     <TableRow>
                         <TableHeaderCell />
-                        {Object.values(timeslots)[0].map((_, index) => <TableHeaderCell key={index}>Field {index + 1}</TableHeaderCell>)}
+                        {Object.values(timeslots)
+                        .sort((a,b) => b.length - a.length)
+                        [0]
+                        .map((_, index) => <TableHeaderCell key={index}>Field {index + 1}</TableHeaderCell>)}
                     </TableRow>
                 </TableHeader>
            
