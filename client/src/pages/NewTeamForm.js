@@ -28,7 +28,7 @@ export default function NewTeamForm(){
     function handleSubmit(){
 
         console.log("sending form: ", formData)
-        fetch("http://localhost:5555/team", {
+        fetch("/api/team", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

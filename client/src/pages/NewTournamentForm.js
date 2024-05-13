@@ -35,7 +35,7 @@ export default function NewTournamentForm(){
                     values.image = randomEmoji()
                 }
                 values.image = values.image === "" ? randomEmoji() : values.image;
-                fetch("http://localhost:5555/tournament", {
+                fetch("/api/tournament", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

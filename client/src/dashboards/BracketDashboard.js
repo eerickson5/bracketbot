@@ -11,7 +11,7 @@ export default function BracketDashboard(){
 
     useEffect( () => {
         if(tournament)
-            fetch(`http://localhost:5555/pools_completed/${tournament.id}`, {
+            fetch(`/api/pools_completed/${tournament.id}`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             })

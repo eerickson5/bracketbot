@@ -73,7 +73,7 @@ export default function CreateBracketForm(){
                 tournamentId: tournament.id
             }
 
-            fetch("http://localhost:5555/accept_schedule", {
+            fetch("/api/accept_schedule", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -16,7 +16,7 @@ export default function TournamentDashboardContainer(){
 
   //todo: change when anything about the tournament changes via the other menus
   useEffect(() => {
-    fetch(`http://localhost:5555/tournament/${tourn_id}`)
+    fetch(`/api/tournament/${tourn_id}`)
     .then(res => res.json())
     .then(data => {
       setTournament({...data.tournament, teams: data.teams})
@@ -29,7 +29,6 @@ export default function TournamentDashboardContainer(){
         <Container>
           <TournamentHeader/>
           <TournamentMenu selectedMenu={selectedMenu} onSelectMenu={(menu) => setSelectedMenu(menu)}/>
-{/* TODO: teams can't be changed once pools are finalized */}
           {selectedMenu === "home" 
           ? <TournamentDashboard/>
           : selectedMenu === "pools" 

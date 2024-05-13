@@ -124,11 +124,9 @@ class Game(db.Model, SerializerMixin):
                 if next_game_score.team in [gs.team for gs in self.game_scores]:
                     relevant_game_score = next_game_score
             if relevant_game_score and relevant_game_score.team != self.winner:
-                print("a")
                 relevant_game_score.team = self.winner
                 db.session.add(relevant_game_score)
             else:
-                print("b")
                 relevant_game_score = self.next_game.create_game_score(self.winner.id)
             return relevant_game_score
 
@@ -235,4 +233,4 @@ class Tournament(db.Model, SerializerMixin):
 
     # on delete also delete stages, games, gamescores, and tournament-teams
 
-    #TODO: remove right/left, add cascades, update upcoming games with gamescores when bracket games are scored, delete tournaments
+    #TODO: remove right/left, add cascades delete tournaments

@@ -75,7 +75,7 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
                 break_length: parseInt(values.breakLength)
             }
 
-            fetch("http://localhost:5555/generate_schedule", {
+            fetch("/api/generate_schedule", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -117,7 +117,7 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
             teamPools: teamPools,
             numStages: teamArrays.length
         }
-        fetch("http://localhost:5555/accept_schedule", {
+        fetch("/api/accept_schedule", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
