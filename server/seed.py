@@ -27,8 +27,10 @@ if __name__ == '__main__':
         #     db.session.delete(bracket)
         # db.session.commit()
 
-        final_round = Game.query.filter(Game.id == 35).first()
-        print(final_round.previous_games)
+        # Stage.query.filter(Stage.id == 46).delete()
+        # Game.query.filter(Game.stage_id == 47).delete()
+        # Stage.query.filter(Stage.id == 47).delete()
+        db.session.commit()
 
         # Stage.query.delete()
         #db.session.query(tournament_teams).delete()

@@ -140,8 +140,15 @@ def accept_pool_schedule(data):
         i += 1
 
     mapped_matchups = map_matchups(data.get("matchups"), timeslots, data.get("teamPools"))
+    crossovers_present = False
     for matchup in mapped_matchups:
+        if matchup["pool_index"] == 0:
+            crossovers_present = True
         matchup["stage"] = stages[matchup["pool_index"]]
+
+    if not crossovers_present:
+        db.session.expunge(crossover_pool)
+    
 
     from algorithms.shared_algorithms import add_game_info_to_database
     for matchup in mapped_matchups:
@@ -149,6 +156,7 @@ def accept_pool_schedule(data):
 
     db.session.commit()
     return stages
+    
 
 def map_matchups(matchups, timeslots, team_pools):
     from datetime import datetime

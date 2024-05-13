@@ -164,8 +164,6 @@ class AcceptSchedule(Resource):
         
         else:
             return make_response({"message": "Invalid type."}, 400)
-            ##TODO: don't serialize Game -> Team -> Gamescore
-            ## fix location in games ?? what
 api.add_resource(AcceptSchedule, '/accept_schedule')
 
 class GameScoreByID(Resource):
@@ -183,7 +181,6 @@ api.add_resource(GameScoreByID, '/game_score/<int:id>')
 
 class PoolsAreComplete(Resource):
     def get(self, id):
-        from sqlalchemy.orm import joinedload
         stages = db.session.query(Stage).filter(Stage.tournament_id == id, Stage.is_bracket == False).all()
         if stages:
             for stage in stages:
@@ -191,7 +188,7 @@ class PoolsAreComplete(Resource):
                     return make_response({"completed": False}, 200)
             return make_response({"completed": True}, 200)
         else:
-            return make_response({"error": "Tournament has no pools."}, 400)
+            return make_response({"completed": False}, 200)
 api.add_resource(PoolsAreComplete, '/pools_completed/<int:id>')
 
 
