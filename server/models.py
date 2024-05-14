@@ -84,7 +84,7 @@ class Game(db.Model, SerializerMixin):
     stage_id = db.Column(db.Integer, db.ForeignKey('stage.id'))
     stage = db.relationship("Stage", back_populates = "games")
 
-    game_scores = db.relationship("GameScore", back_populates = "game")
+    game_scores = db.relationship("GameScore", back_populates = "game", cascade="all, delete")
     teams = association_proxy('game_scores', 'team', creator=lambda team_obj: GameScore(team=team_obj))
     tournaments = association_proxy('stages', 'tournament', creator=lambda tourney_obj: Stage(tournament=tourney_obj))
 
@@ -169,7 +169,7 @@ class Stage(db.Model, SerializerMixin):
 
     tournament_id = db.Column(db.Integer, db.ForeignKey('tournament.id'))
     tournament = db.relationship("Tournament", back_populates = "stages")
-    games = db.relationship("Game", back_populates = "stage")
+    games = db.relationship("Game", back_populates = "stage", cascade="all, delete")
 
     serialize_only = ('games', 'name', 'is_bracket')  
 
@@ -187,9 +187,9 @@ class Tournament(db.Model, SerializerMixin):
     num_fields = db.Column(db.Integer)
     image = db.Column(db.String)
 
-    stages = db.relationship("Stage", back_populates = "tournament")
+    stages = db.relationship("Stage", back_populates = "tournament", cascade="all, delete")
     games = association_proxy("stages", 'games', creator=lambda game_obj: Stage(game=game_obj))
-    teams = db.relationship("Team", secondary=tournament_teams, back_populates = 'tournaments')
+    teams = db.relationship("Team", secondary=tournament_teams, back_populates = 'tournaments', cascade="all, delete")
 
     serialize_only = ('id', 'name', 'image', 'num_fields', 'teams', 'stages')
 

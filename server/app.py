@@ -69,6 +69,13 @@ class TournamentByID(Resource):
             return make_response(tournament.to_dict(), 200)
         else:
             return make_response({"error": "No tournament exists with that ID."}, 404)
+        
+    def delete(self, id):
+        tournament = Tournament.query.filter(Tournament.id == id).first()
+        if tournament:
+            db.session.delete(tournament)
+            db.session.commit()
+        return make_response({}, 200)
 api.add_resource(TournamentByID, '/tournament/<int:id>')
 
 class CreateTournament(Resource):

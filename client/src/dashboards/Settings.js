@@ -16,10 +16,11 @@ export default function Settings(){
             },
             }).then(res => res.json())
             .then(response => {
-                //navigate to safer webpage
+                console.log("terminated.")
             })
             .catch(e => console.log(e))
-        }
+        } else
+            console.log("lool")
     }
 
     return(
