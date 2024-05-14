@@ -12,8 +12,11 @@ export default function PoolsDashboard(){
     const [currPage, setPage] = useState(0)
 
     useEffect(() => {
-        if(tournament.stages.length)
+        if(tournament.stages.length){
             setPools(tournament.stages.map((data, index) => ({...data, poolIndex: index})).filter(stage => !stage.is_bracket))
+        }
+            
+            //that doesn't trigger a rerender for some reason
     }, [tournament])
 
     const creationPages = [

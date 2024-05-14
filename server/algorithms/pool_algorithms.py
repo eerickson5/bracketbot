@@ -146,9 +146,9 @@ def accept_pool_schedule(data):
             crossovers_present = True
         matchup["stage"] = stages[matchup["pool_index"]]
 
+    #not an elegant solution at all
     if not crossovers_present:
-        db.session.expunge(crossover_pool)
-    
+        db.session.expunge(stages.pop(0))
 
     from algorithms.shared_algorithms import add_game_info_to_database
     for matchup in mapped_matchups:

@@ -27,8 +27,8 @@ if __name__ == '__main__':
         #     db.session.delete(bracket)
         # db.session.commit()
 
-        # Stage.query.filter(Stage.id == 46).delete()
-        # Game.query.filter(Game.stage_id == 47).delete()
+        Stage.query.filter(Stage.id == 46).delete()
+        Game.query.filter(Game.stage_id == 46).delete()
         # Stage.query.filter(Stage.id == 47).delete()
         db.session.commit()
 

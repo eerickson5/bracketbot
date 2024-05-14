@@ -125,7 +125,7 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
         body: JSON.stringify(request_data),
         }).then(res => res.json())
         .then(response => {
-            setTournament({...tournament, stages: response})
+            setTournament({...tournament, stages: response.stages})
         })
     }
 
@@ -142,7 +142,7 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
     }
     const maxGames = (largestPoolSize - 1 + (formik.values.crossoversAllowed ? 1 : 0))
     const minGames = (smallestPoolSize - 1 + (formik.values.crossoversAllowed ? 1 : 0))
-    
+    const alreadyGenerated = Boolean(tempSchedule.timeslots.length)
 
 //TODO: add names/ids to form fields
     return (
@@ -230,8 +230,6 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
                 teamPools={teamPools}
                 />
             </div>
-
-            {/* //TODO: only active if a schedule was already generated */}
         
             <Button
             style={{marginBlock: 10}}
@@ -241,7 +239,7 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
             icon='checkmark' 
             labelPosition='left'
             label={{ basic: true, content: "You won't be able to modify pool settings beyond this point." }}
-            onClick={submitPoolSchedule}
+            onClick={alreadyGenerated ? submitPoolSchedule : null}
             // labelPosition='right'
             />
             
