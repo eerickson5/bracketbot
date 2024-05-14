@@ -1,8 +1,26 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import { Button, Input } from 'semantic-ui-react'
+import TournamentContext from "../TournamentContextProvider";
 
 export default function Settings(){
     const [wantToDelete, setWantToDelete] = useState(false)
+    const [deletingInput, setDeletingInput] = useState("")
+    const [tournament] = useContext(TournamentContext)
+
+    const handleDeleteTournament = () => {
+        if(deletingInput === tournament.name){
+            fetch(`/api/tournament/${tournament.id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            }).then(res => res.json())
+            .then(response => {
+                //navigate to safer webpage
+            })
+            .catch(e => console.log(e))
+        }
+    }
 
     return(
         <div style={{display: 'flex', flexDirection: 'column', alignContent: 'flex-start'}}>
@@ -23,7 +41,11 @@ export default function Settings(){
                             labelPosition: 'right',
                             icon: 'trash',
                             content: 'Delete',
-                        }}/>
+                            onClick:handleDeleteTournament
+                        }}
+                        value={deletingInput}
+                        onChange={ e => setDeletingInput(e.target.value)}
+                        />
                     </>
                 :   <Button
                     color='red'
