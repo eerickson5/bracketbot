@@ -6,7 +6,6 @@ import { isSingleEmoji, randomEmoji } from "../emojiFunctions";
 
 //eVENT.preventdefault
 export default function TeamAdder({teams, onEditTeams}){
-
     const [name, setName] = useState("")
     const [emoji, setEmoji] = useState("")
     const [errorMessage, setErrorMessage] = useState("")

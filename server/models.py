@@ -77,7 +77,6 @@ class Game(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     location = db.Column(db.String)
     start_time = db.Column(db.DateTime)
-    # parent_id = db.Column(db.Integer, db.ForeignKey('games.id'))
 
     stage_id = db.Column(db.Integer, db.ForeignKey('stage.id'))
     stage = db.relationship("Stage", back_populates = "games")
@@ -92,7 +91,6 @@ class Game(db.Model, SerializerMixin):
 
     @property
     def previous_games_ids(self):
-        # Return a list of IDs of previous games
         return [game.id for game in self.previous_games]
     
     @property 
@@ -222,4 +220,4 @@ class Tournament(db.Model, SerializerMixin):
                 return False
         return True
 
-    #TODO: remove right/left, 404 handling, gitignore, LOGINS
+#TODO:  404 handling, gitignore, LOGINS, update next_game automatically, ReadME

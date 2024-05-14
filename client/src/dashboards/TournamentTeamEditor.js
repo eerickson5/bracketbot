@@ -8,7 +8,7 @@ export default function TournamentTeamEditor(){
     const [teams, setTeams] = useState(Object.values(tournament.teams))
     const [error, setError] = useState("")
 
-    //TODO: if teams already have a game, can't add new ones
+//TODO: why isn't it automatic :( TeamAdder receives an empty array
     const handleEditTeams = () => {
         if(teams.length < 4){
             setError("Whoops! You need at least 4 teams in a tournament.")
