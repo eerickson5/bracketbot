@@ -72,8 +72,6 @@ class GameScore(db.Model, SerializerMixin):
 
     serialize_only = ('id', 'team_id', 'own_score', 'opponent_score', 'game_id')
     
-
-#I need to assign via right previous game and left previous game NOT next game ?
 class Game(db.Model, SerializerMixin):
     __table_name__ = "games"
     id = db.Column(db.Integer, primary_key=True)
@@ -91,13 +89,6 @@ class Game(db.Model, SerializerMixin):
     #references for bracket as binary tree
     next_game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=True)
     next_game = db.relationship('Game', remote_side=[id], foreign_keys=[next_game_id], backref=backref('previous_games', lazy=True))
-    
-    #following 2 are unneccessary
-    left_previous_game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=True)
-    left_previous_game = db.relationship('Game', foreign_keys=[left_previous_game_id], backref=backref('left_next_game', remote_side=[id], uselist=False))
-    
-    right_previous_game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=True)
-    right_previous_game = db.relationship('Game', foreign_keys=[right_previous_game_id], backref=backref('right_next_game', remote_side=[id], uselist=False))
 
     @property
     def previous_games_ids(self):
@@ -230,7 +221,5 @@ class Tournament(db.Model, SerializerMixin):
             if not stage.all_games_scored():
                 return False
         return True
-
-    # on delete also delete stages, games, gamescores, and tournament-teams
 
     #TODO: remove right/left, 404 handling, gitignore, LOGINS
