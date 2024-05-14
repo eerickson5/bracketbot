@@ -1,26 +1,27 @@
 import React, {useContext, useState} from "react";
 import { Button, Input } from 'semantic-ui-react'
 import TournamentContext from "../TournamentContextProvider";
+import { useNavigate } from "react-router-dom";
 
 export default function Settings(){
     const [wantToDelete, setWantToDelete] = useState(false)
     const [deletingInput, setDeletingInput] = useState("")
     const [tournament] = useContext(TournamentContext)
+    const navigate = useNavigate()
 
     const handleDeleteTournament = () => {
-        if(deletingInput === tournament.name){
+        if(deletingInput === tournament.name)
             fetch(`/api/tournament/${tournament.id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
             },
             }).then(res => res.json())
-            .then(response => {
-                console.log("terminated.")
+            .then(() => {
+                navigate('/tournament/new')
             })
             .catch(e => console.log(e))
-        } else
-            console.log("lool")
+        
     }
 
     return(
