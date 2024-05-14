@@ -4,7 +4,6 @@ import DynamicImage from "./DynamicImage";
 import TournamentContext from "../TournamentContextProvider";
 
 import { isSingleEmoji } from "../emojiFunctions";
-//TODO: emojis hello
 export default function TournamentHeader(){
     const [tournament] = React.useContext(TournamentContext)
     return(

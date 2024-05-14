@@ -7,6 +7,7 @@ import TournamentDashboard from "../dashboards/TournamentDashboard";
 import PoolsDashboard from "../dashboards/PoolsDashboard";
 import TournamentContext from "../TournamentContextProvider"
 import BracketDashboard from "../dashboards/BracketDashboard";
+import Settings from "../dashboards/Settings";
 
 export default function TournamentDashboardContainer(){
 
@@ -33,7 +34,9 @@ export default function TournamentDashboardContainer(){
           ? <TournamentDashboard/>
           : selectedMenu === "pools" 
           ? <PoolsDashboard /> 
-          : <BracketDashboard/>}
+          : selectedMenu === "bracket"
+          ? <BracketDashboard/>
+          : <Settings/>}
         </Container>
     )
 }
