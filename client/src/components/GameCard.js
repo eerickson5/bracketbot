@@ -21,7 +21,7 @@ export default function GameCard({game, onSubmitScore = null}){
     if(!game.game_scores.length){
         return(
             <Card fluid
-            header={<h5>Undetermined Teams</h5>}
+            header={<h5>? vs ?</h5>}
             meta={metaText}
             />
         )

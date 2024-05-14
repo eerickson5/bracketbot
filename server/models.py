@@ -233,4 +233,4 @@ class Tournament(db.Model, SerializerMixin):
 
     # on delete also delete stages, games, gamescores, and tournament-teams
 
-    #TODO: remove right/left, add cascades, delete tournaments, 404 handling, emoji header, gitignore
+    #TODO: remove right/left, add cascades, delete tournaments, 404 handling, emoji header, gitignore, LOGINS
