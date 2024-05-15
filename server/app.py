@@ -205,7 +205,7 @@ class Login(Resource):
             session['user_id'] = user.id
             return make_response(user.to_dict(), 200)
         else:
-            return make_response({}, 401)
+            return make_response({"message": "No user with this email found."}, 401)
 api.add_resource(Login, '/login')
 
 class Logout(Resource):

@@ -178,6 +178,7 @@ class Tournament(db.Model, SerializerMixin):
     stages = db.relationship("Stage", back_populates = "tournament", cascade="all, delete")
     games = association_proxy("stages", 'games', creator=lambda game_obj: Stage(game=game_obj))
     teams = db.relationship("Team", secondary=tournament_teams, back_populates = 'tournaments', cascade="all, delete")
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship("User", back_populates = "tournaments")
 
     serialize_only = ('id', 'name', 'image', 'num_fields', 'teams', 'stages')

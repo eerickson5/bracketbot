@@ -5,10 +5,11 @@ import { useFormik } from "formik";
 
 export default function LoginForm(){    
     const [honeyPot, activateHoneyPot] = useState(false)
-    const [signingUp, setSigningUp] = useState(false)
+    const [isSigningUp, setSigningUp] = useState(false)
+    const [requestErrorMessage, setRequestErrorMessage] = useState("")
 
     const formSchema = yup.object().shape({
-        email: yup.string().email("Invalid email format").required("Input an email").max(100),
+        email: yup.string().email("Invalid email format.").required("Input an email.").max(100),
         password: yup.string().max(50).min(8),
     })
 
@@ -20,33 +21,38 @@ export default function LoginForm(){
         validationSchema: formSchema,
         onSubmit: async (values) => {
             if(!honeyPot){
-                if(signingUp){
-
-                } else {
+                setRequestErrorMessage("")
+                const url = isSigningUp ? "/api/signup" : "/api/login"
+                fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email: values.email,
+                        password: values.password
+                    }),
+                }).then(res => res.json())
+                .then(response => {
+                    if (!response.ok){
+                        setRequestErrorMessage(response.message)
+                    }
                     
-                }
+                })
+                .catch(e => setRequestErrorMessage(e.message))
             }
         }
     })
 
     function handleChange(e, { name, value }){
+        setRequestErrorMessage("")
         formik.setFieldValue(name, value)
     }
-
-    const renderErrors = () => {
-        const errorMessages = Object.values(formik.errors);
-        if (errorMessages.length === 0) {
-          return null;
-        }
-        return (
-          <p style={{color: 'red'}}>{errorMessages[0]}</p>
-        );
-    };
 
     return(
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             <Segment color="red" style={{margin: 20, maxWidth: 400, alignSelf: 'center', paddingBottom: 80}}>
-                <h1>{ signingUp ? "Sign up for Bracketbot" : 'Login to Bracketbot'}</h1>
+                <h1>{ isSigningUp ? "Sign up for Bracketbot" : 'Login to Bracketbot'}</h1>
                 <h3>Manage tournament pools and brackets</h3>
                 <Form onSubmit={formik.handleSubmit}>
                     <h4>Email</h4>
@@ -67,9 +73,8 @@ export default function LoginForm(){
                     fluid
                     />
 
-                    {
-                    //honeypot to deter bots
-                    }
+                    {/* honeypot to deter bots */}
+                    
                     <Input
                     style={{maxWidth: 2}}
                     placeholder="age - don't fill this out"
@@ -78,7 +83,11 @@ export default function LoginForm(){
                     transparent
                     />
 
-                    {renderErrors()}
+                    <p style={{color: 'red'}}>
+                        {Object.values(formik.errors)[0]}<br/>{requestErrorMessage}
+                    </p>
+                        
+                    
 
                     <div>
                         <Button 
@@ -86,9 +95,9 @@ export default function LoginForm(){
                         size="large"
                         floated="left"
                         style={{marginBlock: 10}}
-                        onClick={() => setSigningUp(signingUp => !signingUp)}
+                        onClick={() => setSigningUp(isSigningUp => !isSigningUp)}
                         >
-                            { signingUp ? 'Log in' : 'Sign Up'}
+                            { isSigningUp ? 'Log in' : 'Sign Up'}
                         </Button>
 
                         <Button 
@@ -98,10 +107,9 @@ export default function LoginForm(){
                         floated="right"
                         style={{marginBlock: 10}}
                         >
-                            { signingUp ? 'Sign Up' : 'Login'}
+                            { isSigningUp ? 'Sign Up' : 'Login'}
                         </Button>
                     </div>
-                    
                 </Form>
             </Segment>
         </div>
