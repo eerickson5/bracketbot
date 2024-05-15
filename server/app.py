@@ -3,7 +3,7 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request, make_response, jsonify
+from flask import request, make_response, jsonify, session
 from flask_restful import Resource
 
 # Local imports
@@ -198,6 +198,33 @@ class PoolsAreComplete(Resource):
             return make_response({"completed": False}, 200)
 api.add_resource(PoolsAreComplete, '/pools_completed/<int:id>')
 
+class Login(Resource):
+    def post(self):
+        user = User.query.filter(User.email == request.json.get('email')).first()
+        if user and user.authenticate(request.json.get('password')):
+            session['user_id'] = user.id
+            return make_response(user.to_dict(), 200)
+        else:
+            return make_response({}, 401)
+api.add_resource(Login, '/login')
+
+class Logout(Resource):
+    def delete(self):
+        session['user_id'] = None
+        return make_response({}, 204)
+api.add_resource(Logout, '/logout')
+
+class SignUp(Resource):
+    def post(self):
+        user = User(
+            email=request.json.get('email'),
+            )
+        user.password_hash=request.json.get("password")
+        db.session.add(user)
+        db.session.commit()
+        session['user_id'] = user.id
+        return make_response(user.to_dict(), 201)
+api.add_resource(SignUp, '/signup')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

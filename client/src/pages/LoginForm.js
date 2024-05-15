@@ -20,9 +20,11 @@ export default function LoginForm(){
         validationSchema: formSchema,
         onSubmit: async (values) => {
             if(!honeyPot){
-                console.log("valid")
-            } else {
-                console.log("invalid")
+                if(signingUp){
+
+                } else {
+                    
+                }
             }
         }
     })
