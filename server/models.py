@@ -1,10 +1,9 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 # from sqlalchemy import MetaData
-from config import db
+from config import db, bcrypt
 from sqlalchemy.orm import backref
-
-
+from sqlalchemy.ext.hybrid import hybrid_property
 
 tournament_teams = db.Table(
     "tournament_teams",
@@ -179,6 +178,7 @@ class Tournament(db.Model, SerializerMixin):
     stages = db.relationship("Stage", back_populates = "tournament", cascade="all, delete")
     games = association_proxy("stages", 'games', creator=lambda game_obj: Stage(game=game_obj))
     teams = db.relationship("Team", secondary=tournament_teams, back_populates = 'tournaments', cascade="all, delete")
+    user = db.relationship("User", back_populates = "tournaments")
 
     serialize_only = ('id', 'name', 'image', 'num_fields', 'teams', 'stages')
 
@@ -219,5 +219,25 @@ class Tournament(db.Model, SerializerMixin):
             if not stage.all_games_scored():
                 return False
         return True
+    
+class User(db.Model, SerializerMixin):
+    __table_name__ = "users"
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    _password_hash = db.Column(db.String, nullable=False)
 
-#TODO:  404 handling, gitignore, LOGINS, update next_game automatically, ReadME
+    tournaments = db.relationship("Tournament", back_populates = "user", cascade = "all, delete")
+
+    @hybrid_property
+    def password_hash(self):
+        return self._password_hash
+
+    @password_hash.setter
+    def password_hash(self, pw):
+        pw_hash = bcrypt.generate_password_hash(pw.encode("utf-8"))
+        self._password_hash = pw_hash.decode("utf-8")
+
+    def authenticate(self, attempt):
+        return bcrypt.check_password_hash(self._password_hash, attempt.encode("utf-8"))
+
+#TODO:  404 handling, gitignore, LOGINS, update next_game automatically, ReadME, add login button to header and home page
