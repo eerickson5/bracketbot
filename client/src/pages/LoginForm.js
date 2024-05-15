@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Button, Form, Input, Segment } from "semantic-ui-react";
 import * as yup from 'yup'
+import { useNavigate } from 'react-router-dom';
 import { useFormik } from "formik";
 
 export default function LoginForm(){    
     const [honeyPot, activateHoneyPot] = useState(false)
     const [isSigningUp, setSigningUp] = useState(false)
     const [requestErrorMessage, setRequestErrorMessage] = useState("")
+
+    const navigate = useNavigate()
 
     const formSchema = yup.object().shape({
         email: yup.string().email("Invalid email format.").required("Input an email.").max(100),
@@ -34,8 +37,11 @@ export default function LoginForm(){
                     }),
                 }).then(res => res.json())
                 .then(response => {
-                    if (!response.ok){
+                    if (response.message){
                         setRequestErrorMessage(response.message)
+                    } else {
+                        console.log(response)
+                        // navigate(`${user_id}/tournaments`)
                     }
                     
                 })
@@ -87,7 +93,6 @@ export default function LoginForm(){
                         {Object.values(formik.errors)[0]}<br/>{requestErrorMessage}
                     </p>
                         
-                    
 
                     <div>
                         <Button 

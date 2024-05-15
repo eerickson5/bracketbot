@@ -241,7 +241,7 @@ class User(db.Model, SerializerMixin):
     def authenticate(self, attempt):
         return bcrypt.check_password_hash(self._password_hash, attempt.encode("utf-8"))
     
-    serialize_only = ('id', 'name', 
+    serialize_only = ('id', 'email', 
                       'tournaments.id', 'tournaments.name', 'tournaments.image')
 
 #TODO:  404 handling, gitignore, LOGINS, update next_game automatically, ReadME, add login button to header and home page
