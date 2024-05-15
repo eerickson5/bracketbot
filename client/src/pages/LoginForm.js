@@ -75,7 +75,7 @@ export default function LoginForm(){
                     transparent
                     />
 
-                    <p style={{color: "red"}}>{renderErrors()}</p>
+                    {renderErrors()}
 
                     <div>
                         <Button 
