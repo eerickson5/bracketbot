@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 
 export default function LoginForm(){    
     const [honeyPot, activateHoneyPot] = useState(false)
-
+    const [signingUp, setSigningUp] = useState(false)
 
     const formSchema = yup.object().shape({
         email: yup.string().email("Invalid email format").required("Input an email").max(100),
@@ -42,9 +42,10 @@ export default function LoginForm(){
     };
 
     return(
-        <div>
-            <Segment color="red" style={{margin: 20, maxWidth: 700, alignSelf: 'center', paddingBottom: 80}}>
-                <h1>Login to Bracketbot</h1>
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <Segment color="red" style={{margin: 20, maxWidth: 400, alignSelf: 'center', paddingBottom: 80}}>
+                <h1>{ signingUp ? "Sign up for Bracketbot" : 'Login to Bracketbot'}</h1>
+                <h3>Manage tournament pools and brackets</h3>
                 <Form onSubmit={formik.handleSubmit}>
                     <h4>Email</h4>
                     <Input
@@ -83,8 +84,9 @@ export default function LoginForm(){
                         size="large"
                         floated="left"
                         style={{marginBlock: 10}}
+                        onClick={() => setSigningUp(signingUp => !signingUp)}
                         >
-                            Sign Up
+                            { signingUp ? 'Log in' : 'Sign Up'}
                         </Button>
 
                         <Button 
@@ -94,7 +96,7 @@ export default function LoginForm(){
                         floated="right"
                         style={{marginBlock: 10}}
                         >
-                            Login
+                            { signingUp ? 'Sign Up' : 'Login'}
                         </Button>
                     </div>
                     
