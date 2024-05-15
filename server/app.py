@@ -5,6 +5,7 @@
 # Remote library imports
 from flask import request, make_response, jsonify, session
 from flask_restful import Resource
+from sqlalchemy.exc import IntegrityError
 
 # Local imports
 from config import app, db, api
@@ -216,12 +217,15 @@ api.add_resource(Logout, '/logout')
 
 class SignUp(Resource):
     def post(self):
-        user = User(
-            email=request.json.get('email'),
-            )
-        user.password_hash=request.json.get("password")
-        db.session.add(user)
-        db.session.commit()
+        try:
+            user = User(
+                email=request.json.get('email'),
+                )
+            user.password_hash=request.json.get("password")
+            db.session.add(user)
+            db.session.commit()
+        except IntegrityError as e:
+            return make_response({"message": "A user with that email already exists. Try to login instead."})
         session['user_id'] = user.id
         return make_response(user.to_dict(), 201)
 api.add_resource(SignUp, '/signup')
