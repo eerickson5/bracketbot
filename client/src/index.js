@@ -26,7 +26,7 @@ const router = createBrowserRouter([
         element: <LoginForm/>
     },
     {
-        path: "/tournaments/",
+        path: "/tournaments",
         element: <MyTournaments/>
     }
 ])

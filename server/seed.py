@@ -27,11 +27,15 @@ if __name__ == '__main__':
         #     db.session.delete(bracket)
         # db.session.commit()
 
-        Stage.query.filter(Stage.id == 46).delete()
-        Game.query.filter(Game.stage_id == 46).delete()
-        # Stage.query.filter(Stage.id == 47).delete()
-        db.session.commit()
+        # Stage.query.filter(Stage.id == 46).delete()
+        # Game.query.filter(Game.stage_id == 46).delete()
+        # # Stage.query.filter(Stage.id == 47).delete()
+        # db.session.commit()
 
+        # for tournament in Tournament.query.all():
+        #     tournament.user_id = 1
+        #     db.session.add(tournament)
+        # db.session.commit()
         # Stage.query.delete()
         #db.session.query(tournament_teams).delete()
 

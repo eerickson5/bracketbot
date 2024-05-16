@@ -105,10 +105,11 @@ api.add_resource(CreateTournament, '/tournament')
 
 class TournamentsByUser(Resource):
     def get(self):
+        print("running get ")
         user_id = session["user_id"]
         tournaments = Tournament.query.filter(Tournament.user_id == user_id).all()
         return make_response({"tournaments" : [t.to_dict() for t in tournaments]}, 200)
-api.add_resource(TournamentsByUser, "my_tournaments")
+api.add_resource(TournamentsByUser, "/my_tournaments")
 
 class GenerateGameSchedule(Resource):
     def post(self):
@@ -239,6 +240,7 @@ api.add_resource(SignUp, '/signup')
 
 @app.before_request
 def check_login():
+    print("running before check")
     if not session.get("user_id") and request.method != "GET":
         return make_response({"message": "Log in to modify content"}, 401)
 
