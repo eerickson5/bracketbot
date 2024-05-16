@@ -18,7 +18,7 @@ export default function Settings(){
             },
             }).then(res => res.json())
             .then(() => {
-                navigate('/tournament/new')
+                navigate('/tournaments')
             })
             .catch(e => console.log(e))
         

@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { Menu, MenuItem, Icon } from 'semantic-ui-react'
 
 export default function TournamentMenu({selectedMenu, onSelectMenu}){

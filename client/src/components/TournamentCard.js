@@ -1,9 +1,8 @@
 import React from "react";
-import { Card, Divider, Header, Segment } from 'semantic-ui-react'
-import { isSingleEmoji } from "../emojiFunctions";
+import { Card } from 'semantic-ui-react'
 import DynamicImage from "./DynamicImage";
 
-export default function TournamentCard({tournament}){
+export default function TournamentCard({tournament, handleOnClick}){
     return (
         <Card
         image={<DynamicImage 
@@ -16,6 +15,7 @@ export default function TournamentCard({tournament}){
         // meta={tournament.location}
         description={`${tournament.teams.length} teams`}
         style={{width: '30%', minHeight: 200}}
+        onClick={handleOnClick}
         />
         )
 }
