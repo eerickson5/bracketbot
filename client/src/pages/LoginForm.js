@@ -41,7 +41,7 @@ export default function LoginForm(){
                         setRequestErrorMessage(response.message)
                     } else {
                         console.log(response)
-                        // navigate(`${user_id}/tournaments`)
+                        navigate(`/tournaments`)
                     }
                     
                 })

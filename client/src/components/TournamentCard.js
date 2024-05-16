@@ -7,8 +7,8 @@ export default function TournamentCard({tournament}){
         <Card
         image={tournament.image}
         header={tournament.name}
-        meta={tournament.location}
-        description={`${tournament.teams.length} teams | ${tournament.numPools ?? 0} Pools | ${tournament.numBrackets ?? 0} Brackets`}
+        // meta={tournament.location}
+        // description={`${tournament.teams.length} teams | ${tournament.numPools ?? 0} Pools | ${tournament.numBrackets ?? 0} Brackets`}
         color="red"
         />
     )

@@ -8,6 +8,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import 'semantic-ui-css/semantic.min.css';
 import { TournamentProvider } from "./TournamentContextProvider";
 import LoginForm from "./pages/LoginForm";
+import MyTournaments from "./pages/MyTournaments";
 
 const router = createBrowserRouter([
     {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
     {
         path: "/login",
         element: <LoginForm/>
+    },
+    {
+        path: "/tournaments/",
+        element: <MyTournaments/>
     }
 ])
 const root = ReactDOM.createRoot(document.getElementById("root"))

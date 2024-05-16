@@ -103,6 +103,13 @@ class CreateTournament(Resource):
     #     return make_response({"error": "Not logged in"}, 401)
 api.add_resource(CreateTournament, '/tournament')
 
+class TournamentsByUser(Resource):
+    def get(self):
+        user_id = session["user_id"]
+        tournaments = Tournament.query.filter(Tournament.user_id == user_id).all()
+        return make_response({"tournaments" : [t.to_dict() for t in tournaments]}, 200)
+api.add_resource(TournamentsByUser, "my_tournaments")
+
 class GenerateGameSchedule(Resource):
     def post(self):
         from algorithms.pool_algorithms import generate_best_pool_schedule
@@ -229,6 +236,11 @@ class SignUp(Resource):
         session['user_id'] = user.id
         return make_response(user.to_dict(), 201)
 api.add_resource(SignUp, '/signup')
+
+@app.before_request
+def check_login():
+    if not session.get("user_id") and request.method != "GET":
+        return make_response({"message": "Log in to modify content"}, 401)
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
