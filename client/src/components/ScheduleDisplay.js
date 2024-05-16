@@ -13,7 +13,7 @@ import TournamentContext from "../TournamentContextProvider";
 //TODO: it runs off the screen if 5 or more fields
 
 export default function ScheduleDisplay({pools, scoresEditable=false, title, subtitle}){
-    const poolsToColors = {"Crossovers": "#DDE0E4", "Pool A": "#D57A7C", "Pool B": "#85C7F2", "Pool C": "#68908F", "Pool D": "#D7BD82", "Pool E": "#9FB58D", "Pool F": "#D59C7F", "Pool G": "#4C839A", "Pool H": "#CD9D62", "Bracket": "#6F8292"}
+    const poolsToColors = {"Crossovers": "#000000", "Pool A": "#D57A7C", "Pool B": "#85C7F2", "Pool C": "#68908F", "Pool D": "#D7BD82", "Pool E": "#9FB58D", "Pool F": "#D59C7F", "Pool G": "#4C839A", "Pool H": "#CD9D62", "Bracket": "#6F8292"}
     //Temporary solution for ease of coding above
 
     const [tournament, setTournament] = useContext(TournamentContext)
@@ -87,7 +87,7 @@ export default function ScheduleDisplay({pools, scoresEditable=false, title, sub
         <div style={{paddingBlock: 15, display: "flex", flexDirection: 'column', alignItems: 'center', flexWrap: 'wrap',}}>
             <h3>{title}</h3>
             <h5 style={{marginBlock: 5}}>{subtitle}</h5>
-            <Table celled collapsing color='red'>
+            <Table collapsing color='red'>
                 
                 <TableHeader>
                     <TableRow>
@@ -110,7 +110,7 @@ export default function ScheduleDisplay({pools, scoresEditable=false, title, sub
                                     <h4>{games[0].readable_time}</h4>
                                 </TableCell>
                                 {games.map(
-                                    game => <TableCell key={game.id} style={{backgroundColor: game.poolColor}}>
+                                    game => <TableCell key={game.id}>
                                         <GameCard game={game} onSubmitScore={handleSubmitScore}/>
                                     </TableCell>
                                 )}
