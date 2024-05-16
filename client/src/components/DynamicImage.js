@@ -3,7 +3,7 @@ import { Image, Header } from 'semantic-ui-react'
 import { isSingleEmoji } from "../emojiFunctions";
 
 export default function DynamicImage({image, isFullWidth, maxWidth='100%', maxHeight='200px'}){
-    const emojis = Array.from({ length: isFullWidth ? 15 : 20 }, (_, index) => index + 1);
+    const emojis = Array.from({ length: isFullWidth ? 15 : 30 }, (_, index) => index + 1);
     const randomPosition = (max) => Math.floor(Math.random() * max);
     const randomSize = () => Math.floor(Math.random() * 70) + 20;
     const randomRotation = () => Math.floor(Math.random() * 360);
