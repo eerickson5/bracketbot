@@ -1,7 +1,11 @@
 import React from "react";
 import { Menu, MenuItem, Icon } from 'semantic-ui-react'
+import { useNavigate } from "react-router-dom";
 
 export default function TournamentMenu({selectedMenu, onSelectMenu}){
+
+  const navigate = useNavigate()
+
     return (
         <Menu icon='labeled' tabular>
 
@@ -39,6 +43,14 @@ export default function TournamentMenu({selectedMenu, onSelectMenu}){
         >
           <Icon name='setting' />
           Settings
+        </MenuItem>
+
+        <MenuItem
+          name='exit'
+          onClick={() => navigate('/tournaments')}
+        >
+          <Icon name='close' />
+          Exit
         </MenuItem>
       </Menu>
     )
