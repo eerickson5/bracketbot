@@ -14,6 +14,7 @@ export default function TournamentDashboardContainer(){
   const [tournament, setTournament] = useContext(TournamentContext)
   const tourn_id = useParams().id
   const [selectedMenu, setSelectedMenu] = useState("home")
+  const [isOwner, setIsOwner] = useState(false)
 
   //todo: change when anything about the tournament changes via the other menus
   useEffect(() => {
@@ -25,8 +26,20 @@ export default function TournamentDashboardContainer(){
     .catch(e => console.log(e))
   }, [tourn_id, setTournament])
 
+  useEffect(() => {
+    fetch(`/api/check_user`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.user.id === tournament.user_id){
+        setIsOwner(true)
+      } else {
+        setIsOwner(false)
+      }
+    })
+  }, [setIsOwner, tournament.user_id])
 
-    return(
+    if(isOwner)
+      return(
         <Container>
           <TournamentHeader/>
           <TournamentMenu selectedMenu={selectedMenu} onSelectMenu={(menu) => setSelectedMenu(menu)}/>
@@ -38,5 +51,12 @@ export default function TournamentDashboardContainer(){
           ? <BracketDashboard/>
           : <Settings/>}
         </Container>
-    )
+      )
+    else{
+      return(
+        <Container>
+          <TournamentHeader/>
+          <TournamentDashboard/>
+        </Container>
+      )}
 }

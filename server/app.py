@@ -238,9 +238,17 @@ class SignUp(Resource):
         return make_response(user.to_dict(), 201)
 api.add_resource(SignUp, '/signup')
 
+class CheckSession(Resource):
+    def get(self):
+        if session.get("user_id"):
+            user = User.query.filter(User.id == session["user_id"]).first()
+            return make_response({"user": user.to_dict()}, 200)
+        else:
+            return make_response({"message": "No user logged in"}, 401)
+api.add_resource(CheckSession, '/check_user')
+
 @app.before_request
 def check_login():
-    print("running before check")
     if not session.get("user_id") and request.method != "GET":
         return make_response({"message": "Log in to modify content"}, 401)
 

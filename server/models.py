@@ -181,7 +181,7 @@ class Tournament(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship("User", back_populates = "tournaments")
 
-    serialize_only = ('id', 'name', 'image', 'num_fields', 'teams', 'stages')
+    serialize_only = ('id', 'name', 'image', 'num_fields', 'teams', 'stages', 'user_id')
 
     def rationalize_teams(self, given_teams):
         recurring_teams = []
