@@ -244,4 +244,4 @@ class User(db.Model, SerializerMixin):
     serialize_only = ('id', 'email', 
                       'tournaments.id', 'tournaments.name', 'tournaments.image')
 
-#TODO:  404 handling, gitignore, LOGINS, update next_game automatically, ReadME, add login button to header and home page
+#TODO:  404 handling, gitignore, update next_game automatically, ReadME, REAL HOME LANDING PAGE

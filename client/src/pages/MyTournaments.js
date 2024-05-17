@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Segment } from "semantic-ui-react";
+import { Container, Button, Segment } from "semantic-ui-react";
 import TournamentCard from '../components/TournamentCard'
 import { useNavigate } from "react-router-dom";
 
@@ -24,8 +24,13 @@ export default function MyTournaments(){
 
     //debug this by using /localhost:5555 to send the get request?
     return(
-        <div style={{display: 'flex', justifyContent: 'center', padding: 30}}>
-             <Segment color="red">
+        <div style={{display: 'flex', justifyContent: 'center', padding: 20, flexDirection: 'column'}}>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignSelf: 'stretch'}}>
+                <Button content='Home Page' icon='home'/>
+                <Button content='Log Out'  icon='user'/>
+            </div>
+            
+            <Segment color="red">
                 <h1 style={{paddingBlock: 20, alignSelf: 'center', textAlign: 'center'}}>Your Tournaments</h1>
                 <Container style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
                     {tournaments.map(tournament => <TournamentCard tournament={tournament} key={tournament.id} handleOnClick={() => handleClick(tournament)}/>)}
