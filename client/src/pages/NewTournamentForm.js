@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Form, FormInput, FormRadio, Segment, Grid, Button, Container } from 'semantic-ui-react'
 import TeamAdder from "../components/TeamAdder";
 import { isSingleEmoji, randomEmoji } from "../emojiFunctions";
@@ -9,6 +9,16 @@ import { useNavigate } from "react-router-dom";
 export default function NewTournamentForm(){
     const navigate = useNavigate()
         //TODO: return button should trigger add team sometimes, not submit tournament
+
+    useEffect( () => {
+        fetch("/api/check_user")
+        .then(res => res.json())
+        .then(data => {
+          if (!data.user)
+            navigate('/')
+        })
+    }, [navigate])
+
     const formSchema = yup.object().shape({
         tournamentName: yup.string().required("This tournament needs a name!").max(50),
         image: yup.string().max(150),
