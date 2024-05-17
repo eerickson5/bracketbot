@@ -14,7 +14,7 @@ export default function TournamentCard({tournament, handleOnClick}){
         header={tournament.name}
         // meta={tournament.location}
         description={`${tournament.teams.length} teams`}
-        style={{width: '30%', minHeight: 200}}
+        style={{width: 275, minHeight: 200}}
         onClick={handleOnClick}
         />
         )
