@@ -220,7 +220,7 @@ api.add_resource(Login, '/login')
 class Logout(Resource):
     def delete(self):
         session['user_id'] = None
-        return make_response({}, 204)
+        return make_response({"message": "successfully logged out"}, 204)
 api.add_resource(Logout, '/logout')
 
 class SignUp(Resource):
@@ -244,7 +244,7 @@ class CheckSession(Resource):
             user = User.query.filter(User.id == session["user_id"]).first()
             return make_response({"user": user.to_dict()}, 200)
         else:
-            return make_response({"message": "No user logged in"}, 401)
+            return make_response({"message": "No user logged in"}, 200)
 api.add_resource(CheckSession, '/check_user')
 
 @app.before_request

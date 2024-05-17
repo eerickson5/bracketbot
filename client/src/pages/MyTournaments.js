@@ -18,22 +18,36 @@ export default function MyTournaments(){
         .catch(e => console.log(e))
     }, [])
 
-    const handleClick = (tournament) => {
+    const handleTournamentClick = (tournament) => {
         navigate(`/tournament/${tournament.id}`)
     }
 
-    //debug this by using /localhost:5555 to send the get request?
+    const handleLogout = () => {
+        fetch(`/api/logout`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        .then(res => {
+            if (res.status === 204) {
+                navigate("/")
+            }
+          })
+        .catch(e => console.log(e))
+    }
+
     return(
         <div style={{display: 'flex', justifyContent: 'center', padding: 20, flexDirection: 'column'}}>
             <div style={{display: 'flex', justifyContent: 'space-between', alignSelf: 'stretch'}}>
-                <Button content='Home Page' icon='home'/>
-                <Button content='Log Out'  icon='user'/>
+                <Button content='Home Page' icon='home' />
+                <Button content='Log Out'  icon='user' onClick={handleLogout}/>
             </div>
             
             <Segment color="red">
                 <h1 style={{paddingBlock: 20, alignSelf: 'center', textAlign: 'center'}}>Your Tournaments</h1>
                 <Container style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-                    {tournaments.map(tournament => <TournamentCard tournament={tournament} key={tournament.id} handleOnClick={() => handleClick(tournament)}/>)}
+                    {tournaments.map(tournament => <TournamentCard tournament={tournament} key={tournament.id} handleOnClick={() => handleTournamentClick(tournament)}/>)}
                 </Container>
             </Segment>
         </div>

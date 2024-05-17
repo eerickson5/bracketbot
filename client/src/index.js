@@ -9,8 +9,13 @@ import 'semantic-ui-css/semantic.min.css';
 import { TournamentProvider } from "./TournamentContextProvider";
 import LoginForm from "./pages/LoginForm";
 import MyTournaments from "./pages/MyTournaments";
+import LandingPage from "./pages/LandingPage";
 
 const router = createBrowserRouter([
+    {
+        path:"/",
+        element: <LandingPage/>
+    },
     {
         path: "/tournament/new",
         element: <NewTournamentForm/>

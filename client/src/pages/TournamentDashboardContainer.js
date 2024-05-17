@@ -30,7 +30,7 @@ export default function TournamentDashboardContainer(){
     fetch(`/api/check_user`)
     .then(res => res.json())
     .then(data => {
-      if (data.user.id === tournament.user_id){
+      if (data.user && data.user.id === tournament.user_id){
         setIsOwner(true)
       } else {
         setIsOwner(false)
