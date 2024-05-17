@@ -48,7 +48,7 @@ export default function MyTournaments(){
                 <h1 style={{paddingBlock: 20, alignSelf: 'center', textAlign: 'center'}}>Your Tournaments</h1>
                 <Container style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', }}>
                     <Button color='white' onClick={() => navigate('/tournament/new')}
-                    style={{height: 200, width: 275, alignSelf:'center', border: '2px solid blue',}}>
+                    style={{height: 200, width: 275, alignSelf:'center'}}>
                         <h2>➕<br/> Create New Tournament </h2>
                     </Button>
                     {tournaments.map(tournament => <TournamentCard tournament={tournament} key={tournament.id} handleOnClick={() => handleTournamentClick(tournament)}/>)}
