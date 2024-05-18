@@ -233,11 +233,12 @@ export default function CreatePoolsForm({teamArrays, onGoBack}){
         
             <Button
             style={{marginBlock: 10}}
+            disabled={tempSchedule.timeslots.length === 0}
             content='Accept and Save Pool Play Schedule'
             type="submit" name="submit"
             primary
             icon='checkmark' 
-            labelPosition='left'
+            labelPosition='right'
             label={{ basic: true, content: "You won't be able to modify pool settings beyond this point." }}
             onClick={alreadyGenerated ? submitPoolSchedule : null}
             // labelPosition='right'

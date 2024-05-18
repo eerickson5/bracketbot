@@ -244,6 +244,7 @@ class User(db.Model, SerializerMixin):
     serialize_only = ('id', 'email', 
                       'tournaments.id', 'tournaments.name', 'tournaments.image')
 
-#TODO:  404 handling, gitignore, update next_game automatically, ReadME, REAL HOME LANDING PAGE
+#TODO:  404 handling, gitignore, update next_game automatically, ReadME, REAL HOME LANDING PAGE, when bracket is generated SHOW IT
+#what happens when a gamescore is changed if the next game is already scored?
 
 #if next_game changed => reload whole tournament
