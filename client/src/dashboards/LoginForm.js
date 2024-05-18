@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Form, Input, Segment } from "semantic-ui-react";
+import { Button, Form, Input, Segment, Image } from "semantic-ui-react";
 import * as yup from 'yup'
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from "formik";
@@ -58,7 +58,8 @@ export default function LoginForm(){
     //TODO: forgot password emailer
     return(
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <Segment color="red" style={{margin: 20, maxWidth: 400, alignSelf: 'center', paddingBottom: 80}}>
+            <Segment color="blue" style={{margin: 20, minWidth: 300, alignSelf: 'center', paddingBottom: 80}}>
+            <Image src='https://i.imgur.com/56YwqBA.png' size="small"/>
                 <h1>{ isSigningUp ? "Sign Up" : 'Login'}</h1>
                 <h4>Don't have an account? Sign up instead!</h4>
                 <Form onSubmit={formik.handleSubmit}>

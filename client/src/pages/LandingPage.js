@@ -1,5 +1,4 @@
 import React from "react";
-import LoginForm from "../dashboards/LoginForm";
 import { Button, Image } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 
@@ -26,9 +25,6 @@ export default function LandingPage(){
                 <Image src='https://i.imgur.com/C8qi8ro.png' rounded bordered size="large" style={{marginBlock: 10}}/>
                 
             </div>
-            
-            
-             {/* <LoginForm/> */}
         </div>
        
     )
