@@ -40,7 +40,7 @@ export default function MyTournaments(){
     return(
         <div style={{display: 'flex', justifyContent: 'center', padding: 20, flexDirection: 'column'}}>
             <div style={{display: 'flex', justifyContent: 'space-between', alignSelf: 'stretch'}}>
-                <Button content='Home Page' icon='home' />
+                <Button content='Home Page' icon='home' onClick={() => navigate('/')}/>
                 <Button content='Log Out'  icon='user' onClick={handleLogout}/>
             </div>
             
@@ -51,7 +51,7 @@ export default function MyTournaments(){
                     style={{height: 200, width: 275, alignSelf:'center'}}>
                         <h2>➕<br/> Create New Tournament </h2>
                     </Button>
-                    {tournaments.map(tournament => <TournamentCard tournament={tournament} key={tournament.id} handleOnClick={() => handleTournamentClick(tournament)}/>)}
+                    {tournaments.map(tournament => <TournamentCard tournament={tournament} key={tournament.id} handleOnClick={() => navigate(`/tournament/${tournament.id}`)}/>)}
                 </Container>
             </Segment>
         </div>

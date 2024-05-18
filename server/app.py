@@ -86,6 +86,7 @@ class CreateTournament(Resource):
             tournament = Tournament(
                 name=request.json.get("tournamentName"),
                 image=request.json.get("image"),
+                user_id=session["user_id"]
             )
             db.session.add(tournament)
             teams = [Team(

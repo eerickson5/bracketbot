@@ -7,9 +7,9 @@ import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import 'semantic-ui-css/semantic.min.css';
 import { TournamentProvider } from "./TournamentContextProvider";
-import LoginForm from "./pages/LoginForm";
+import LoginForm from "./dashboards/LoginForm";
 import MyTournaments from "./pages/MyTournaments";
-import LandingPage from "./pages/LandingPage";
+import LandingPage from './pages/LandingPage';
 
 const router = createBrowserRouter([
     {
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/login",
-        element: <LoginForm/>
+        element: <LandingPage/>
     },
     {
         path: "/tournaments",

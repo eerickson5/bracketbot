@@ -13,6 +13,5 @@ from models import db, Team, Tournament, Game, GameScore, Stage, tournament_team
 if __name__ == '__main__':
     fake = Faker()
     with app.app_context():
-        
         db.session.commit()
         print("Seeded.")

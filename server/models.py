@@ -245,3 +245,5 @@ class User(db.Model, SerializerMixin):
                       'tournaments.id', 'tournaments.name', 'tournaments.image')
 
 #TODO:  404 handling, gitignore, update next_game automatically, ReadME, REAL HOME LANDING PAGE
+
+#if next_game changed => reload whole tournament
