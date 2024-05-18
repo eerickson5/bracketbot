@@ -75,7 +75,12 @@ export default function NewTournamentForm(){
 
     //TODO: enter button adds team, not submit tournament
     return (
-        <Container style={{marginTop: 50}}>
+        <Container style={{paddingTop: 50}}>
+            <Button 
+            content="Back to Tournaments"
+            icon='arrow left' labelPosition='left'
+            onClick={() => navigate('/tournaments')}
+            />
             <Segment color="red" padded >
                 <h2>Create New Tournament</h2>
                 <Form onSubmit={formik.handleSubmit}>
