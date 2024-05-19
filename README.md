@@ -48,14 +48,20 @@ cd client
 npm start
 ```
 
-## Stack
+## 🗂️ Stack
 - ReactJS & Semantic UI for front end
 - Flask & SQL-Alchemy for back end
 
 
----
+## 📈 Future Plans
+I have lots of ideas for this project.  Like, a lot.
+1. Add team pages so a team can see only its own schedule
+2. Add a ranking component that updates in real time so teams know where they stand
+3. Add a private link for team captains to submit their scores for each game.  If 2 teams have a dispute over the score, they can choose to take the average or defer to the tournament manager.
+4. Make everything PRETTIER.
+5. Allow a tournament manager to rearrange games to different fields via drag-n-drop so teams don't have to move as much.
 
-### All Rights Reserved
+## All Rights Reserved
 
 This project is the intellectual property of Elise Erickson and is protected by copyright law. 
 Unauthorized use, reproduction, or distribution of this software, in whole or in part, 
