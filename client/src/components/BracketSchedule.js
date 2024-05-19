@@ -58,16 +58,16 @@ export default function BracketSchedule(){
             }),
         })
         .then(response => response.json())
-        .then(gameScore => {
-            const stages = tournament.stages
-            const eligibleGameScores = stages.filter(stage => stage.is_bracket)[0].games[gameIndex].game_scores
-            if(eligibleGameScores[0].id === gameScore.id)
-                eligibleGameScores[0].own_score = gameScore.own_score
-            else if (eligibleGameScores[1].id === gameScore.id)
-                eligibleGameScores[1].own_score = gameScore.own_score
+        .then(data => {
+            // const stages = tournament.stages
+            // const eligibleGameScores = stages.filter(stage => stage.is_bracket)[0].games[gameIndex].game_scores
+            // if(eligibleGameScores[0].id === gameScore.id)
+            //     eligibleGameScores[0].own_score = gameScore.own_score
+            // else if (eligibleGameScores[1].id === gameScore.id)
+            //     eligibleGameScores[1].own_score = gameScore.own_score
             setTournament({
                 ...tournament,
-                stages: stages
+                stages: tournament.stages.map(stage => stage.id === data.stage.id ? data.stage : stage)
             })
     })
 }

@@ -191,11 +191,19 @@ class GameScoreByID(Resource):
         if game_score and game_score.team_id == request.json.get("team_id"):
             game_score.own_score = request.json.get("new_score")
             db.session.add(game_score)
+
             if(game_score.game.next_game):
                 game_score.game.assign_next_game_to_winner()
                 #TODO: return next game's game_score so the ui updates immediately
+            if(len(game_score.game.previous_games) == 2):
+                for game in game_score.game.previous_games:
+                    game.scores_locked = True
+                    db.session.add(game)
+
             db.session.commit()
-        return make_response(game_score.to_dict(), 200)
+            #return current stage so ALL changes are added to front end
+            stage = game_score.game.stage
+        return make_response({"game_score": game_score.to_dict(), "stage": stage.to_dict()}, 200)
 api.add_resource(GameScoreByID, '/game_score/<int:id>')
 
 class PoolsAreComplete(Resource):

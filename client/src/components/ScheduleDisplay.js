@@ -59,16 +59,15 @@ export default function ScheduleDisplay({pools, scoresEditable=false, title, sub
             }),
         })
         .then(response => response.json())
-        .then(gameScore => {
-            const stages = tournament.stages
-            const eligibleGameScores = stages[poolIndex].games[gameIndex].game_scores
-            if(eligibleGameScores[0].id === gameScore.id)
-                eligibleGameScores[0].own_score = gameScore.own_score
-            else if (eligibleGameScores[1].id === gameScore.id)
-                eligibleGameScores[1].own_score = gameScore.own_score
+        .then(data=> {
+            // const eligibleGameScores = stages[poolIndex].games[gameIndex].game_scores
+            // if(eligibleGameScores[0].id === gameScore.id)
+            //     eligibleGameScores[0].own_score = gameScore.own_score
+            // else if (eligibleGameScores[1].id === gameScore.id)
+            //     eligibleGameScores[1].own_score = gameScore.own_score
             setTournament({
                 ...tournament,
-                stages: stages
+                stages: tournament.stages.map(stage => stage.id === data.stage.id ? data.stage : stage)
             })
             
             // stage[game.stage.id] -> games[game.id] -> game_score['score0' ? game.game_scores[0].id : game.game_scores[1].id] -> own_score
