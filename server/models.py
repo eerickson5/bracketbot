@@ -246,7 +246,7 @@ class User(db.Model, SerializerMixin):
     serialize_only = ('id', 'email', 
                       'tournaments.id', 'tournaments.name', 'tournaments.image')
 
-#TODO:  404 handling, gitignore, update next_game automatically, ReadME when bracket is generated SHOW IT
+#TODO:  404 handling, gitignore, update next_game automatically, ReadME, delete user
 #when bracket is generated or next_game is scored, lock the previous score
 
 #if next_game changed => reload whole tournament

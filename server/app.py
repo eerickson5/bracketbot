@@ -178,7 +178,7 @@ class AcceptSchedule(Resource):
                 from algorithms.bracket_algorithms import generate_bracket
                 bracket = generate_bracket(tournament, data)
                 return make_response({
-                    "bracket": bracket.to_dict()
+                    "bracket": bracket.to_dict(),
                 }, 201)
         
         else:

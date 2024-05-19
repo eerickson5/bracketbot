@@ -80,11 +80,14 @@ export default function CreateBracketForm(){
             },
             body: JSON.stringify(request_data),
             }).then(res => res.json())
-            .then(response => {
+            .then(data => {
                 setIsLoading(false)
+                setTournament({
+                    ...tournament, 
+                    stages: [...tournament.stages, data.bracket]
+                })
                 // formik.resetForm()
                 //TODO: for this and pool form, prevent action if isLoading
-                console.log(response)
                 //go to next screen
             })
             .catch(e => console.log(e))

@@ -13,5 +13,8 @@ from models import db, Team, Tournament, Game, GameScore, Stage, tournament_team
 if __name__ == '__main__':
     fake = Faker()
     with app.app_context():
+
+        bracket = Stage.query.filter(Stage.id == 50).first()
+        db.session.delete(bracket)
         db.session.commit()
         print("Seeded.")

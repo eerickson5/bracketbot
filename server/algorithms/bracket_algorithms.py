@@ -65,6 +65,8 @@ def generate_bracket( tournament, data ):
     for matchup in matchups:
         db.session.add(matchup["game"])
 
+    lock_pool_scores(tournament)
+
     db.session.commit()
 
     return bracket
@@ -102,4 +104,9 @@ def assign_times_and_fields(matchups, num_fields, start_time, game_length, break
     start_times = add_game_timing(len(timeslots), start_time, game_length, break_length, False)
     return [ {"start_time": start_times[matchup["timeslot"]], **matchup} for matchup in matchups ]
 
-    
+def lock_pool_scores(tournament):
+    from models import db
+    pool_games = [game for stage in tournament.stages if not stage.is_bracket for game in stage.games]
+    for game in pool_games:
+        game.scores_locked = True
+        db.session.add(game)
