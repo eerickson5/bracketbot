@@ -120,7 +120,7 @@ class Game(db.Model, SerializerMixin):
                 relevant_game_score = self.next_game.create_game_score(self.winner.id)
             return relevant_game_score
 
-    serialize_only = ('id', 'location', 'start_time', 'readable_time',
+    serialize_only = ('id', 'location', 'start_time', 'readable_time', 'scores_locked',
                       'teams', 
                       'stage.name',
                       'previous_games_ids',
@@ -247,6 +247,6 @@ class User(db.Model, SerializerMixin):
                       'tournaments.id', 'tournaments.name', 'tournaments.image')
 
 #TODO:  404 handling, gitignore, update next_game automatically, ReadME when bracket is generated SHOW IT
-#what happens when a gamescore is changed if the next game is already scored?
+#when bracket is generated or next_game is scored, lock the previous score
 
 #if next_game changed => reload whole tournament

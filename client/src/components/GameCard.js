@@ -70,7 +70,7 @@ export default function GameCard({game, onSubmitScore = null}){
                 <h5>{team0.image}{team0.team_name} vs {team1.team_name}{team1.image}</h5>
             </CardHeader>
             <CardMeta>{metaText}</CardMeta>
-            {onSubmitScore
+            {onSubmitScore && !game.scores_locked
             ?<CardContent>
                 <div style={{display: 'flex', alignItems: 'center'}}>
                     {team0.image}
