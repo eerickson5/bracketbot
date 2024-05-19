@@ -61,7 +61,13 @@ export default function LoginForm(){
             <Segment color="blue" style={{margin: 20, minWidth: 300, alignSelf: 'center', paddingBottom: 80}}>
             <Image src='https://i.imgur.com/56YwqBA.png' size="small"/>
                 <h1>{ isSigningUp ? "Sign Up" : 'Login'}</h1>
-                <h4>Don't have an account? Sign up instead!</h4>
+                <h4 
+                style={{cursor: 'pointer', padding: '10px',}}
+                onClick={() => setSigningUp(isSigningUp => !isSigningUp)}>{ 
+                    isSigningUp 
+                    ? ( <>Already have an account? <span style={{ color: 'blue' }}>Log in.</span></> )
+                    : ( <>Don't have an account? <span style={{ color: 'blue' }}>Sign up!</span></> )
+                }</h4>
                 <Form onSubmit={formik.handleSubmit}>
                     <h4>Email</h4>
                     <Input
@@ -102,9 +108,9 @@ export default function LoginForm(){
                         size="large"
                         floated="left"
                         style={{marginBlock: 10}}
-                        onClick={() => setSigningUp(isSigningUp => !isSigningUp)}
+                        onClick={() => navigate('/')}
                         >
-                            { isSigningUp ? 'Log in' : 'Sign Up'}
+                            Back
                         </Button>
 
                         <Button 
