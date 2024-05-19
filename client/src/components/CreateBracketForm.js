@@ -61,7 +61,6 @@ export default function CreateBracketForm(){
         validationSchema: formSchema,
         onSubmit: async (values) => {
             setIsLoading(true)
-            console.log("sending request")
             const request_data = {
                 type: "bracket",
                 numFields: parseInt(values.numFields),

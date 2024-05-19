@@ -1,5 +1,4 @@
 import React from "react";
-import App from "./components/App";
 import TournamentDashboardContainer from "./pages/TournamentDashboardContainer";
 import NewTournamentForm from "./pages/NewTournamentForm";
 import * as ReactDOM from "react-dom";
@@ -10,11 +9,13 @@ import { TournamentProvider } from "./TournamentContextProvider";
 import LoginForm from "./dashboards/LoginForm";
 import MyTournaments from "./pages/MyTournaments";
 import LandingPage from './pages/LandingPage';
+import ErrorPage from "./pages/ErrorPage";
 
 const router = createBrowserRouter([
     {
         path:"/",
-        element: <LandingPage/>
+        element: <LandingPage/>,
+        errorElement: <ErrorPage/>
     },
     {
         path: "/tournament/new",

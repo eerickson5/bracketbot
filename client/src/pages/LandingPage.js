@@ -23,7 +23,7 @@ export default function LandingPage(){
     return(
         <div>
             <div style={{backgroundColor: '#f5f5f5'}}>
-                <Image src='https://i.imgur.com/56YwqBA.png' size="small"/>
+                <Image src='https://i.imgur.com/56YwqBA.png' alt="bracketbot logo" size="small"/>
             </div>
             
             <div style={{display: 'flex', flexWrap:'wrap', flexDirection:'row', padding: 20, alignItems: 'center', justifyContent: 'space-evenly'}}>
