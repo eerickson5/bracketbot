@@ -246,4 +246,4 @@ class User(db.Model, SerializerMixin):
     serialize_only = ('id', 'email', 
                       'tournaments.id', 'tournaments.name', 'tournaments.image')
 
-#TODO:  gitignore, ReadME, delete user
+#TODO:  ReadME, delete user, show team ranking, team view page
