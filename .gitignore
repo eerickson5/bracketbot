@@ -5,6 +5,10 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '.gitignore_global'
 
+#Ignore production + debugging files.
+/server/seed.py
+/server/algorithms/algorithm_testers.py
+
 # Ignore bundler config.
 /.bundle
 

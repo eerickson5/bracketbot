@@ -246,4 +246,4 @@ class User(db.Model, SerializerMixin):
     serialize_only = ('id', 'email', 
                       'tournaments.id', 'tournaments.name', 'tournaments.image')
 
-#TODO:  404 handling, gitignore, ReadME, delete user
+#TODO:  gitignore, ReadME, delete user
