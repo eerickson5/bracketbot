@@ -3,7 +3,6 @@ import { Container, Button, Segment, Icon } from "semantic-ui-react";
 import TournamentCard from '../components/TournamentCard'
 import { useNavigate } from "react-router-dom";
 
-        //TODO: if not logged in, reroute to login
 export default function MyTournaments(){
 
     const navigate = useNavigate()
@@ -11,16 +10,17 @@ export default function MyTournaments(){
     const [tournaments, setTournaments] = useState([])
     useEffect( () => {
         fetch(`/api/my_tournaments`)
-        .then(res => res.json())
+        .then(res => {
+            if(!res.ok)
+                throw new Error(res.status)
+            return res.json()
+        
+        })
         .then(response => {
             setTournaments(response.tournaments)
         })
-        .catch(e => console.log(e))
-    }, [])
-
-    const handleTournamentClick = (tournament) => {
-        navigate(`/tournament/${tournament.id}`)
-    }
+        .catch(_ => navigate("/login"))
+    }, [navigate])
 
     const handleLogout = () => {
         fetch(`/api/logout`, {
@@ -40,7 +40,6 @@ export default function MyTournaments(){
     return(
         <div style={{display: 'flex', justifyContent: 'center', padding: 20, flexDirection: 'column'}}>
             <div style={{display: 'flex', justifyContent: 'space-between', alignSelf: 'stretch'}}>
-                <Button content='Home Page' icon='home' onClick={() => navigate('/')}/>
                 <Button content='Log Out'  icon='user' onClick={handleLogout}/>
             </div>
             

@@ -106,10 +106,12 @@ api.add_resource(CreateTournament, '/tournament')
 
 class TournamentsByUser(Resource):
     def get(self):
-        print("running get ")
         user_id = session["user_id"]
-        tournaments = Tournament.query.filter(Tournament.user_id == user_id).all()
-        return make_response({"tournaments" : [t.to_dict() for t in tournaments]}, 200)
+        if user_id:
+            tournaments = Tournament.query.filter(Tournament.user_id == user_id).all()
+            return make_response({"tournaments" : [t.to_dict() for t in tournaments]}, 200)
+        else:
+            return make_response({"message" : "No user logged in."}, 401)
 api.add_resource(TournamentsByUser, "/my_tournaments")
 
 class GenerateGameSchedule(Resource):

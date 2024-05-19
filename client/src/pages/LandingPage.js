@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Image } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 
 export default function LandingPage(){
+    const [loading, setLoading] = useState(false)
+
     const navigate = useNavigate()
+
+    const handleLogin = () => {
+        setLoading(true)
+        fetch("/api/check_user")
+        .then(res => res.json())
+        .then(data => {
+            if(data.user)
+                navigate('/tournaments')
+            else
+                navigate('/login')
+            setLoading(false)
+        })
+    }
+
     return(
         <div>
             <div style={{backgroundColor: '#f5f5f5'}}>
@@ -15,7 +31,7 @@ export default function LandingPage(){
                     <h1>Build tournament schedules <br/>from the first round ➜ finals</h1>
                     <h4>Add teams, plan pools, schedule games, and build brackets in seconds</h4>
                     <div style={{display: 'flex', flexDirection:'row', justifyContent: 'center'}}>
-                        <Button content="Try it" icon='user' color='blue' onClick={() => navigate('/login')}/>
+                        <Button content="Try it" icon='user' color='blue' onClick={handleLogin} loading={loading}/>
                         <a href="https://github.com/eerickson5/bracketbot">
                             <Button content="GitHub" icon='github' basic color='blue'/>
                         </a>
