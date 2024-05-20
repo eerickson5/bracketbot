@@ -260,7 +260,7 @@ api.add_resource(CheckSession, '/check_user')
 
 @app.before_request
 def check_login():
-    if request.endpoint != "login" and not session.get("user_id") and request.method != "GET":
+    if request.endpoint not in ["signup", "login"] and not session.get("user_id") and request.method != "GET":
         return make_response({"message": "Log in to modify content"}, 401)
 
 if __name__ == '__main__':

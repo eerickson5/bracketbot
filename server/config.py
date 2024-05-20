@@ -13,7 +13,7 @@ import os
 
 # Instantiate app, set attributes
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["DEBUG"] = True
 app.json.compact = False
@@ -25,7 +25,7 @@ metadata = MetaData(naming_convention={
 db = SQLAlchemy(metadata=metadata)
 migrate = Migrate(app, db)
 db.init_app(app)
-app.secret_key = os.environ.get('SECRET_KEY') #thanks chatGPT
+app.secret_key = "db-test"#os.environ.get('SECRET_KEY') #thanks chatGPT
 print(app.secret_key)
 api = Api(app)
 CORS(app)
