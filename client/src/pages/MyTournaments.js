@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button, Segment, Icon } from "semantic-ui-react";
+import { Container, Button, Segment } from "semantic-ui-react";
 import TournamentCard from '../components/TournamentCard'
 import { useNavigate } from "react-router-dom";
 

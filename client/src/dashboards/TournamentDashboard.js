@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Container, Button} from 'semantic-ui-react'
+import React, { useContext } from "react";
+import { Container } from 'semantic-ui-react'
 import TeamCard from "../components/TeamCard";
 import TournamentContext from "../TournamentContextProvider";
 import ScheduleDisplay from "../components/ScheduleDisplay";
@@ -8,7 +8,7 @@ import TournamentTeamEditor from "./TournamentTeamEditor";
 //TODO: once pools are submitted... the ui isn't automatically updated ?? and then if I try to navigate it freaks out??
 //TODO: teams are not automatically fetched :/
 export default function TournamentDashboard(){
-  const [tournament, setTournament] = useContext(TournamentContext)
+  const [tournament] = useContext(TournamentContext)
   console.log(tournament)
     return(
       <Container style={{paddingBottom: 20}}>

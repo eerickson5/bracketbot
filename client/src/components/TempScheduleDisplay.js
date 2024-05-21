@@ -3,13 +3,8 @@ import {
     TableRow,
     TableHeaderCell,
     TableHeader,
-    TableFooter,
     TableCell,
     TableBody,
-    MenuItem,
-    Icon,
-    Label,
-    Menu,
     Table,
   } from 'semantic-ui-react'
 import TournamentContext from "../TournamentContextProvider";

@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Header } from 'semantic-ui-react'
+import { Image } from 'semantic-ui-react'
 import { isSingleEmoji } from "../emojiFunctions";
 
 export default function DynamicImage({image, isFullWidth, maxWidth='100%', maxHeight='200px'}){
