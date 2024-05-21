@@ -11,7 +11,7 @@ export default function NewTournamentForm(){
         //TODO: return button should trigger add team sometimes, not submit tournament
 
     useEffect( () => {
-        fetch("/api/check_user")
+        fetch("/check_user")
         .then(res => res.json())
         .then(data => {
           if (!data.user)
@@ -45,7 +45,7 @@ export default function NewTournamentForm(){
                     values.image = randomEmoji()
                 }
                 values.image = values.image === "" ? randomEmoji() : values.image;
-                fetch("/api/tournament", {
+                fetch("/tournament", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

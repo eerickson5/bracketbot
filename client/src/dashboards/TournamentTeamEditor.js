@@ -13,7 +13,7 @@ export default function TournamentTeamEditor(){
         if(teams.length < 4){
             setError("Whoops! You need at least 4 teams in a tournament.")
         } else {
-            fetch(`/api/tournament/${tournament.id}`, {
+            fetch(`/tournament/${tournament.id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",

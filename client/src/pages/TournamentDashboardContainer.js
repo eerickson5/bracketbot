@@ -18,7 +18,7 @@ export default function TournamentDashboardContainer(){
 
   //todo: change when anything about the tournament changes via the other menus
   useEffect(() => {
-    fetch(`/api/tournament/${tourn_id}`)
+    fetch(`/tournament/${tourn_id}`)
     .then(res => res.json())
     .then(data => {
       setTournament({...data.tournament, teams: data.teams})
@@ -27,7 +27,7 @@ export default function TournamentDashboardContainer(){
   }, [tourn_id, setTournament])
 
   useEffect(() => {
-    fetch(`/api/check_user`)
+    fetch(`/check_user`)
     .then(res => res.json())
     .then(data => {
       if (data.user && data.user.id === tournament.user_id){

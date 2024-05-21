@@ -12,8 +12,13 @@ import os
 # Local imports
 
 # Instantiate app, set attributes
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
+app = Flask(
+    __name__,
+    static_url_path='',
+    static_folder='../client/build',
+    template_folder='../client/build'
+    )
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI', "postgresql://elise717:46a5jf6741hTEBd40ejvwxCXSn2VSxx6@dpg-cp5or7o21fec73e9ijlg-a.ohio-postgres.render.com/bracketbot")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["DEBUG"] = True
 app.json.compact = False
@@ -25,7 +30,7 @@ metadata = MetaData(naming_convention={
 db = SQLAlchemy(metadata=metadata)
 migrate = Migrate(app, db)
 db.init_app(app)
-app.secret_key = "db-test"#os.environ.get('SECRET_KEY') #thanks chatGPT
+app.secret_key = os.environ.get('SECRET_KEY')
 print(app.secret_key)
 api = Api(app)
 CORS(app)

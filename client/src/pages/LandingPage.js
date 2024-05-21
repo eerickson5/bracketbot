@@ -9,7 +9,7 @@ export default function LandingPage(){
 
     const handleLogin = () => {
         setLoading(true)
-        fetch("/api/check_user")
+        fetch("/check_user")
         .then(res => res.json())
         .then(data => {
             if(data.user)
@@ -23,7 +23,7 @@ export default function LandingPage(){
     return(
         <div>
             <div style={{backgroundColor: '#f5f5f5'}}>
-                <Image src='https://i.imgur.com/56YwqBA.png' alt="bracketbot logo" size="small"/>
+                <Image src='https://lh3.googleusercontent.com/pw/AP1GczM3USD5Dql6O5olke1c7qClcHhRMb3dCSOfGZ_oth6MMt6XCJNSEfL7MrdDNaedxIBPOvNS78i-pJ7TBN9GN1e8AQem1-Aw3Z-LPFFbxGCrgyoWXmY=w2400' alt="bracketbot logo" size="small"/>
             </div>
             
             <div style={{display: 'flex', flexWrap:'wrap', flexDirection:'row', padding: 20, alignItems: 'center', justifyContent: 'space-evenly'}}>
@@ -38,7 +38,7 @@ export default function LandingPage(){
                         
                     </div>
                 </div>
-                <Image src='https://i.imgur.com/C8qi8ro.png' rounded bordered size="large" style={{marginBlock: 10}}/>
+                <Image src="https://lh3.googleusercontent.com/pw/AP1GczPiU218QqE1z4wJ90PcIMb0K2S8IpST9ahjKqw_ook0-fImeHNZ6_iS70iHPJWLsmNOiqD2K3J80khL6K_ZEXAuvav1I-t9jOz8Uw6vuSTRZYVBW1k=w2400" rounded bordered size="large" style={{marginBlock: 10}}/>
                 
             </div>
         </div>

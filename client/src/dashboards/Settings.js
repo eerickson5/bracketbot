@@ -11,7 +11,7 @@ export default function Settings(){
 
     const handleDeleteTournament = () => {
         if(deletingInput === tournament.name)
-            fetch(`/api/tournament/${tournament.id}`, {
+            fetch(`/tournament/${tournament.id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",

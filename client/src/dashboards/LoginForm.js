@@ -25,7 +25,7 @@ export default function LoginForm(){
         onSubmit: async (values) => {
             if(!honeyPot){
                 setRequestErrorMessage("")
-                const url = isSigningUp ? "/api/signup" : "/api/login"
+                const url = isSigningUp ? "/signup" : "/login"
                 fetch(url, {
                     method: "POST",
                     headers: {

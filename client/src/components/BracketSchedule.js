@@ -47,7 +47,7 @@ export default function BracketSchedule(){
     }
 
     const handleSubmitScore = ({gameScoreId, teamId, newScore, gameIndex}) => {
-        fetch(`/api/game_score/${gameScoreId}`, {
+        fetch(`/game_score/${gameScoreId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

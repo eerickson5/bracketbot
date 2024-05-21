@@ -3,7 +3,7 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request, make_response, jsonify, session
+from flask import request, make_response, jsonify, session, render_template
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
@@ -15,8 +15,9 @@ from models import Team, Tournament, Game, GameScore, Stage, User
 # Views go here!
 
 @app.route('/')
-def index():
-    return '<h1>Project Server</h1>'
+@app.route('/<int:id>')
+def index(id=0):
+    return render_template("index.html")
 
 class TeamByID(Resource):
     def get(self, id):
