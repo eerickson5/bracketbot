@@ -6,7 +6,7 @@ import PoolVisualizer from "../components/PoolVisualizer";
 import ScheduleDisplay from "../components/ScheduleDisplay";
 
 export default function PoolsDashboard(){
-    const [tournament, setTournament] = useContext(TournamentContext)
+    const [tournament ] = useContext(TournamentContext)
     const [pools, setPools] = useState([])
     const [teamPools, setTeamPools] = useState([])
     const [currPage, setPage] = useState(0)

@@ -5,7 +5,7 @@ import BracketSchedule from "../components/BracketSchedule";
 
 export default function BracketDashboard(){
 
-    const [tournament, setTournament] = useContext(TournamentContext)
+    const [tournament] = useContext(TournamentContext)
     const [poolsComplete, setPoolsComplete] = useState(true)
     const [bracket, setBracket] = useState()
 
