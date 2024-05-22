@@ -9,7 +9,7 @@ export default function LandingPage(){
 
     const handleLogin = () => {
         setLoading(true)
-        fetch("/check_user")
+        fetch("/api/check_user")
         .then(res => res.json())
         .then(data => {
             if(data.user)

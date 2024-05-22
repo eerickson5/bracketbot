@@ -9,7 +9,7 @@ export default function MyTournaments(){
 
     const [tournaments, setTournaments] = useState([])
     useEffect( () => {
-        fetch(`/my_tournaments`)
+        fetch(`/api/my_tournaments`)
         .then(res => {
             if(!res.ok)
                 throw new Error(res.status)
@@ -23,7 +23,7 @@ export default function MyTournaments(){
     }, [navigate])
 
     const handleLogout = () => {
-        fetch(`/logout`, {
+        fetch(`/api/logout`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",

@@ -26,7 +26,7 @@ export default function NewTeamForm(){
     }
 
     function handleSubmit(){
-        fetch("/team", {
+        fetch("/api/team", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

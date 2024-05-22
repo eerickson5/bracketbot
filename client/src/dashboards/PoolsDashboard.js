@@ -15,8 +15,6 @@ export default function PoolsDashboard(){
         if(tournament.stages.length){
             setPools(tournament.stages.map((data, index) => ({...data, poolIndex: index})).filter(stage => !stage.is_bracket))
         }
-            
-            //that doesn't trigger a rerender for some reason
     }, [tournament])
 
     const creationPages = [
@@ -26,7 +24,6 @@ export default function PoolsDashboard(){
         }}/>,
         <CreatePoolsForm teamArrays={teamPools} onGoBack={() => setPage(0)}/>
     ]
-    //TODO: If a bracket exists, schedule display (scores) cannot be edited!
 
     const getTeamLists = () => {
         return pools

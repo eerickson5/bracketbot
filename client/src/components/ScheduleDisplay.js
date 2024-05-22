@@ -48,7 +48,7 @@ export default function ScheduleDisplay({pools, scoresEditable=false, title, sub
     };
 
     const handleSubmitScore = scoresEditable ? ({gameScoreId, teamId, newScore, gameIndex, poolIndex}) => {
-        fetch(`/game_score/${gameScoreId}`, {
+        fetch(`/api/game_score/${gameScoreId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

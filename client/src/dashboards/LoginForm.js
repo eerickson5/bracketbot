@@ -25,7 +25,7 @@ export default function LoginForm(){
         onSubmit: async (values) => {
             if(!honeyPot){
                 setRequestErrorMessage("")
-                const url = isSigningUp ? "/signup" : "/login"
+                const url = isSigningUp ? "/api/signup" : "/api/login"
                 fetch(url, {
                     method: "POST",
                     headers: {
@@ -59,7 +59,7 @@ export default function LoginForm(){
     return(
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             <Segment color="blue" style={{margin: 20, minWidth: 300, alignSelf: 'center', paddingBottom: 80}}>
-            <Image src='https://i.imgur.com/56YwqBA.png' size="small"/>
+            <Image src='https://lh3.googleusercontent.com/pw/AP1GczM3USD5Dql6O5olke1c7qClcHhRMb3dCSOfGZ_oth6MMt6XCJNSEfL7MrdDNaedxIBPOvNS78i-pJ7TBN9GN1e8AQem1-Aw3Z-LPFFbxGCrgyoWXmY=w2400' size="small"/>
                 <h1>{ isSigningUp ? "Sign Up" : 'Login'}</h1>
                 <h4 
                 style={{cursor: 'pointer', padding: '10px',}}

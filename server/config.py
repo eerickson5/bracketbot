@@ -18,7 +18,7 @@ app = Flask(
     static_folder='../client/build',
     template_folder='../client/build'
     )
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI', "postgresql://elise717:46a5jf6741hTEBd40ejvwxCXSn2VSxx6@dpg-cp5or7o21fec73e9ijlg-a.ohio-postgres.render.com/bracketbot")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI', "sqlite:///app.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["DEBUG"] = True
 app.json.compact = False
@@ -30,8 +30,8 @@ metadata = MetaData(naming_convention={
 db = SQLAlchemy(metadata=metadata)
 migrate = Migrate(app, db)
 db.init_app(app)
-app.secret_key = os.environ.get('SECRET_KEY')
+app.secret_key = os.environ.get('SECRET_KEY', "dev_key")
 print(app.secret_key)
-api = Api(app)
+api = Api(app, prefix='/api')
 CORS(app)
 bcrypt = Bcrypt(app)
