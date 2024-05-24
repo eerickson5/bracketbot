@@ -3,18 +3,28 @@ import { Card, CardContent, CardHeader, CardMeta, CardDescription, Input } from 
 
 export default function GameCard({game, onSubmitScore = null}){
 
+
     const[scores, setScores] = useState({
         "score0": "", 
         "score1": ""
     })
 
+    const [gameScores] = useState(
+        [...game.game_scores].sort((a, b) => {
+            if (a && b)
+              return a.id - b.id;
+            else
+              return 0; // or any other appropriate value, such as `1` or `-1`
+          })
+    )
+
     useEffect(() => {
-        if(game.game_scores.length === 2)
+        if(gameScores.length === 2)
             setScores({
-                "score0": game.game_scores[0].own_score ?? "", 
-                "score1": game.game_scores[1].own_score ?? ""
+                "score0": gameScores[0].own_score ?? "", 
+                "score1": gameScores[1].own_score ?? ""
             })
-    }, [game.game_scores])
+    }, [gameScores])
 
     const metaText = <p>
         {game.location + " | "} 
@@ -22,25 +32,25 @@ export default function GameCard({game, onSubmitScore = null}){
         {" | " + game.readable_time}
         </p>
 
-    if(!game.game_scores.length){
+    if(!gameScores.length){
         return(
             <Card fluid
             header={<h5>? vs ?</h5>}
             meta={metaText}
             />
         )
-    } else if (game.game_scores.length === 1){
+    } else if (gameScores.length === 1){
         return(
             <Card fluid style={{padding: 10}}
-            header={<h5>{game.game_scores[0].team.team_name} vs ?</h5>}
+            header={<h5>{gameScores[0].team.team_name} vs ?</h5>}
             meta={metaText}
             />
         )
     }
 
 
-    const team0 = game.game_scores[0].team
-    const team1 = game.game_scores[1].team
+    const team0 = gameScores[0].team
+    const team1 = gameScores[1].team
 
     const handleChange = (e) => {
         if(Number.isInteger(Number(e.target.value)) && Number(e.target.value) < 200){
@@ -58,7 +68,7 @@ export default function GameCard({game, onSubmitScore = null}){
         onSubmitScore({
             teamId: e.target.name === 'score0' ? team0.id : team1.id,
             newScore: Number(e.target.value),
-            gameScoreId: e.target.name === 'score0' ? game.game_scores[0].id : game.game_scores[1].id,
+            gameScoreId: e.target.name === 'score0' ? gameScores[0].id : gameScores[1].id,
             gameIndex: game.gameIndex,
             poolIndex: game.poolIndex
         })
@@ -86,7 +96,7 @@ export default function GameCard({game, onSubmitScore = null}){
                     {team1.image}
                 </div>
             </CardContent>
-            :<CardDescription>{`${team0.image} ${game.game_scores[0].own_score ?? 0} - ${game.game_scores[1].own_score ?? 0} ${team1.image}`}</CardDescription>
+            :<CardDescription>{`${team0.image} ${gameScores[0].own_score ?? 0} - ${game.game_scores[1].own_score ?? 0} ${team1.image}`}</CardDescription>
             }
             
         </Card>

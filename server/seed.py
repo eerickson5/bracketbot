@@ -14,7 +14,6 @@ if __name__ == '__main__':
     fake = Faker()
     with app.app_context():
 
-        bracket = Stage.query.filter(Stage.id == 50).first()
-        db.session.delete(bracket)
+        db.session.add(team)
         db.session.commit()
         print("Seeded.")

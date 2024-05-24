@@ -43,11 +43,11 @@ class Team(db.Model, SerializerMixin):
                     team_rank["point_diff"] += score[1]['score']
                     team_rank["point_diff"] -= score[0]['score']
 
-                winner_id = game.winner.id
-                if winner_id == self.id:
-                    team_rank["record"] += 3
-                elif winner_id == None:
+                if game.winner == None:
                     team_rank["record"] += 1
+                elif game.winner.id == self.id:
+                    team_rank["record"] += 3
+                    
 
         return team_rank
 
@@ -97,6 +97,7 @@ class Game(db.Model, SerializerMixin):
     @property 
     def readable_time(self):
         return self.start_time.strftime("%I:%M %p").lower()
+        
     
     def create_game_score(self, team_id):
         if len(self.game_scores) == 0 or (len(self.game_scores) == 1 and self.game_scores[0].team_id != team_id):

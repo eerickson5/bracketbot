@@ -31,7 +31,10 @@ db = SQLAlchemy(metadata=metadata)
 migrate = Migrate(app, db)
 db.init_app(app)
 app.secret_key = os.environ.get('SECRET_KEY', "dev_key")
-print(app.secret_key)
-api = Api(app, prefix='/api')
+api = Api(app, prefix=os.environ.get('API_PREFIX', "/")) #should be "/api"
+#here's the deal: my proxy automatically reads and removes the /api. 
+# this line ensures flask needs the /api because otherwise front end endpoints would point to the backend
+# I can't do a "/" because then flask would catch it and error out
+# without the proxy nothing works locally
 CORS(app)
 bcrypt = Bcrypt(app)
