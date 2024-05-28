@@ -63,7 +63,6 @@ export default function ScheduleDisplay({pools, scoresEditable=false, title, sub
         })
         .then(response => response.json())
         .then(data=> {
-            console.log(data.stage)
             setTournament({
                 ...tournament,
                 stages: tournament.stages.map(stage => stage.id === data.stage.id ? data.stage : stage)
