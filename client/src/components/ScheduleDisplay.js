@@ -44,7 +44,10 @@ export default function ScheduleDisplay({pools, scoresEditable=false, title, sub
     const timeStringToMinutes = (timeString) => {
         const [hours, minutes] = timeString.split(':')
                                     .map(str => str.length > 2 ? Number(str.slice(0,2)) : Number(str));
-        return hours * 60 + minutes;
+        if (timeString.includes("p") && hours !== 12)
+            return (hours + 12) * 60 + minutes;
+        else 
+            return hours * 60 + minutes;
     };
 
     const handleSubmitScore = scoresEditable ? ({gameScoreId, teamId, newScore, gameIndex, poolIndex}) => {
