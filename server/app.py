@@ -254,9 +254,10 @@ class CheckSession(Resource):
     def get(self):
         if session.get("user_id"):
             user = User.query.filter(User.id == session["user_id"]).first()
-            return make_response({"user": user.to_dict()}, 200)
-        else:
-            return make_response({"message": "No user logged in"}, 200)
+            if user:
+                return make_response({"user": user.to_dict()}, 200)
+        
+        return make_response({"message": "No user logged in"}, 200)
 api.add_resource(CheckSession, '/check_user')
 
 @app.before_request
