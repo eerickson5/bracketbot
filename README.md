@@ -37,13 +37,17 @@ I originally intended for team captains to be able to log in and submit their ow
 ### Server
 ```console
 source ~/.bash_profile
+pipenv install
 pipenv shell
 cd server
+flask db init
+flask db upgrade
 python app.py
 ```
 
 ### Client
 ```console
+npm install --prefix client
 cd client
 npm start
 ```
