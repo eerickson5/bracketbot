@@ -53,8 +53,8 @@ npm start
 ```
 
 ## 🗂️ Stack
-- ReactJS & Semantic UI for front end
-- Flask & SQL-Alchemy for back end
+- ReactJS & Semantic UI for frontend
+- Flask & SQL for backend
 
 
 ## 📈 Future Plans
